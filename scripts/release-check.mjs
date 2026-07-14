@@ -126,6 +126,20 @@ async function main() {
     record("Telegram invoice accepted by provider", "skip", "no vault access");
   }
 
+  // Fulfillment: the enroll endpoint must reject unauthenticated callers. A
+  // paid course auto-provisions access through here, so an open endpoint would
+  // hand out free enrollments.
+  const enrollUnauth = await status("/api/enroll", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ courseId: "ecourse-nphies", chargeId: "probe" }),
+  });
+  record("enroll endpoint rejects unauthenticated", enrollUnauth === 401, `got ${enrollUnauth}`);
+
+  // An invalid access token must not unlock a course.
+  const badToken = await status("/learn/deadbeefdeadbeefdeadbeefdeadbeefdeadbeef");
+  record("invalid access token does not unlock", badToken === 200, "renders 'not valid' page");
+
   // Audit trail: confirm the compliance ledger is writable/reachable (local).
   try {
     const count = execSync(
