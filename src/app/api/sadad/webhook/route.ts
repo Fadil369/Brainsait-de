@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createHmac, timingSafeEqual } from "node:crypto";
 import { getGateway } from "@/lib/backend";
+import { verifySadadSignature } from "@/lib/sadad-signature";
 
 // SADAD sends webhook notifications when payments are confirmed.
 // This endpoint receives those callbacks and updates the order status.
@@ -16,14 +16,6 @@ export const runtime = "nodejs";
 // Reject callbacks whose timestamp is outside this window, so a signed payload
 // captured off the wire cannot be replayed indefinitely.
 const MAX_CLOCK_SKEW_MS = 5 * 60 * 1000;
-
-function signaturesMatch(expected: string, provided: string): boolean {
-  const a = Buffer.from(expected, "utf8");
-  const b = Buffer.from(provided, "utf8");
-  // timingSafeEqual throws on length mismatch, which would itself leak length.
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -52,9 +44,7 @@ export async function POST(request: NextRequest) {
       request.headers.get("x-signature") ??
       "";
 
-    const expected = createHmac("sha256", webhookSecret).update(raw).digest("hex");
-
-    if (!provided || !signaturesMatch(expected, provided)) {
+    if (!verifySadadSignature(raw, provided, webhookSecret)) {
       console.warn("[SADAD Webhook] Rejected: signature mismatch");
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }

@@ -1,23 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { constantTimeEqual } from "@/lib/ct-equal";
 
 // Gate for the operations surface. Everything matched below can read or change
 // order state, so it fails closed: when the credentials are not configured the
 // route is refused outright rather than served unauthenticated.
 //
-// Runs on the edge runtime, so node:crypto is unavailable — hence the manual
-// constant-time comparison below.
+// Runs on the edge runtime, so node:crypto is unavailable — constantTimeEqual
+// is pure JS for exactly that reason.
 
 const ADMIN_PAGES = "/admin";
 const ADMIN_APIS = ["/api/sadad/verify", "/api/sadad/reject"];
-
-function constantTimeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) {
-    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return diff === 0;
-}
 
 function unauthorized(realm: boolean) {
   return new NextResponse("Unauthorized", {
