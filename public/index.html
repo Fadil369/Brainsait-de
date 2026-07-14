@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HealthExchange v4 — منصة التبادل الصحي الموحدة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@700;900&family=Playfair+Display:wght@400;600;700;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--teal:#0f5257;--teal-d:#093b3e;--teal-l:#146a6a;--teal-g:rgba(15,82,87,.08);
+--gold:#b8862f;--gold-l:#d4a84a;--gold-g:rgba(184,134,47,.08);
+--slate:#33475b;--plum:#5c3d5c;--amber:#8a6421;--green:#1f7a5c;--blue:#2c6e8f;--red:#c0392b;
+--rose:#f43f5e;--violet:#8b5cf6;--cyan:#2dd4bf;
+--bg:#f0f3f2;--s1:#fff;--s2:#f7f9f8;--s3:#eef2f1;
+--tx:#1a2b2a;--tx2:#4a5a59;--tx3:#8a9a99;--bd:#dde6e5;--bd2:#c8d4d3;
+--sh:0 1px 3px rgba(0,0,0,.05),0 4px 16px rgba(15,82,87,.06);
+--sh2:0 4px 24px rgba(0,0,0,.07),0 12px 48px rgba(15,82,87,.09);
+--r:10px;--r-sm:6px;--r-lg:16px;
+--side:280px;--top:56px;
+--fd:'Cairo','IBM Plex Sans Arabic',sans-serif;
+--fb:'IBM Plex Sans Arabic','Cairo',sans-serif;
+--fa:'Noto Kufi Arabic','Cairo',sans-serif;
+--fdisp:'Playfair Display',serif;--fmono:'DM Mono',monospace;
+}
+[data-theme=dark]{
+--bg:#0c1413;--s1:#151f1e;--s2:#1a2827;--s3:#111a19;
+--tx:#e4ecea;--tx2:#96aaa9;--tx3:#5e706f;--bd:#263635;--bd2:#304241;
+--sh:0 1px 3px rgba(0,0,0,.25),0 4px 16px rgba(0,0,0,.2);
+--sh2:0 4px 24px rgba(0,0,0,.35);--teal-g:rgba(15,82,87,.18);--gold-g:rgba(184,134,47,.14);
+}
+html{direction:rtl;font-size:15px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--fb);line-height:1.7;overflow:hidden;height:100vh}
+h1,h2,h3,h4,h5{font-family:var(--fd);font-weight:700;line-height:1.3;margin:0}
+a{color:var(--teal);text-decoration:none}
+button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:inherit}
+.app{display:flex;height:100vh;overflow:hidden}
+.side{width:var(--side);min-width:var(--side);background:var(--s1);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;transition:transform .3s ease;z-index:100}
+.side-h{padding:16px 15px 12px;background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;flex-shrink:0}
+.side-h .logo{font-family:var(--fa);font-size:14px;font-weight:900}
+.side-h .sub{font-size:10px;opacity:.65;margin-top:2px}
+.side-nav{flex:1;overflow-y:auto;padding:6px 0;scrollbar-width:thin}
+.ns{padding:11px 15px 3px;font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--tx3)}
+.nb{display:flex;align-items:center;gap:9px;width:100%;padding:8px 15px;font-size:12px;color:var(--tx2);transition:all .12s;border-right:3px solid transparent;text-align:right}
+.nb:hover{background:var(--teal-g);color:var(--teal)}
+.nb.on{background:var(--teal-g);color:var(--teal);font-weight:600;border-right-color:var(--teal)}
+.nb .ic{width:18px;text-align:center;font-size:13px;flex-shrink:0}
+.nb .bg{margin-right:auto;background:var(--teal);color:#fff;font-size:8.5px;padding:1px 6px;border-radius:10px;font-weight:700}
+.nb .bg.g{background:var(--green)}.nb .bg.a{background:var(--amber)}.nb .bg.p{background:var(--plum)}.nb .bg.gl{background:var(--gold)}.nb .bg.r{background:var(--rose)}.nb .bg.v{background:var(--violet)}
+.mw{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.top{height:var(--top);background:var(--s1);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
+.top-t{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--teal);white-space:nowrap}
+.top-r{margin-right:auto;display:flex;align-items:center;gap:8px}
+.sb{position:relative;width:260px}
+.sb input{width:100%;padding:7px 12px 7px 34px;border:1px solid var(--bd);border-radius:var(--r);background:var(--s2);color:var(--tx);font-family:var(--fb);font-size:12px;outline:none;transition:border-color .2s}
+.sb input:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-g)}
+.sb::before{content:"\1F50D";position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.45}
+.sr{position:absolute;top:100%;right:0;left:0;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-sm);margin-top:4px;max-height:320px;overflow-y:auto;z-index:200;display:none;box-shadow:var(--sh2)}
+.sr.show{display:block}
+.sr-i{padding:9px 13px;font-size:12px;cursor:pointer;border-bottom:1px solid var(--bd);transition:background .12s;display:flex;gap:8px;align-items:center}
+.sr-i:hover{background:var(--teal-g)}
+.sr-i .srt{font-size:10px;color:var(--tx3)}
+.ib{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-sm);color:var(--tx2);font-size:15px;transition:all .12s}
+.ib:hover{background:var(--s3);color:var(--teal)}
+.mc{flex:1;overflow-y:auto;padding:20px 22px;scroll-behavior:smooth}
+.cd{background:var(--s1);border-radius:var(--r);border:1px solid var(--bd);box-shadow:var(--sh);overflow:hidden}
+.cd-h{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.cd-b{padding:18px}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px}
+.sc{background:var(--s1);border-radius:var(--r);padding:18px;border:1px solid var(--bd);box-shadow:var(--sh);position:relative;overflow:hidden}
+.sc::before{content:"";position:absolute;top:0;right:0;width:4px;height:100%}
+.sc.t::before{background:var(--teal)}.sc.g::before{background:var(--gold)}.sc.gr::before{background:var(--green)}
+.sc.pl::before{background:var(--plum)}.sc.am::before{background:var(--amber)}.sc.r::before{background:var(--red)}
+.sc.sl::before{background:var(--slate)}.sc.bl::before{background:var(--blue)}.sc.v::before{background:var(--violet)}.sc.c::before{background:var(--cyan)}
+.sn{font-family:var(--fd);font-size:30px;font-weight:900;line-height:1}
+.sn.t{color:var(--teal)}.sn.g{color:var(--gold)}.sn.gr{color:var(--green)}
+.sn.pl{color:var(--plum)}.sn.am{color:var(--amber)}.sn.r{color:var(--red)}.sn.sl{color:var(--slate)}.sn.v{color:var(--violet)}.sn.c{color:var(--cyan)}
+.sl2{font-size:11.5px;color:var(--tx3);margin-top:3px}
+.sc2{font-size:10.5px;margin-top:6px;color:var(--tx3)}
+.pb{height:7px;background:var(--s3);border-radius:4px;overflow:hidden;margin-top:6px}
+.pf{height:100%;border-radius:4px;transition:width .8s ease}
+.fc{background:var(--s1);border-radius:var(--r-lg);border:1px solid var(--bd);box-shadow:var(--sh);max-width:760px;margin:0 auto 20px;overflow:hidden}
+.fh{padding:14px 22px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.fh h2{font-size:17px;font-weight:800}
+.fh .ft{font-size:10.5px;opacity:.8;margin-bottom:2px}
+.fb2{padding:22px 26px 30px}
+.fr{margin-top:8px;font-size:12.5px;line-height:2.1}
+.fl{border-bottom:1px solid var(--bd2);display:inline-block;min-width:110px;min-height:20px;padding:0 3px;transition:border-color .2s}
+.fl:hover,.fl:focus-within{border-color:var(--teal)}
+.fl input,.fl select,.fl textarea{border:none;outline:none;background:none;width:100%;font-family:var(--fb);font-size:12.5px;color:var(--tx);padding:1px 0}
+.fl-w{min-width:200px}.fl-xw{min-width:250px}
+.rk{margin:10px 0;line-height:1.95;font-size:12.5px}
+.nt{background:var(--s2);border-right:3px solid var(--teal);padding:9px 13px;border-radius:var(--r-sm);font-size:12px;margin-top:10px;line-height:2.1}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;margin-top:12px;font-size:12.5px}
+table.fm{width:100%;border-collapse:collapse;margin-top:10px;font-size:12px}
+table.fm th{background:var(--s3);padding:7px 9px;text-align:right;font-weight:600;border-bottom:2px solid var(--bd)}
+table.fm td{padding:6px 9px;border-bottom:1px solid var(--bd)}
+table.fm input{border:none;outline:none;background:none;width:100%;font-family:var(--fb);font-size:12px;color:var(--tx)}
+.fm-g th{background:var(--gold-g)}
+.ss{margin-top:24px;border-top:1px dashed var(--bd);padding-top:18px}
+.ss h4{font-size:12px;color:var(--teal);margin-bottom:12px;font-weight:700}
+.sg-s{display:flex;flex-wrap:wrap;gap:16px}
+.sb-s{flex:1;min-width:170px}
+.sb-s label{display:block;font-size:11px;color:var(--tx3);margin-bottom:5px;font-weight:600}
+.scw{border:1px solid var(--bd);border-radius:var(--r-sm);background:var(--s2);overflow:hidden;position:relative}
+.scw canvas{display:block;width:100%;height:76px;cursor:crosshair;touch-action:none}
+.sa{display:flex;gap:5px;margin-top:5px}
+.btn-s{font-size:10.5px;padding:3px 10px;border-radius:4px;border:1px solid var(--bd);cursor:pointer;transition:all .12s}
+.btn-cl{background:var(--s1);color:var(--tx3)}.btn-cl:hover{background:var(--s3)}
+.btn-co{background:var(--teal);border-color:var(--teal);color:#fff}.btn-co:hover{background:var(--teal-d)}
+.sk{font-size:10.5px;color:#2a7a2a;margin-top:3px;display:none}.sk.on{display:flex;align-items:center;gap:4px}
+.st{font-size:9.5px;color:var(--tx3);margin-top:2px}
+.sr2{margin-top:20px;text-align:center}
+.btn-sub{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;padding:10px 32px;border-radius:var(--r);font-size:13.5px;font-family:var(--fd);font-weight:700;box-shadow:0 2px 10px rgba(15,82,87,.25);transition:all .2s;position:relative;overflow:hidden}
+.btn-sub:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(15,82,87,.35)}
+.btn-sub:disabled{opacity:.45;cursor:default;transform:none}
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.dc-f{background:var(--s1);border-radius:var(--r);border:1px solid var(--bd);box-shadow:var(--sh);overflow:hidden;transition:transform .2s,box-shadow .2s}
+.dc-f:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.dc-h{padding:12px 16px;color:#fff;display:flex;align-items:center;gap:10px}
+.dc-h .dl{font-family:var(--fa);font-size:20px;font-weight:900;opacity:.75}
+.dc-h h3{font-size:13px;font-weight:700}
+.dc-b{padding:12px 16px}
+.dt{display:flex;flex-wrap:wrap;gap:4px}
+.dt span{font-size:10px;padding:3px 7px;border-radius:4px;background:var(--s3);color:var(--tx2);border:1px solid var(--bd)}
+.ccg{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:14px}
+.cc{background:var(--s1);border-radius:var(--r);padding:16px;border:1px solid var(--bd);box-shadow:var(--sh)}
+.cc-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cb{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px}
+.cb-g{background:#e6f7ee;color:#1a7a3a}.cb-w{background:#fff3e0;color:#b86421}.cb-c{background:#fce4e4;color:var(--red)}
+.ci{list-style:none;padding:0}
+.ci li{padding:5px 0;font-size:12px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--bd)}
+.ci li:last-child{border:none}
+.cik{font-size:13px}
+.cik.ok{color:#2a7a2a}.cik.pd{color:var(--gold)}.cik.mi{color:var(--red)}
+.guide-card{margin-bottom:18px}
+.guide-h3{font-size:15px;color:var(--teal);margin-top:18px;padding-right:10px;border-right:3px solid var(--teal)}
+.rl{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:7px}
+.rl li{padding:9px 12px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-sm);font-size:12px;display:flex;align-items:center;gap:7px;transition:all .12s}
+.rl li:hover{border-color:var(--teal);background:var(--teal-g)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--teal);color:#fff;padding:11px 26px;border-radius:var(--r);font-size:13px;font-family:var(--fd);z-index:9999;opacity:0;transition:all .35s;pointer-events:none;box-shadow:var(--sh2);white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;justify-content:center;align-items:center}
+.modal-bg.show{display:flex}
+.modal{background:var(--s1);border-radius:var(--r-lg);max-width:600px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:var(--sh2);padding:24px}
+.modal h3{margin-bottom:14px;color:var(--teal)}
+.bp{background:var(--s2);border:1px solid var(--bd);padding:7px 14px;border-radius:var(--r-sm);font-size:11.5px;color:var(--tx2);display:flex;align-items:center;gap:5px;transition:all .12s}
+.bp:hover{border-color:var(--teal);color:var(--teal)}
+@media print{
+@page{size:letter;margin:.65in}
+.side,.top,.sr2,.sa,.btn-cl,.btn-co,.bp,.ib,.sb,.nb,.toast,.modal-bg{display:none!important}
+.mw{width:100%!important}.mc{padding:0!important;overflow:visible!important}
+.fc{box-shadow:none!important;border:1px solid #ccc!important;page-break-inside:avoid}
+body{overflow:visible;height:auto;background:#fff!important}.app{height:auto;overflow:visible}
+}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ai{animation:fi .35s ease both}
+.ai:nth-child(2){animation-delay:.04s}.ai:nth-child(3){animation-delay:.08s}.ai:nth-child(4){animation-delay:.12s}
+@keyframes cu{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.cu{animation:cu .4s ease forwards}
+.vs{display:none}.vs.on{display:block}
+@media(max-width:768px){
+:root{--side:0px}
+.side{position:fixed;top:0;right:0;bottom:0;width:280px;z-index:300;transform:translateX(100%)}
+.side.open{transform:translateX(0)}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:299}
+.ov.show{display:block}
+.g2{grid-template-columns:1fr}.sb{width:160px}
+.sg{grid-template-columns:repeat(2,1fr)}.dg,.ccg{grid-template-columns:1fr}
+.sg-s{flex-direction:column}.rl{grid-template-columns:1fr}
+}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--bd2)}
+.chk{display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:12px}
+.chk input{accent-color:var(--teal);width:15px;height:15px}
+.tabs{display:flex;gap:2px;border-bottom:2px solid var(--bd);margin-bottom:14px}
+.tab{padding:8px 16px;font-size:12px;font-weight:600;color:var(--tx3);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;cursor:pointer}
+.tab:hover{color:var(--teal)}.tab.on{color:var(--teal);border-bottom-color:var(--teal)}
+.tab-c{display:none}.tab-c.on{display:block}
+.drg-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-lg);padding:24px;transition:all .3s;cursor:pointer}
+.drg-card:hover{border-color:var(--gold);box-shadow:var(--sh2);transform:translateY(-2px)}
+.drg-card-t{font-family:var(--fd);font-size:18px;font-weight:700}
+.drg-xp{font-size:11px;color:var(--gold-l);background:var(--gold-g);padding:4px 10px;border-radius:10px}
+.drg-desc{font-size:13px;color:var(--tx2);margin-bottom:14px;line-height:1.7}
+.drg-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.drg-tag{font-size:10px;padding:3px 9px;border-radius:6px;letter-spacing:.05em}
+.drg-tag.g{background:var(--gold-g);color:var(--gold-l)}.drg-tag.t{background:rgba(45,212,191,.12);color:var(--cyan)}.drg-tag.v{background:rgba(139,92,246,.12);color:var(--violet)}.drg-tag.r{background:rgba(244,63,94,.12);color:var(--rose)}
+.drg-prog{background:var(--s3);border-radius:4px;height:6px;overflow:hidden;margin-bottom:10px}
+.drg-prog-f{height:100%;border-radius:4px;transition:width 1s ease}
+.drg-prog-f.g{background:linear-gradient(90deg,var(--gold),var(--gold-l))}.drg-prog-f.t{background:linear-gradient(90deg,#0d9488,var(--cyan))}
+.lab-c{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-lg);overflow:hidden}
+.lab-h{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--s2);border-bottom:1px solid var(--bd)}
+.lab-dots{display:flex;gap:6px}.lab-dot{width:10px;height:10px;border-radius:50%}
+.lab-dot.r{background:#ef4444}.lab-dot.y{background:#eab308}.lab-dot.g{background:#22c55e}
+.lab-body{display:grid;grid-template-columns:1fr 1fr;min-height:450px}
+.lab-p{padding:20px}.lab-p+.lab-p{border-right:1px solid var(--bd)}
+.lab-pt{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--tx3);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.lab-pt::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.cnote{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:16px;font-size:12px;line-height:1.9;color:var(--tx2);max-height:350px;overflow-y:auto}
+.cnote .hl{background:rgba(212,168,67,.15);color:var(--gold-l);padding:1px 5px;border-radius:3px}
+.cnote .ht{background:rgba(45,212,191,.12);color:var(--cyan);padding:1px 5px;border-radius:3px}
+.cw{display:flex;flex-direction:column;gap:12px}
+.ci-g{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:12px}
+.ci-l{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);margin-bottom:8px}
+.cs{display:flex;flex-direction:column;gap:6px}
+.csu{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-sm);cursor:pointer;transition:all .3s}
+.csu:hover{border-color:var(--gold);background:var(--gold-g)}
+.csu.sel{border-color:var(--gold);background:var(--gold-g)}
+.csu.cor{border-color:var(--green);background:rgba(34,197,94,.1)}
+.csu.wrg{border-color:var(--red);background:rgba(239,68,68,.1)}
+.csu-id{font-weight:500;color:var(--gold-l);font-size:12px}
+.csu-nm{font-size:11px;color:var(--tx2)}
+.csu-cf{font-size:10px;padding:3px 8px;border-radius:8px;background:rgba(34,197,94,.15);color:var(--green)}
+.drg-res{background:var(--s2);border:1px solid var(--gold);border-radius:var(--r);padding:16px;text-align:center;display:none}
+.drg-res.vis{display:block}
+.drg-res-c{font-family:var(--fd);font-size:22px;font-weight:700;color:var(--gold)}
+.lab-acts{display:flex;gap:8px;margin-top:14px}
+.btn-l{flex:1;padding:10px;border-radius:var(--r-sm);font-size:11px;font-weight:500;cursor:pointer;transition:all .3s;border:none;font-family:var(--fb)}
+.btn-l.p{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--s1)}
+.btn-l.p:hover{box-shadow:0 0 30px rgba(212,168,67,.2)}
+.btn-l.p:disabled{opacity:.5;cursor:not-allowed}
+.btn-l.s{background:transparent;color:var(--tx2);border:1px solid var(--bd)}
+.btn-l.s:hover{border-color:var(--gold)}
+.case-nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.case-b{padding:6px 14px;font-size:10px;border-radius:20px;background:var(--s2);border:1px solid var(--bd);color:var(--tx3);cursor:pointer;transition:all .3s}
+.case-b.act{border-color:var(--gold);color:var(--gold-l);background:var(--gold-g)}
+.quiz-c{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-lg);padding:32px;max-width:700px}
+.quiz-pb{display:flex;gap:6px;margin-bottom:24px}
+.quiz-d{flex:1;height:4px;border-radius:2px;background:var(--bd);transition:background .3s}
+.quiz-d.dn{background:var(--gold)}.quiz-d.act{background:var(--gold-l)}
+.quiz-q{font-family:var(--fd);font-size:18px;font-weight:600;margin-bottom:20px;line-height:1.4}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.quiz-o{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);cursor:pointer;transition:all .3s;font-size:13px}
+.quiz-o:hover{border-color:var(--gold)}
+.quiz-o.sel{border-color:var(--gold);background:var(--gold-g)}
+.quiz-o.cor{border-color:var(--green);background:rgba(34,197,94,.08)}
+.quiz-o.wrg{border-color:var(--red);background:rgba(239,68,68,.08)}
+.quiz-lt{width:26px;height:26px;border-radius:50%;background:var(--s1);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+.quiz-fb{padding:12px;border-radius:var(--r);font-size:12px;margin-bottom:14px;display:none;line-height:1.7}
+.quiz-fb.sh{display:block}
+.quiz-fb.cor{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+.quiz-fb.wrg{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red)}
+.quiz-ft{display:flex;justify-content:space-between;align-items:center}
+.badges-g{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.badge-i{text-align:center;transition:all .3s;cursor:pointer}
+.badge-i:hover{transform:scale(1.1)}
+.badge-ic{width:56px;height:56px;margin:0 auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--bd);background:var(--s1)}
+.badge-ic.earn{border-color:var(--gold);box-shadow:0 0 16px rgba(212,168,67,.2)}
+.badge-ic.lock{opacity:.3;filter:grayscale(1)}
+.badge-nm{font-size:10px;color:var(--tx3)}
+.lb{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-lg);overflow:hidden;max-width:580px}
+.lb-h{padding:14px 20px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
+.lb-r{display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid var(--bd);transition:background .3s}
+.lb-r:hover{background:var(--gold-g)}
+.lb-r.me{background:var(--gold-g);border-right:3px solid var(--gold)}
+.lb-rk{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--tx3);width:28px;text-align:center}
+.lb-rk.tp{color:var(--gold)}
+.lb-av{width:32px;height:32px;border-radius:50%;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid var(--bd)}
+.lb-inf{flex:1}.lb-nm{font-size:13px;font-weight:500}.lb-tt{font-size:10px;color:var(--tx3)}
+.lb-sc{font-size:13px;font-weight:500;color:var(--gold-l)}
+.cert{background:linear-gradient(135deg,var(--s2),var(--s3),var(--s2));border:2px solid var(--gold);border-radius:var(--r-lg);padding:40px;text-align:center;max-width:600px;position:relative;overflow:hidden}
+.cert::before{content:'';position:absolute;inset:6px;border:1px solid rgba(184,134,47,.15);border-radius:var(--r);pointer-events:none}
+.cert-seal{font-size:48px;margin-bottom:12px}
+.cert-t{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.cert-st{font-size:13px;color:var(--tx2);margin-bottom:20px}
+.cert-nm{font-family:var(--fd);font-size:28px;font-weight:900;margin-bottom:4px}
+.cert-dt{font-size:11px;color:var(--tx3);margin-bottom:20px}
+.cert-id{font-size:10px;color:var(--tx3);letter-spacing:.1em}
+.cert-pb{background:var(--s3);height:10px;border-radius:5px;overflow:hidden;max-width:380px;margin:12px auto 0}
+.cert-pf{height:100%;background:linear-gradient(90deg,var(--gold),var(--cyan));border-radius:5px;transition:width 1.5s ease}
+.wh-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-lg);padding:24px;transition:all .3s}
+.wh-card:hover{border-color:var(--gold);box-shadow:var(--sh2)}
+.wh-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px}
+.wh-icon.g{background:var(--gold-g)}.wh-icon.t{background:rgba(45,212,191,.12)}.wh-icon.v{background:rgba(139,92,246,.12)}.wh-icon.r{background:rgba(244,63,94,.12)}
+.wh-t{font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:6px}
+.wh-d{font-size:12px;color:var(--tx2);line-height:1.7;margin-bottom:12px}
+.wh-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 8px;border-radius:6px;background:var(--gold-g);color:var(--gold-l)}
+.api-box{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-lg);overflow:hidden}
+.api-h{padding:12px 18px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.api-h .dots{display:flex;gap:5px}.api-h .dot{width:8px;height:8px;border-radius:50%}
+.api-h .dot.r{background:#ef4444}.api-h .dot.y{background:#eab308}.api-h .dot.g{background:#22c55e}
+.api-h-t{font-size:11px;color:var(--tx3);font-family:var(--fmono)}
+.api-body{padding:18px}
+.api-code{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r-sm);padding:14px;font-family:var(--fmono);font-size:11px;line-height:1.8;color:var(--tx2);overflow-x:auto;white-space:pre;margin-bottom:12px}
+.api-btn{padding:8px 18px;border-radius:var(--r-sm);font-size:11px;font-weight:600;cursor:pointer;transition:all .3s;border:none;font-family:var(--fb)}
+.api-btn.g{background:var(--gold);color:var(--s1)}.api-btn.g:hover{background:var(--gold-l)}
+.api-btn.s{background:transparent;color:var(--tx2);border:1px solid var(--bd)}
+.api-btn.s:hover{border-color:var(--gold)}
+.api-res{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r-sm);padding:14px;font-family:var(--fmono);font-size:11px;line-height:1.8;color:var(--green);margin-top:12px;display:none;white-space:pre}
+.api-res.sh{display:block}
+.cmp-t{width:100%;border-collapse:collapse;font-size:12px}
+.cmp-t th{background:var(--s2);padding:10px 12px;text-align:right;font-weight:600;border-bottom:2px solid var(--bd)}
+.cmp-t td{padding:8px 12px;border-bottom:1px solid var(--bd)}
+.cmp-t tr:hover td{background:var(--teal-g)}
+.cmp-ok{color:var(--green);font-weight:700}.cmp-no{color:var(--red);font-weight:700}
+.kpi-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+.kpi{background:var(--s1);border-radius:var(--r);padding:20px;border:1px solid var(--bd);box-shadow:var(--sh);position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%}
+.kpi.t::before{background:var(--teal)}.kpi.g::before{background:var(--gold)}.kpi.gr::before{background:var(--green)}.kpi.v::before{background:var(--violet)}.kpi.c::before{background:var(--cyan)}.kpi.r::before{background:var(--rose)}
+.kpi-v{font-family:var(--fd);font-size:32px;font-weight:900;line-height:1}
+.kpi-v.t{color:var(--teal)}.kpi-v.g{color:var(--gold)}.kpi-v.gr{color:var(--green)}.kpi-v.v{color:var(--violet)}.kpi-v.c{color:var(--cyan)}.kpi-v.r{color:var(--rose)}
+.kpi-l{font-size:11px;color:var(--tx3);margin-top:4px}
+.kpi-ch{font-size:10px;margin-top:4px;display:flex;align-items:center;gap:3px}
+.kpi-ch.up{color:var(--green)}.kpi-ch.dn{color:var(--red)}
+.gm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px}
+.gm-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-lg);padding:24px;text-align:center;transition:all .3s;cursor:pointer}
+.gm-card:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:var(--sh2)}
+.gm-ic{width:52px;height:52px;margin:0 auto 12px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.gm-ic.g{background:var(--gold-g)}.gm-ic.t{background:rgba(45,212,191,.12)}.gm-ic.v{background:rgba(139,92,246,.12)}
+.gm-t{font-family:var(--fd);font-size:16px;font-weight:600;margin-bottom:6px}
+.gm-d{font-size:12px;color:var(--tx2);line-height:1.7;margin-bottom:12px}
+.gm-rw{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--gold-l);background:var(--gold-g);padding:4px 10px;border-radius:10px}
+.ch-nav{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.ch-btn{padding:7px 14px;font-size:11px;border-radius:18px;background:var(--s2);border:1px solid var(--bd);color:var(--tx3);cursor:pointer;transition:all .3s}
+.ch-btn.act{border-color:var(--gold);color:var(--gold-l);background:var(--gold-g)}
+.ch-btn.done{border-color:var(--green);color:var(--green)}
+.ch-body{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-lg);padding:28px}
+.ch-body h3{font-family:var(--fd);font-size:20px;font-weight:700;margin-bottom:14px}
+.ch-body h4{font-family:var(--fd);font-size:16px;font-weight:600;margin:20px 0 8px;color:var(--gold)}
+.ch-body p{font-size:13px;color:var(--tx2);line-height:1.9;margin-bottom:12px}
+.ch-body ul{padding-right:20px;margin-bottom:12px}
+.ch-body li{font-size:13px;color:var(--tx2);line-height:1.9;margin-bottom:4px}
+.ch-ft{display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--bd)}
+.info-b{background:var(--s2);border-right:3px solid var(--gold);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:14px 18px;margin:16px 0;font-size:12px;color:var(--tx2);line-height:1.8}
+.info-b.t{border-right-color:var(--cyan)}.info-b.v{border-right-color:var(--violet)}
+.lp{display:none;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r-lg);padding:28px;margin-bottom:24px}
+.lp.open{display:block}
+.lp-close{float:left;background:var(--s2);border:1px solid var(--bd);color:var(--tx3);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.lp-close:hover{border-color:var(--rose);color:var(--rose)}
+.qg{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+.sh{margin-bottom:18px}
+.sh h1{font-size:22px;color:var(--teal)}
+.sh p{color:var(--tx2);font-size:12px;margin-top:3px}
+.dtbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:12px}
+.dtbl th,.dtbl td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--bd)}
+.dtbl th{color:var(--gold);text-transform:uppercase;letter-spacing:.08em;font-size:10px;background:var(--s2)}
+.dtbl td{color:var(--tx2)}
+@media(max-width:768px){
+.lab-body{grid-template-columns:1fr}
+.lab-p+.lab-p{border-right:none;border-top:1px solid var(--bd)}
+.badges-g{grid-template-columns:repeat(3,1fr)}
+.gm-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+<div class="ov" id="ov"></div>
+<nav class="side" id="side">
+<div class="side-h">
+<div class="logo">HealthExchange v4</div>
+<div class="sub">منصة التبادل الصحي الموحدة · HX · v4.0</div>
+</div>
+<div class="side-nav" id="sideNav">
+<div class="ns">الرئيسية</div>
+<button class="nb on" data-v="hx"><span class="ic">📊</span>لوحة HX<span class="bg">6</span></button>
+<div class="ns" style="color:var(--teal)">النماذج والوثائق</div>
+<button class="nb" data-v="cons"><span class="ic">✍️</span>الموافقات المستنيرة<span class="bg">13</span></button>
+<button class="nb" data-v="clin"><span class="ic">🏥</span>النماذج السريرية<span class="bg g">5</span></button>
+<button class="nb" data-v="adm"><span class="ic">📋</span>النماذج الإدارية<span class="bg">4</span></button>
+<button class="nb" data-v="fin"><span class="ic">💰</span>النماذج المالية<span class="bg a">3</span></button>
+<button class="nb" data-v="leg"><span class="ic">⚖️</span>النماذج القانونية<span class="bg p">3</span></button>
+<div class="ns" style="color:var(--gold)">الإطار والمرجع</div>
+<button class="nb" data-v="fw"><span class="ic">🏗️</span>إطار الحوكمة (16 مجال)</button>
+<button class="nb" data-v="guide"><span class="ic">📖</span>دليل أنواع الوثائق</button>
+<button class="nb" data-v="comp"><span class="ic">✅</span>تتبع الامتثال</button>
+<div class="ns" style="color:var(--cyan)">أكاديمية DRG</div>
+<button class="nb" data-v="drg-c"><span class="ic">🎓</span>الدورات التعليمية<span class="bg gl">6</span></button>
+<button class="nb" data-v="drg-l"><span class="ic">🧪</span>مختبر ترميز DRG</button>
+<button class="nb" data-v="drg-q"><span class="ic">❓</span>الاختبارات</button>
+<button class="nb" data-v="drg-g"><span class="ic">🏆</span>الساحة والإنجازات</button>
+<div class="ns" style="color:var(--violet)">طبقة الثقة Wathq</div>
+<button class="nb" data-v="wathq"><span class="ic">🔐</span>منتجات Wathq<span class="bg v">5</span></button>
+<button class="nb" data-v="wapi"><span class="ic">🔌</span>API Sandbox</button>
+<button class="nb" data-v="wcmp"><span class="ic">📋</span>مقارنة Wathq</button>
+<div class="ns" style="color:var(--plum)">الإعدادات</div>
+<button class="nb" data-v="set"><span class="ic">⚙️</span>الإعدادات</button>
+</div>
+</nav>
+<div class="mw">
+<header class="top">
+<button class="ib" id="menuBtn" style="display:none">☰</button>
+<div class="top-t" id="topT">لوحة HX</div>
+<div class="top-r">
+<div class="sb">
+<input type="text" id="gs" placeholder="بحث في النماذج والدورات والمنتجات..." autocomplete="off">
+<div class="sr" id="sr"></div>
+</div>
+<div style="display:flex;align-items:center;gap:4px;background:var(--gold-g);padding:4px 10px;border-radius:16px;font-size:11px;color:var(--gold-l)">★ <span id="xpDisp">2,450 XP</span></div>
+<button class="ib" id="bPrint" title="طباعة">🖨️</button>
+<button class="ib" id="bTheme" title="تبديل المظهر">🌙</button>
+<button class="ib" id="bExport" title="تصدير">📥</button>
+</div>
+</header>
+<div class="mc" id="mc">
+
+<!-- HX DASHBOARD -->
+<div class="vs on" id="v-hx">
+<div class="sh"><h1>لوحة التبادل الصحي الرئيسية</h1><p>نظرة شاملة على الأداء والوثائق والامتثال والتعليم</p></div>
+<div class="kpi-cards">
+<div class="kpi t ai"><div class="kpi-v t">28</div><div class="kpi-l">نموذج وثيقة جاهز</div><div class="kpi-ch up">✍️ 13 موافقة + 5 سريري + 4 إداري + 3 مالي + 3 قانوني</div></div>
+<div class="kpi g ai"><div class="kpi-v g">300+</div><div class="kpi-l">نوع وثيقة في الإطار</div><div class="kpi-ch up">🏗️ 16 مجال رئيسي</div></div>
+<div class="kpi gr ai"><div class="kpi-v gr">7</div><div class="kpi-l">جهات تنظيمية</div><div class="kpi-ch up">MOH · CBAHI · SFDA · CCHI · NPHIES · SCFHS · SDAIA</div></div>
+<div class="kpi v ai"><div class="kpi-v v">6</div><div class="kpi-l">وحدات تعليمية DRG</div><div class="kpi-ch up">🎓 240 حالة تدريبية</div></div>
+<div class="kpi c ai"><div class="kpi-v c">5</div><div class="kpi-l">منتجات Wathq Trust</div><div class="kpi-ch up">🔐 KYB · PDF · ZATCA · AI · API</div></div>
+<div class="kpi r ai"><div class="kpi-v r">94.2%</div><div class="kpi-l">دقة الترميز</div><div class="kpi-ch up">↑ +12% منذ البداية</div></div>
+</div>
+<div class="cd ai" style="margin-bottom:18px">
+<div class="cd-h"><h3 style="font-size:14px;color:var(--teal)">ملخص الامتثال</h3></div>
+<div class="cd-b" id="hxBars"></div>
+</div>
+<div class="cd ai" style="margin-bottom:18px">
+<div class="cd-h"><h3 style="font-size:14px;color:var(--teal)">مؤشرات الأداء DRG</h3></div>
+<div class="cd-b">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+<div style="padding:14px;background:var(--s2);border-radius:var(--r-sm);text-align:center"><div style="font-family:var(--fd);font-size:28px;font-weight:900;color:var(--gold)">1.84</div><div style="font-size:10px;color:var(--tx3)">Case Mix Index</div><div style="font-size:10px;color:var(--green)">↑ +8.6%</div></div>
+<div style="padding:14px;background:var(--s2);border-radius:var(--r-sm);text-align:center"><div style="font-family:var(--fd);font-size:28px;font-weight:900;color:var(--cyan)">91%</div><div style="font-size:10px;color:var(--tx3)">Clean Claim Rate</div><div style="font-size:10px;color:var(--green)">↑ +83%</div></div>
+<div style="padding:14px;background:var(--s2);border-radius:var(--r-sm);text-align:center"><div style="font-family:var(--fd);font-size:28px;font-weight:900;color:var(--violet)">4.7</div><div style="font-size:10px;color:var(--tx3)">Avg A/R Days</div><div style="font-size:10px;color:var(--green)">↓ -48%</div></div>
+<div style="padding:14px;background:var(--s2);border-radius:var(--r-sm);text-align:center"><div style="font-family:var(--fd);font-size:28px;font-weight:900;color:var(--gold-l)">$1.2M</div><div style="font-size:10px;color:var(--tx3)">DNFB Rate</div><div style="font-size:10px;color:var(--green)">↓ -92%</div></div>
+</div>
+</div>
+</div>
+<div class="cd ai">
+<div class="cd-h"><h3 style="font-size:14px;color:var(--teal)">إجراءات سريعة</h3></div>
+<div class="cd-b"><div class="qg" id="hxQuick"></div></div>
+</div>
+</div>
+
+<!-- CONSENT FORMS -->
+<div class="vs" id="v-cons">
+<div class="sh"><h1>الموافقات المستنيرة</h1><p>13 نموذجًا شاملاً لجميع أنواع الموافقات الشائعة</p></div>
+<div id="consentForms"></div>
+</div>
+
+<!-- CLINICAL FORMS -->
+<div class="vs" id="v-clin">
+<div class="sh"><h1>النماذج السريرية</h1><p>5 نماذج أساسية لتوثيق الرعاية السريرية</p></div>
+<div id="clinicalForms"></div>
+</div>
+
+<!-- ADMIN FORMS -->
+<div class="vs" id="v-adm">
+<div class="sh"><h1>النماذج الإدارية</h1><p>4 نماذج لتنظيم العمل الإداري والمؤسسي</p></div>
+<div id="adminForms"></div>
+</div>
+
+<!-- FINANCIAL FORMS -->
+<div class="vs" id="v-fin">
+<div class="sh"><h1>النماذج المالية والتأمينية</h1><p>3 نماذج للفواتير والمطالبات والتعريفات</p></div>
+<div id="financialForms"></div>
+</div>
+
+<!-- LEGAL FORMS -->
+<div class="vs" id="v-leg">
+<div class="sh"><h1>النماذج القانونية والتنظيمية</h1><p>3 نماذج للترخيص وحماية البيانات والإبلاغ الإلزامي</p></div>
+<div id="legalForms"></div>
+</div>
+
+<!-- FRAMEWORK -->
+<div class="vs" id="v-fw">
+<div class="sh"><h1>إطار الوثائق والحوكمة الصحية (SHDIGF)</h1><p>16 مجالًا رئيسيًا يغطي أكثر من 300 نوع وثيقة</p></div>
+<div class="cd ai" style="margin-bottom:18px">
+<div class="cd-h"><h3 style="font-size:14px;color:var(--teal)">القالب الموحّد لكل وثيقة</h3></div>
+<div class="cd-b" style="overflow-x:auto">
+<table class="fm" style="font-size:11.5px">
+<thead><tr><th>الحقل</th><th>الوصف</th></tr></thead>
+<tbody>
+<tr><td style="font-weight:700">الغرض</td><td>لماذا وُجدت هذه الوثيقة</td></tr>
+<tr><td style="font-weight:700">الجهة المالكة</td><td>القسم المسؤول إداريًا</td></tr>
+<tr><td style="font-weight:700">مُعِدّها</td><td>الدور الوظيفي الذي ينشئها</td></tr>
+<tr><td style="font-weight:700">المرجع التنظيمي</td><td>MOH · CBAHI · CCHI · NPHIES · SFDA · SCFHS · PDPL</td></tr>
+<tr><td style="font-weight:700">مدة الاحتفاظ</td><td>الحد الأدنى النظامي للأرشفة</td></tr>
+<tr><td style="font-weight:700">فرص الأتمتة</td><td>الذكاء الاصطناعي، OCR، سير العمل الآلي</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dg" id="fwGrid"></div>
+</div>
+
+<!-- GUIDE -->
+<div class="vs" id="v-guide">
+<div class="sh"><h1>دليل أنواع الوثائق</h1><p>دليل شامل مصنّف: سريري · إداري · مالي · قانوني</p></div>
+<div class="cd ai guide-card">
+<div class="cd-h" style="background:var(--teal);color:#fff"><h3 style="font-size:14px">الجهات التنظيمية الرئيسية</h3></div>
+<div class="cd-b" style="overflow-x:auto">
+<table class="fm" style="font-size:12px">
+<thead><tr><th>الجهة</th><th>الاختصار</th><th>دورها</th></tr></thead>
+<tbody>
+<tr><td>وزارة الصحة</td><td style="font-weight:700">MOH</td><td>تراخيص المنشآت، الإبلاغ الإلزامي</td></tr>
+<tr><td>المركز السعودي لاعتماد المنشآت</td><td style="font-weight:700">CBAHI</td><td>معايير الاعتماد وجودة السجلات</td></tr>
+<tr><td>الهيئة العامة للغذاء والدواء</td><td style="font-weight:700">SFDA</td><td>تنظيم الوصفات والأدوية</td></tr>
+<tr><td>مجلس الضمان الصحي</td><td style="font-weight:700">CCHI</td><td>تنظيم وثائق التأمين والمطالبات</td></tr>
+<tr><td>المنصة الوطنية للتبادل الصحي</td><td style="font-weight:700">NPHIES</td><td>تبادل المطالبات والموافقات الإلكترونية</td></tr>
+<tr><td>الهيئة السعودية للتخصصات الصحية</td><td style="font-weight:700">SCFHS</td><td>تصنيف وتراخيص مزاولة المهنة</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cd ai guide-card">
+<div class="cd-b">
+<div class="tabs" id="guideTabs">
+<div class="tab on" data-gt="g-clin">السريرية</div>
+<div class="tab" data-gt="g-adm">الإدارية</div>
+<div class="tab" data-gt="g-fin">المالية</div>
+<div class="tab" data-gt="g-legal">القانونية</div>
+</div>
+<div class="tab-c on" id="gt-g-clin">
+<h3 class="guide-h3">الوثائق السريرية</h3>
+<ul class="rl">
+<li>📄 السجل الطبي الموحّد (EMR)</li>
+<li>📄 الموافقة المستنيرة</li>
+<li>📄 الوصفة الطبية — SFDA + "وصفتي"</li>
+<li>📄 تقرير التحويل الطبي</li>
+<li>📄 تقرير الخروج (Discharge Summary)</li>
+<li>📄 مسارات الرعاية السريرية</li>
+<li>📄 الإبلاغ عن الحوادث</li>
+</ul>
+</div>
+<div class="tab-c" id="gt-g-adm">
+<h3 class="guide-h3" style="color:var(--slate);border-right-color:var(--slate)">الوثائق الإدارية</h3>
+<ul class="rl">
+<li>📋 الملف الوظيفي للموظف</li>
+<li>📋 الإجراءات التشغيلية (SOPs)</li>
+<li>📋 محاضر لجان الجودة</li>
+<li>📋 تفويض الصلاحيات</li>
+<li>📋 خطة إدارة الطوارئ</li>
+</ul>
+</div>
+<div class="tab-c" id="gt-g-fin">
+<h3 class="guide-h3" style="color:var(--amber);border-right-color:var(--amber)">الوثائق المالية</h3>
+<ul class="rl">
+<li>💰 الفاتورة الطبية</li>
+<li>💰 مطالبة التأمين عبر نفيس</li>
+<li>💰 جدول التعرفة الطبية</li>
+</ul>
+</div>
+<div class="tab-c" id="gt-g-legal">
+<h3 class="guide-h3" style="color:var(--plum);border-right-color:var(--plum)">الوثائق القانونية</h3>
+<ul class="rl">
+<li>⚖️ ترخيص مزاولة النشاط الصحي</li>
+<li>⚖️ حماية البيانات (PDPL)</li>
+<li>⚖️ الإبلاغ الإلزامي عن الأمراض المعدية</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<!-- COMPLIANCE -->
+<div class="vs" id="v-comp">
+<div class="sh"><h1>تتبع الامتثال التنظيمي</h1><p>رصد مدى الالتزام بالمعايير والأنظمة</p></div>
+<div class="ccg" id="compGrid"></div>
+</div>
+
+<!-- DRG COURSES -->
+<div class="vs" id="v-drg-c">
+<div class="sh"><h1 style="color:var(--gold)">أكاديمية DRG — الدورات التعليمية</h1><p>6 وحدات تدريجية مع محتوى تفاعلي وحالات سريرية حقيقية</p></div>
+<div class="lp" id="lessonPanel">
+<button class="lp-close" onclick="closeLesson()">✕</button>
+<div id="lessonContent"></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px" id="courseCards"></div>
+</div>
+
+<!-- DRG LAB -->
+<div class="vs" id="v-drg-l">
+<div class="sh"><h1 style="color:var(--cyan)">مختبر ترميز DRG</h1><p>تدرّب على سيناريوهات سريرية حقيقية مع محرك الذكاء الاصطناعي</p></div>
+<div class="case-nav" id="caseNav"></div>
+<div class="lab-c">
+<div class="lab-h">
+<div style="display:flex;align-items:center;gap:8px">
+<div class="lab-dots"><div class="lab-dot r"></div><div class="lab-dot y"></div><div class="lab-dot g"></div></div>
+<span style="font-size:11px;color:var(--tx3);font-family:var(--fmono)" id="labTitleBar">DRG Lab v2.0 — Case #SA-001</span>
+</div>
+<div style="font-size:11px;color:var(--gold-l);background:var(--gold-g);padding:4px 10px;border-radius:10px">★ +50 XP</div>
+</div>
+<div class="lab-body">
+<div class="lab-p">
+<div class="lab-pt">التوثيق السريري</div>
+<div class="cnote" id="clinicalNote"></div>
+</div>
+<div class="lab-p">
+<div class="lab-pt">مساحة عمل الترميز</div>
+<div class="cw" id="codingWorkspace">
+<div class="ci-g" id="principalGroup"></div>
+<div class="ci-g" id="secondaryGroup"></div>
+<div class="drg-res" id="drgResult"></div>
+<div class="lab-acts">
+<button class="btn-l p" id="submitBtn" onclick="submitCoding()">أرسل وتحقق</button>
+<button class="btn-l s" onclick="resetLab()">إعادة تعيين</button>
+<button class="btn-l s" onclick="nextCase()">الحالة التالية ←</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- DRG QUIZ -->
+<div class="vs" id="v-drg-q">
+<div class="sh"><h1 style="color:var(--gold)">اختبارات المعرفة</h1><p>أسئلة سريعة من منهج DRG-SA V2 — كل إجابة صحيحة تكسب نقاط خبرة</p></div>
+<div class="quiz-c" id="quizContainer">
+<div class="quiz-pb" id="quizProgress"></div>
+<div class="quiz-q" id="quizQuestion"></div>
+<div class="quiz-opts" id="quizOptions"></div>
+<div class="quiz-fb" id="quizFeedback"></div>
+<div class="quiz-ft">
+<div style="font-size:12px;color:var(--gold-l)" id="quizXP">★ 0 XP</div>
+<button class="btn-l p" id="nextQuizBtn" onclick="nextQuestion()" style="width:auto;padding:10px 24px">السؤال التالي ←</button>
+</div>
+</div>
+</div>
+
+<!-- DRG GAMIFICATION -->
+<div class="vs" id="v-drg-g">
+<div class="sh"><h1 style="color:var(--gold)">الساحة والإنجازات</h1><p>اكسب نقاط الخبرة، افتح الإنجازات، وتنافس مع الزملاء</p></div>
+<div class="gm-grid">
+<div class="gm-card" onclick="startDailyChallenge()">
+<div class="gm-ic g">🏆</div>
+<div class="gm-t">التحديات اليومية</div>
+<div class="gm-d">أكمل تحدي ترميز DRG واحد يومياً. مكافآت السلسلة تضاعف نقاط الخبرة.</div>
+<div class="gm-rw">★ +100 XP / يوم</div>
+</div>
+<div class="gm-card" onclick="go('drg-l')">
+<div class="gm-ic t">💎</div>
+<div class="gm-t">محاكاة الحالات</div>
+<div class="gm-d">تعامل مع سيناريوهات سريرية حقيقية. كل حالة محددة بوقت تكسب نقاط إضافية.</div>
+<div class="gm-rw">★ +50 إلى 200 XP</div>
+</div>
+<div class="gm-card" onclick="startBossExam()">
+<div class="gm-ic v">🚀</div>
+<div class="gm-t">اختبارات التحدي</div>
+<div class="gm-d">اختبارات نهاية الوحدة. انجح لفتح الوحدة التالية وكسب شارة.</div>
+<div class="gm-rw">★ +500 XP + شارة</div>
+</div>
+</div>
+<div style="margin-bottom:28px">
+<h3 style="font-family:var(--fd);font-size:20px;font-weight:600;margin-bottom:16px">شارات الإنجاز</h3>
+<div class="badges-g" id="badgesGrid"></div>
+</div>
+<div style="margin-bottom:28px">
+<h3 style="font-family:var(--fd);font-size:20px;font-weight:600;margin-bottom:16px">لوحة المتصدرين</h3>
+<div class="lb" id="leaderboard"></div>
+</div>
+<h3 style="font-family:var(--fd);font-size:20px;font-weight:600;margin-bottom:16px">شهادتك</h3>
+<div class="cert">
+<div class="cert-seal">🏆</div>
+<div class="cert-t">شهادة DRG-SA V2 المهنية</div>
+<div class="cert-st">الترميز الطبي وسلامة التوثيق السريري بالذكاء الاصطناعي</div>
+<div class="cert-nm">—</div>
+<div class="cert-dt">أكمل جميع الوحدات الست لفتحها</div>
+<div class="cert-id">CERT-DRG-SA-XXXX</div>
+<div style="margin-top:20px">
+<div style="font-size:11px;color:var(--tx3);margin-bottom:8px">2 من 6 وحدات مكتملة</div>
+<div class="cert-pb"><div class="cert-pf" style="width:33%"></div></div>
+</div>
+</div>
+</div>
+
+<!-- WATHQ TRUST -->
+<div class="vs" id="v-wathq">
+<div class="sh"><h1 style="color:var(--violet)">طبقة الثقة Wathq</h1><p>منتجات التحقق والثقة للأعمال — KYB، شهادات PDF، المراقبة المستمرة</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px" id="wathqGrid"></div>
+</div>
+
+<!-- WATHQ API -->
+<div class="vs" id="v-wapi">
+<div class="sh"><h1 style="color:var(--violet)">API Sandbox — Wathq Trust</h1><p>جرّب واجهات برمجة التطبيقات مع مفاتيح تجريبية</p></div>
+<div class="api-box" style="margin-bottom:20px">
+<div class="api-h"><div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div><span class="api-h-t">POST /api/v1/verify/kyb — Demo Key: wth_demo_sk_12345</span></div>
+<div class="api-body">
+<div class="api-code" id="apiCode1">{
+  "cr_number": "1234567890",
+  "api_key": "wth_demo_sk_12345",
+  "verification_type": "full_kyb"
+}</div>
+<button class="api-btn g" onclick="runApiDemo(1)">▶ تنفيذ الطلب</button>
+<button class="api-btn s" onclick="copyApiCode(1)">📋 نسخ</button>
+<div class="api-res" id="apiRes1"></div>
+</div>
+</div>
+<div class="api-box" style="margin-bottom:20px">
+<div class="api-h"><div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div><span class="api-h-t">POST /api/v1/zatca/invoice — Demo Key: wth_demo_sk_12345</span></div>
+<div class="api-body">
+<div class="api-code" id="apiCode2">{
+  "invoice_type": "standard",
+  "seller_cr": "1234567890",
+  "buyer_vat": "300012345600003",
+  "items": [{"desc":"Medical Supplies","qty":10,"price":150.00,"vat":15}],
+  "api_key": "wth_demo_sk_12345"
+}</div>
+<button class="api-btn g" onclick="runApiDemo(2)">▶ تنفيذ الطلب</button>
+<button class="api-btn s" onclick="copyApiCode(2)">📋 نسخ</button>
+<div class="api-res" id="apiRes2"></div>
+</div>
+</div>
+<div class="api-box" style="margin-bottom:20px">
+<div class="api-h"><div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div><span class="api-h-t">POST /api/v1/risk/score — Demo Key: wth_demo_sk_12345</span></div>
+<div class="api-body">
+<div class="api-code" id="apiCode3">{
+  "cr_number": "1234567890",
+  "assessment_type": "comprehensive",
+  "api_key": "wth_demo_sk_12345"
+}</div>
+<button class="api-btn g" onclick="runApiDemo(3)">▶ تنفيذ الطلب</button>
+<button class="api-btn s" onclick="copyApiCode(3)">📋 نسخ</button>
+<div class="api-res" id="apiRes3"></div>
+</div>
+</div>
+</div>
+
+<!-- WATHQ COMPARISON -->
+<div class="vs" id="v-wcmp">
+<div class="sh"><h1 style="color:var(--violet)">مقارنة Wathq Trust Layer vs Wathq الخام</h1><p>لماذا تختار طبقة الثقة الموحدة</p></div>
+<div class="cd ai">
+<div class="cd-b" style="overflow-x:auto">
+<table class="cmp-t">
+<thead><tr><th>الميزة</th><th>Wathq الخام</th><th>Wathq Trust Layer</th></tr></thead>
+<tbody>
+<tr><td>التحقق من السجل التجاري</td><td class="cmp-ok">✅ متوفر</td><td class="cmp-ok">✅ متوفر</td></tr>
+<tr><td>حزمة KYB شاملة</td><td class="cmp-no">❌ غير متوفر</td><td class="cmp-ok">✅ متوفر</td></tr>
+<tr><td>شهادات PDF رسمية</td><td class="cmp-no">❌ غير متوفر</td><td class="cmp-ok">✅ متوفر</td></tr>
+<tr><td>المراقبة المستمرة</td><td class="cmp-no">❌ غير متوفر</td><td class="cmp-ok">✅ متوفر</td></tr>
+<tr><td>مولد فواتير ZATCA</td><td class="cmp-no">❌ غير متوفر</td><td class="cmp-ok">✅ متوفر</td></tr>
+<tr><td>تقييم المخاطر بالذكاء الاصطناعي</td><td class="cmp-no">❌ غير متوفر</td><td class="cmp-ok">✅ متوفر</td></tr>
+<tr><td>API Sandbox مع مفاتيح تجريبية</td><td class="cmp-no">❌ غير متوفر</td><td class="cmp-ok">✅ متوفر</td></tr>
+<tr><td>لوحة تحكم موحدة</td><td class="cmp-no">❌ غير متوفر</td><td class="cmp-ok">✅ متوفر</td></tr>
+<tr><td>تكامل مع HealthExchange</td><td class="cmp-no">❌ غير متوفر</td><td class="cmp-ok">✅ متوفر</td></tr>
+<tr><td>دعم فني مخصص</td><td class="cmp-no">❌ أساسي</td><td class="cmp-ok">✅ أولوية</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- SETTINGS -->
+<div class="vs" id="v-set">
+<div class="sh"><h1>الإعدادات</h1></div>
+<div class="cd" style="max-width:520px">
+<div class="cd-b">
+<div style="margin-bottom:18px">
+<label style="font-size:12.5px;font-weight:600;display:block;margin-bottom:6px">المظهر</label>
+<button id="setTheme" class="btn-s" style="padding:8px 18px;font-size:12px;background:var(--teal);color:#fff;border-color:var(--teal)">تبديل الوضع الداكن / الفاتح</button>
+</div>
+<div style="margin-bottom:18px">
+<label style="font-size:12.5px;font-weight:600;display:block;margin-bottom:6px">اسم المنشأة</label>
+<div class="fl fl-xw"><input type="text" id="setName" placeholder="أدخل اسم المنشأة"></div>
+</div>
+<div style="margin-bottom:18px">
+<label style="font-size:12.5px;font-weight:600;display:block;margin-bottom:6px">حفظ البيانات</label>
+<div style="display:flex;gap:8px;margin-top:6px">
+<button class="btn-s" style="padding:7px 14px;font-size:11.5px" onclick="saveAll()">💾 حفظ الكل</button>
+<button class="btn-s" style="padding:7px 14px;font-size:11.5px;background:var(--red);color:#fff;border-color:var(--red)" onclick="clearAll()">🗑️ مسح الكل</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal-bg" id="modal"><div class="modal" id="modalBody"></div></div>
+<script>
+(function(){
+
+/* THEME */
+var dark=localStorage.getItem('hx-theme')==='dark';
+function applyT(){document.documentElement.setAttribute('data-theme',dark?'dark':'')}
+applyT();
+function toggleT(){dark=!dark;localStorage.setItem('hx-theme',dark?'dark':'');applyT();toast(dark?'تم تفعيل الوضع الداكن':'تم تفعيل الوضع الفاتح')}
+document.getElementById('bTheme').onclick=toggleT;
+document.getElementById('setTheme').onclick=toggleT;
+
+/* NAV */
+var titles={hx:'لوحة HX',cons:'الموافقات المستنيرة',clin:'النماذج السريرية',adm:'النماذج الإدارية',fin:'النماذج المالية',leg:'النماذج القانونية',fw:'إطار الحوكمة SHDIGF',guide:'دليل أنواع الوثائق',comp:'تتبع الامتثال','drg-c':'أكاديمية DRG','drg-l':'مختبر ترميز DRG','drg-q':'الاختبارات','drg-g':'الساحة والإنجازات',wathq:'طبقة الثقة Wathq',wapi:'API Sandbox',wcmp:'مقارنة Wathq',set:'الإعدادات'};
+function go(id){
+document.querySelectorAll('.vs').forEach(function(s){s.classList.remove('on')});
+var el=document.getElementById('v-'+id);if(el)el.classList.add('on');
+document.querySelectorAll('.nb').forEach(function(b){b.classList.toggle('on',b.dataset.v===id)});
+document.getElementById('topT').textContent=titles[id]||id;
+document.getElementById('mc').scrollTop=0;
+if(!formsBuilt&&['cons','clin','adm','fin','leg'].indexOf(id)>=0)buildForms();
+if(id==='fw'&&!fwBuilt)buildFW();
+if(id==='drg-c')renderCourses();
+if(id==='drg-l'){renderCaseNav();loadCase(currentCase);}
+if(id==='drg-q')resetQuiz();
+if(id==='drg-g'){renderBadges();renderLeaderboard();}
+if(id==='wathq')renderWathq();
+}
+document.querySelectorAll('.nb[data-v]').forEach(function(b){b.addEventListener('click',function(){go(this.dataset.v)})});
+
+/* MOBILE */
+var side=document.getElementById('side'),ov=document.getElementById('ov'),mBtn=document.getElementById('menuBtn');
+function ckM(){if(innerWidth<=768){mBtn.style.display=''}else{mBtn.style.display='none';side.classList.remove('open');ov.classList.remove('show')}}
+ckM();addEventListener('resize',ckM);
+mBtn.onclick=function(){side.classList.toggle('open');ov.classList.toggle('show')};
+ov.onclick=function(){side.classList.remove('open');ov.classList.remove('show')};
+
+/* HX DASHBOARD */
+var hxBars=[
+{n:'وزارة الصحة (MOH)',i:'\uD83C\uDFE5',p:85,c:'var(--teal)'},
+{n:'CBAHI',i:'\u2B50',p:72,c:'var(--gold)'},
+{n:'SFDA',i:'\uD83D\uDC8A',p:90,c:'var(--green)'},
+{n:'CCHI / نفيس',i:'\uD83D\uDEE1\uFE0F',p:65,c:'var(--amber)'},
+{n:'SCFHS',i:'\uD83D\uDC68\u200D\u2695\uFE0F',p:95,c:'var(--slate)'},
+{n:'PDPL / SDAIA',i:'\uD83D\uDD12',p:78,c:'var(--plum)'}
+];
+var hxBEl=document.getElementById('hxBars');
+hxBEl.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px">'+hxBars.map(function(b){return '<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--s2);border-radius:var(--r-sm)"><div style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:'+b.c+'15">'+b.i+'</div><div style="flex:1"><div style="font-size:11.5px;font-weight:600">'+b.n+'</div><div class="pb"><div class="pf" style="width:'+b.p+'%;background:'+b.c+'"></div></div><div style="font-size:9.5px;color:var(--tx3);margin-top:3px">'+b.p+'% متوافق</div></div></div>'}).join('')+'</div>';
+
+var hxQuicks=[
+{l:'\u270D\uFE0F نموذج موافقة',v:'cons',c:'var(--teal)'},
+{l:'\uD83C\uDFE5 نموذج سريري',v:'clin',c:'var(--teal-l)'},
+{l:'\uD83D\uDCB0 فاتورة / مطالبة',v:'fin',c:'var(--amber)'},
+{l:'\uD83C\uDF93 دورات DRG',v:'drg-c',c:'var(--gold)'},
+{l:'\uD83E\uDDEA مختبر DRG',v:'drg-l',c:'var(--cyan)'},
+{l:'\uD83D\uDD10 Wathq Trust',v:'wathq',c:'var(--violet)'},
+{l:'\u2705 تتبع الامتثال',v:'comp',c:'var(--green)'},
+{l:'\uD83D\uDDA8\uFE0F طباعة / PDF',v:'print',c:'var(--slate)'}
+];
+var hxQg=document.getElementById('hxQuick');
+hxQuicks.forEach(function(q){
+var btn=document.createElement('button');
+btn.style.cssText='padding:13px;background:'+q.c+'10;border:1px solid '+q.c+';border-radius:var(--r-sm);text-align:center;font-size:11.5px;font-weight:600;color:'+q.c+';transition:all .15s';
+btn.textContent=q.l;
+if(q.v==='print')btn.onclick=function(){window.print()};else btn.setAttribute('data-goto',q.v);
+hxQg.appendChild(btn);
+if(btn.getAttribute('data-goto'))btn.addEventListener('click',function(){go(this.getAttribute('data-goto'))});
+});
+
+/* FORMS DATA */
+var forms=[
+{id:'c1',cat:'cons',n:1,tag:'نموذج 1',t:'موافقة عامة على العلاج',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'رقم الملف'},{l:'التاريخ'}],body:'أُقرّ بأنني استلمت شرحًا وافيًا من الطبيب المعالج حول حالتي الصحية والفحوصات والإجراءات التشخيصية والعلاجية العامة اللازمة.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع الطبيب'},{k:'witness',l:'الشاهد'}]},
+{id:'c2',cat:'cons',n:2,tag:'نموذج 2',t:'موافقة على إجراء جراحي',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'رقم الملف'},{l:'اسم الإجراء الجراحي',w:1},{l:'الجراح المسؤول'}],body:'<strong>أُقرّ بأنني فُهِمت:</strong> طبيعة العملية وخطواتها · المخاطر والمضاعفات المحتملة · البدائل العلاجية المتاحة.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع الجراح'},{k:'witness',l:'الشاهد'}]},
+{id:'c3',cat:'cons',n:3,tag:'نموذج 3',t:'موافقة على التخدير',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'رقم الملف'},{l:'نوع التخدير: \u2610 عام \u2610 نصفي \u2610 تسكين واعٍ'}],body:'<strong>المخاطر الموضّحة:</strong> ردود فعل تحسسية · صعوبات تنفسية · غثيان وقيء.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع طبيب التخدير'},{k:'witness',l:'الشاهد'}]},
+{id:'c4',cat:'cons',n:4,tag:'نموذج 4',t:'موافقة نقل الدم',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'فصيلة الدم'},{l:'المكوّن: \u2610 دم كامل \u2610 كريات حمراء \u2610 صفائح \u2610 بلازما'}],body:'<strong>أُقرّ بفهمي:</strong> ضرورة نقل الدم · احتمال تفاعل تحسسي · خطر ضئيل لانتقال عدوى.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع الطبيب'},{k:'witness',l:'الشاهد'}]},
+{id:'c5',cat:'cons',n:5,tag:'نموذج 5',t:'موافقة ولي الأمر لعلاج قاصر',bg:'var(--teal)',rows:[{l:'اسم القاصر'},{l:'تاريخ الميلاد'},{l:'اسم ولي الأمر'},{l:'صلة القرابة'}],body:'أُقرّ بأنني فُهِمت طبيعة العلاج ومخاطره وبدائله، وأوافق على إجرائه نيابةً عن القاصر.',sigs:[{k:'patient',l:'توقيع ولي الأمر'},{k:'doctor',l:'توقيع الطبيب'},{k:'witness',l:'الشاهد'}]},
+{id:'c6',cat:'cons',n:6,tag:'نموذج 6',t:'موافقة المشاركة في بحث سريري',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'عنوان الدراسة',w:1},{l:'رقم اعتماد IRB'}],body:'<strong>أُقرّ بفهمي:</strong> الغرض العلمي · حقي في الانسحاب · سرية بياناتي · المخاطر والفوائد.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع الباحث'},{k:'witness',l:'الشاهد'}]},
+{id:'c7',cat:'cons',n:7,tag:'نموذج 7',t:'إقرار الخروج خلاف نصيحة الطبيب (AMA)',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'رقم الملف'}],body:'أُقرّ بأنني أرغب في المغادرة بإرادتي الخاصة خلافًا لنصيحة الطبيب، وقد أُوضحت لي المخاطر.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع الطبيب'},{k:'witness',l:'الشاهد'}]},
+{id:'c8',cat:'cons',n:8,tag:'نموذج 8',t:'موافقة تصوير إشعاعي بصبغة',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'نوع الفحص'},{l:'حساسية من اليود: \u2610 لا \u2610 نعم'}],body:'<strong>أُقرّ بفهمي:</strong> ضرورة حقن مادة التباين · احتمال تفاعل تحسسي · تأثيرها على الكلى.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع أخصائي الأشعة'},{k:'witness',l:'الشاهد'}]},
+{id:'c9',cat:'cons',n:9,tag:'نموذج 9',t:'موافقة التنظير',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'النوع: \u2610 معدي \u2610 قولون \u2610 قصبي'}],body:'<strong>أُقرّ بفهمي:</strong> طريقة الإجراء · مخاطر النزيف أو الثقب · الحاجة للتخدير.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع الطبيب'},{k:'witness',l:'الشاهد'}]},
+{id:'c10',cat:'cons',n:10,tag:'نموذج 10',t:'موافقة التعقيم / منع الإنجاب',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'الإجراء المطلوب',w:1}],body:'<strong>أُقرّ بفهمي:</strong> الطبيعة الدائمة للإجراء · البدائل المتاحة · أنني اتخذت القرار بإرادتي.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع الطبيب'},{k:'witness',l:'الشاهد'}]},
+{id:'c11',cat:'cons',n:11,tag:'نموذج 11',t:'موافقة العلاج النفسي',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'نوع العلاج: \u2610 دوائي \u2610 سلوكي \u2610 ECT'}],body:'<strong>أُقرّ بفهمي:</strong> طبيعة العلاج · الآثار الجانبية · سرية المعلومات وحدود الإفصاح.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع الطبيب النفسي'},{k:'witness',l:'الشاهد'}]},
+{id:'c12',cat:'cons',n:12,tag:'نموذج 12',t:'موافقة التطعيم',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'اسم اللقاح'},{l:'رقم التشغيلة'}],body:'<strong>أُقرّ بفهمي:</strong> الغرض من التطعيم · الآثار الجانبية · ضرورة المراقبة.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع الممرض'}]},
+{id:'c13',cat:'cons',n:13,tag:'نموذج 13',t:'قرار عدم الإنعاش (DNR)',bg:'var(--teal)',rows:[{l:'اسم المريض'},{l:'رقم الملف'}],body:'تم مناقشة الحالة وتقرر بالاتفاق إصدار أمر DNR وفق السياسة الأخلاقية المعتمدة.',sigs:[{k:'patient',l:'توقيع المريض'},{k:'doctor',l:'توقيع الطبيب'},{k:'witness',l:'لجنة الأخلاقيات'}]},
+{id:'f1',cat:'clin',n:14,tag:'نموذج 14',t:'بيانات دخول المريض',bg:'var(--teal-l)',grid:[['الاسم الرباعي','رقم الملف'],['رقم الهوية','تاريخ الميلاد'],['الجنس','الجنسية'],['رقم الجوال','جهة الطوارئ']],note:'التاريخ المرضي — الحساسية · الأمراض المزمنة · الأدوية الحالية',sigs:[{k:'patient',l:'توقيع الاستقبال'}]},
+{id:'f2',cat:'clin',n:15,tag:'نموذج 15',t:'الوصفة الطبية',bg:'var(--teal-l)',rows:[{l:'اسم المريض'},{l:'العمر'},{l:'رقم الملف'}],table:{h:['اسم الدواء','التركيز','الجرعة','المدة'],r:3},sigs:[{k:'doctor',l:'توقيع الطبيب'}]},
+{id:'f3',cat:'clin',n:16,tag:'نموذج 16',t:'تقرير التحويل الطبي',bg:'var(--teal-l)',rows:[{l:'اسم المريض'},{l:'رقم الملف'},{l:'من قسم'},{l:'إلى قسم'}],note:'سبب التحويل · ملخص الحالة · درجة الاستعجال: \u2610 عاجل \u2610 روتيني',sigs:[{k:'doctor',l:'الطبيب المحيل'}]},
+{id:'f4',cat:'clin',n:17,tag:'نموذج 17',t:'تقرير الخروج',bg:'var(--teal-l)',rows:[{l:'اسم المريض'},{l:'تاريخ الدخول'},{l:'تاريخ الخروج'}],note:'تشخيص الدخول · تشخيص الخروج · الأدوية عند الخروج · موعد المراجعة',sigs:[{k:'doctor',l:'الطبيب المعالج'}]},
+{id:'f5',cat:'clin',n:18,tag:'نموذج 18',t:'الإبلاغ عن حدث سريري',bg:'var(--teal-l)',rows:[{l:'اسم المريض'},{l:'القسم'},{l:'تاريخ ووقت الحدث'}],note:'نوع الحدث: \u2610 خطأ دوائي \u2610 سقوط \u2610 عدوى · وصف الحدث · الإجراء الفوري',sigs:[{k:'patient',l:'المُبلِغ'},{k:'doctor',l:'المشرف'}]},
+{id:'f6',cat:'adm',n:19,tag:'نموذج 19',t:'غلاف الملف الوظيفي',bg:'var(--slate)',grid:[['الاسم','الرقم الوظيفي'],['المسمى','القسم'],['تاريخ التعيين','رقم SCFHS']],note:'مرفقات: \u2610 العقد \u2610 الشهادات \u2610 ترخيص المزاولة \u2610 سجل CME',sigs:[{k:'doctor',l:'مسؤول الموارد البشرية'}]},
+{id:'f7',cat:'adm',n:20,tag:'نموذج 20',t:'إجراء تشغيلي موحد (SOP)',bg:'var(--slate)',rows:[{l:'عنوان الإجراء',w:1},{l:'رقم الوثيقة'}],note:'الغرض · النطاق · المسؤوليات · خطوات التنفيذ · المراجع',sigs:[{k:'patient',l:'أعدّه'},{k:'doctor',l:'راجعه'},{k:'witness',l:'اعتمده'}]},
+{id:'f8',cat:'adm',n:21,tag:'نموذج 21',t:'محضر لجنة الجودة',bg:'var(--slate)',rows:[{l:'اللجنة'},{l:'التاريخ'},{l:'رقم الاجتماع'}],note:'الحضور · جدول الأعمال · القرارات · الإجراءات التصحيحية',sigs:[{k:'patient',l:'رئيس اللجنة'},{k:'doctor',l:'المقرر'}]},
+{id:'f9',cat:'adm',n:22,tag:'نموذج 22',t:'تفويض الصلاحيات',bg:'var(--slate)',rows:[{l:'اسم الطبيب'},{l:'التخصص'},{l:'رقم SCFHS'}],note:'الإجراءات المُصرّح بها · مدة التفويض · تاريخ المراجعة',sigs:[{k:'patient',l:'رئيس القسم'},{k:'doctor',l:'لجنة الاعتماد'}]},
+{id:'f10',cat:'fin',n:23,tag:'نموذج 23',t:'الفاتورة الطبية',bg:'var(--amber)',rows:[{l:'اسم المريض'},{l:'رقم الملف'},{l:'رقم الفاتورة'}],table:{h:['البند','الرمز CPT','الكمية','السعر'],r:2,s:[['كشفية','99245','1','350 ر.س'],['تحليل','80053','1','120 ر.س']]},sigs:[{k:'doctor',l:'المحاسب'}]},
+{id:'f11',cat:'fin',n:24,tag:'نموذج 24',t:'مطالبة التأمين (نفيس)',bg:'var(--amber)',rows:[{l:'اسم المريض'},{l:'رقم العضوية'}],note:'رمز ICD-10 · رموز CPT · الحالة: \u2610 معتمدة \u2610 مرفوضة \u2610 معلّقة',sigs:[{k:'doctor',l:'مُعد المطالبة'}]},
+{id:'f12',cat:'fin',n:25,tag:'نموذج 25',t:'جدول التعرفة الطبية',bg:'var(--amber)',table:{h:['الخدمة','الرمز','السعر المعتمد','سعر التأمين'],r:4},sigs:[{k:'doctor',l:'المدير المالي'}]},
+{id:'f13',cat:'leg',n:26,tag:'نموذج 26',t:'طلب ترخيص نشاط صحي',bg:'var(--plum)',rows:[{l:'اسم المنشأة'},{l:'السجل التجاري'}],note:'نوع النشاط · المرفقات: \u2610 رخصة البلدية \u2610 عقد الإيجار \u2610 شهادة السلامة',sigs:[{k:'patient',l:'مقدّم الطلب'}]},
+{id:'f14',cat:'leg',n:27,tag:'نموذج 27',t:'إقرار معالجة البيانات (PDPL)',bg:'var(--plum)',rows:[{l:'اسم المريض'},{l:'رقم الملف'}],body:'أُقرّ بموافقتي على جمع ومعالجة بياناتي الصحية بما يتوافق مع نظام PDPL.',sigs:[{k:'patient',l:'توقيع المريض'}]},
+{id:'f15',cat:'leg',n:28,tag:'نموذج 28',t:'الإبلاغ عن مرض معدٍ',bg:'var(--plum)',rows:[{l:'اسم المريض'},{l:'رقم الهوية'}],note:'المرض · تاريخ التشخيص · إجراءات العزل · الإبلاغ للترصد: \u2610 نعم \u2610 جارٍ',sigs:[{k:'doctor',l:'الطبيب المُبلِغ'}]}
+];
+
+/* BUILD FORMS */
+var formsBuilt=false;var sigs={};
+var catMap={cons:'consentForms',clin:'clinicalForms',adm:'adminForms',fin:'financialForms',leg:'legalForms'};
+function buildForms(){
+formsBuilt=true;
+forms.forEach(function(f){
+var ct=document.getElementById(catMap[f.cat]);if(!ct)return;
+var cd=document.createElement('div');cd.className='fc ai';cd.id='form-'+f.id;
+var rh='';
+if(f.rows)f.rows.forEach(function(r){rh+='<div class="fr">'+r.l+': <span class="fl'+(r.w?' fl-xw':'')+'"><input type="text" placeholder="..."></span></div>'});
+if(f.grid){rh+='<div class="g2">';f.grid.forEach(function(p){rh+='<div>'+p[0]+': <span class="fl"><input type="text" placeholder="..."></span></div><div>'+p[1]+': <span class="fl"><input type="text" placeholder="..."></span></div>'});rh+='</div>'}
+var bh=f.body?'<p class="rk">'+f.body+'</p>':'';
+if(f.note)bh+='<div class="nt">'+f.note+'</div>';
+if(f.table){
+bh+='<table class="fm'+(f.cat==='fin'?' fm-g':'')+'"><thead><tr>';f.table.h.forEach(function(h){bh+='<th>'+h+'</th>'});bh+='</tr></thead><tbody>';
+for(var i=0;i<f.table.r;i++){bh+='<tr>';if(f.table.s&&f.table.s[i])f.table.s[i].forEach(function(c){bh+='<td>'+c+'</td>'});else f.table.h.forEach(function(){bh+='<td><input type="text"></td>'});bh+='</tr>'}
+bh+='</tbody></table>'}
+var sh='';
+if(f.sigs&&f.sigs.length){
+sh='<div class="ss"><h4>التوقيعات الرقمية</h4><div class="sg-s">';
+f.sigs.forEach(function(s){sh+='<div class="sb-s"><label>'+s.l+'</label><div class="scw"><canvas data-s="'+s.k+'"></canvas></div><div class="sa"><button class="btn-s btn-cl" data-cl="'+s.k+'">مسح</button><button class="btn-s btn-co" data-co="'+s.k+'">تأكيد</button></div><div class="sk" data-sk="'+s.k+'">\u2713 تم التوقيع</div><div class="st" data-st="'+s.k+'"></div></div>'});
+sh+='</div><div class="sr2"><button class="btn-sub" data-sub="'+f.id+'">إرسال وحفظ النموذج</button></div></div>'}
+cd.innerHTML='<div class="fh" style="background:'+f.bg+'"><div><div class="ft">'+f.tag+'</div><h2>'+f.t+'</h2></div><button class="bp" onclick="window.print()">\uD83D\uDDA8\uFE0F طباعة</button></div><div class="fb2">'+rh+bh+sh+'</div>';
+ct.appendChild(cd);
+initSig(cd,f.id);
+});
+}
+
+/* SIGNATURE ENGINE */
+function initSig(el,fid){
+el.querySelectorAll('canvas[data-s]').forEach(function(c){
+var k=fid+'-'+c.dataset.s;if(sigs[k])return;sigs[k]={d:0,c:0};
+var w=c.parentElement;c.width=w.offsetWidth||260;c.height=76;
+var x=c.getContext('2d');x.strokeStyle='#1a3a3a';x.lineWidth=2;x.lineCap='round';x.lineJoin='round';
+function p(e){var r=c.getBoundingClientRect();var t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*(c.width/r.width),y:(t.clientY-r.top)*(c.height/r.height)}}
+c.onmousedown=function(e){sigs[k].d=1;x.beginPath();var v=p(e);x.moveTo(v.x,v.y)};
+c.onmousemove=function(e){if(!sigs[k].d)return;x.lineTo(p(e).x,p(e).y);x.stroke()};
+c.onmouseup=c.onmouseleave=function(){sigs[k].d=0};
+c.ontouchstart=function(e){e.preventDefault();sigs[k].d=1;x.beginPath();var v=p(e);x.moveTo(v.x,v.y)};
+c.ontouchmove=function(e){e.preventDefault();if(!sigs[k].d)return;var v=p(e);x.lineTo(v.x,v.y);x.stroke()};
+c.ontouchend=function(){sigs[k].d=0};
+});
+el.querySelectorAll('[data-cl]').forEach(function(b){
+b.onclick=function(){
+var k=fid+'-'+b.dataset.cl;var c=el.querySelector('canvas[data-s="'+b.dataset.cl+'"]');
+if(c)c.getContext('2d').clearRect(0,0,c.width,c.height);
+if(sigs[k])sigs[k].c=0;
+var sk=el.querySelector('[data-sk="'+b.dataset.cl+'"]');var st=el.querySelector('[data-st="'+b.dataset.cl+'"]');
+if(sk)sk.classList.remove('on');if(st)st.textContent='';
+};
+});
+el.querySelectorAll('[data-co]').forEach(function(b){
+b.onclick=function(){
+var k=fid+'-'+b.dataset.co;var c=el.querySelector('canvas[data-s="'+b.dataset.co+'"]');
+if(!c)return;var bl=document.createElement('canvas');bl.width=c.width;bl.height=c.height;
+if(c.toDataURL()===bl.toDataURL()){toast('الرجاء رسم التوقيع أولاً');return}
+if(sigs[k])sigs[k].c=1;
+var sk=el.querySelector('[data-sk="'+b.dataset.co+'"]');var st=el.querySelector('[data-st="'+b.dataset.co+'"]');
+if(sk)sk.classList.add('on');var now=new Date();if(st)st.textContent=now.toLocaleDateString('ar-SA')+' '+now.toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
+};
+});
+el.querySelectorAll('[data-sub]').forEach(function(b){
+b.onclick=function(e){
+var cs=el.querySelectorAll('canvas[data-s]');var ok=true;
+cs.forEach(function(c){var k2=fid+'-'+c.dataset.s;if(!sigs[k2]||!sigs[k2].c)ok=false});
+if(!ok){toast('يرجى تأكيد جميع التوقيعات');return}
+toast('\u2713 تم حفظ النموذج بنجاح');
+saveForm(fid);
+};
+});
+}
+
+/* FRAMEWORK */
+var fwBuilt=false;
+var fws=[
+{a:'A',t:'الحوكمة والشؤون المؤسسية',bg:'var(--teal)',it:['ترخيص المنشأة','السجل التجاري','دليل الجودة','الهيكل التنظيمي','ميثاق الحوكمة','إدارة المخاطر']},
+{a:'B',t:'التوثيق السريري',bg:'var(--teal)',it:['EMR','الموافقات المستنيرة','الأوامر الطبية','ملاحظات SOAP','الإجراءات الجراحية']},
+{a:'C',t:'التوثيق التمريضي',bg:'var(--teal-l)',it:['خطة الرعاية','تسليم المناوبة','العلامات الحيوية','تقييم الجروح']},
+{a:'D',t:'توثيق الصيدلية',bg:'var(--green)',it:['جرد الأدوية','الأدوية المخدرة','التفاعلات الضارة']},
+{a:'E',t:'التوثيق المخبري',bg:'var(--blue)',it:['جمع العينات','سلسلة الحفظ','ضبط الجودة']},
+{a:'F',t:'توثيق الأشعة',bg:'var(--slate)',it:['طلب التصوير','موافقة الإشعاع','تقرير الأشعة']},
+{a:'G',t:'الدورة المالية',bg:'var(--amber)',it:['التحقق من الأهلية','التفويض المسبق','تقديم المطالبة']},
+{a:'H',t:'الترميز الطبي',bg:'#a3701a',it:['ICD-10-AM','CPT','DRG','تحسين التوثيق CDI']},
+{a:'I',t:'منصة نفيس',bg:'var(--gold)',it:['طلب الأهلية','التفويض المسبق','المطالبة','تسوية الدفعات']},
+{a:'J',t:'توثيق الذكاء الاصطناعي',bg:'var(--plum)',it:['توصية سريرية','سجل قرار النموذج','Prompt Log']},
+{a:'K',t:'توثيق الجودة',bg:'#7a3b57',it:['تقرير الحادث','RCA','CAPA','مؤشرات الأداء']},
+{a:'L',t:'الموارد البشرية',bg:'var(--slate)',it:['التحقق من المؤهلات','الصلاحيات الإكلينيكية','CME']},
+{a:'M',t:'التنظيم والرقابة',bg:'#5c4433',it:['اعتماد CBAHI','تفتيش SFDA','تراخيص SCFHS']},
+{a:'N',t:'البحث العلمي',bg:'#3d5c4a',it:['موافقة IRB','بروتوكول التجربة','الحدث الضار']},
+{a:'O',t:'الصحة الرقمية',bg:'#2d5f6e',it:['HL7','FHIR API','MPI','إدارة الهوية']},
+{a:'P',t:'الهندسة المؤسسية',bg:'#455a64',it:['BPMN','قاموس البيانات','ERD','الأمن السيبراني']}
+];
+function buildFW(){
+fwBuilt=true;var g=document.getElementById('fwGrid');
+fws.forEach(function(d){
+var c=document.createElement('div');c.className='dc-f ai';
+c.innerHTML='<div class="dc-h" style="background:'+d.bg+'"><div class="dl">'+d.a+'</div><h3>'+d.t+'</h3></div><div class="dc-b"><div class="dt">'+d.it.map(function(i){return '<span>'+i+'</span>'}).join('')+'</div></div>';
+g.appendChild(c);
+});
+}
+
+/* COMPLIANCE */
+var comps=[
+{n:'وزارة الصحة (MOH)',i:'\uD83C\uDFE5',s:'good',its:[{t:'ترخيص المنشآت',k:'ok'},{t:'الإبلاغ الإلزامي',k:'ok'},{t:'السياسات الوطنية',k:'pd'}]},
+{n:'CBAHI',i:'\u2B50',s:'warn',its:[{t:'معايير الاعتماد',k:'ok'},{t:'جودة السجلات',k:'pd'},{t:'سلامة المريض',k:'ok'}]},
+{n:'SFDA',i:'\uD83D\uDC8A',s:'good',its:[{t:'تنظيم الوصفات',k:'ok'},{t:'الأدوية والمستلزمات',k:'ok'}]},
+{n:'CCHI / نفيس',i:'\uD83D\uDEE1\uFE0F',s:'warn',its:[{t:'وثائق التأمين',k:'ok'},{t:'المطالبات الإلكترونية',k:'pd'},{t:'الموافقات المسبقة',k:'mi'}]},
+{n:'SCFHS',i:'\uD83D\uDC68\u200D\u2695\uFE0F',s:'good',its:[{t:'تراخيص مزاولة المهنة',k:'ok'},{t:'التصنيف المهني',k:'ok'}]},
+{n:'PDPL / SDAIA',i:'\uD83D\uDD12',s:'good',its:[{t:'حماية البيانات',k:'ok'},{t:'الموافقة على المعالجة',k:'ok'},{t:'ضوابط المشاركة',k:'pd'}]}
+];
+var cg=document.getElementById('compGrid');
+comps.forEach(function(c){
+var bc=c.s==='good'?'cb-g':c.s==='warn'?'cb-w':'cb-c';
+var bt=c.s==='good'?'متوافق':'يحتاج مراجعة';
+var d=document.createElement('div');d.className='cc ai';
+d.innerHTML='<div class="cc-h"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:22px">'+c.i+'</span><strong style="font-size:13px">'+c.n+'</strong></div><span class="cb '+bc+'">'+bt+'</span></div><ul class="ci">'+c.its.map(function(i){return '<li><span class="cik '+(i.k==='ok'?'ok':i.k==='pd'?'pd':'mi')+'">'+(i.k==='ok'?'✅':i.k==='pd'?'⏳':'❌')+'</span>'+i.t+'</li>'}).join('')+'</ul>';
+cg.appendChild(d);
+});
+
+/* GUIDE TABS */
+document.querySelectorAll('[data-gt]').forEach(function(tab){
+tab.addEventListener('click',function(){
+document.querySelectorAll('#guideTabs .tab').forEach(function(t){t.classList.remove('on')});
+tab.classList.add('on');
+document.querySelectorAll('.tab-c').forEach(function(c){c.classList.remove('on')});
+var target=document.getElementById('gt-'+tab.dataset.gt);if(target)target.classList.add('on');
+});
+});
+
+/* SEARCH */
+var sIdx=[];
+forms.forEach(function(f){sIdx.push({id:f.id,cat:f.cat,t:f.t,n:f.n,type:'form'})});
+fws.forEach(function(d){sIdx.push({id:'fw',cat:'fw',t:d.t,it:d.it.join(' '),type:'domain'})});
+var gs=document.getElementById('gs'),sr=document.getElementById('sr');
+gs.addEventListener('input',function(){
+var q=this.value.trim();if(!q){sr.classList.remove('show');return}
+var res=sIdx.filter(function(s){return(s.t&&s.t.indexOf(q)>=0)||(s.it&&s.it.indexOf(q)>=0)});
+if(!res.length){sr.innerHTML='<div class="sr-i">لا توجد نتائج</div>';sr.classList.add('show');return}
+sr.innerHTML=res.slice(0,12).map(function(r){return '<div class="sr-i" data-gc="'+r.cat+'"><div><strong>'+(r.n?'#'+r.n+' · ':'')+r.t+'</strong><div class="srt">'+(r.type==='form'?'نموذج':'مجال إطاري')+'</div></div></div>'}).join('');
+sr.classList.add('show');
+sr.querySelectorAll('.sr-i[data-gc]').forEach(function(el){el.addEventListener('click',function(){go(el.dataset.gc);sr.classList.remove('show');gs.value=''})});
+});
+gs.addEventListener('blur',function(){setTimeout(function(){sr.classList.remove('show')},200)});
+
+/* PRINT */
+document.getElementById('bPrint').onclick=function(){window.print()};
+
+/* EXPORT */
+document.getElementById('bExport').onclick=function(){
+var data={forms:forms.map(function(f){return{id:f.id,title:f.t,category:f.cat,number:f.n}}),framework:fws.map(function(d){return{letter:d.a,title:d.t,items:d.it}}),compliance:comps,exportDate:new Date().toISOString()};
+var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+var url=URL.createObjectURL(blob);
+var a=document.createElement('a');a.href=url;a.download='hx-export-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);
+toast('\u2713 تم تصدير البيانات');
+};
+
+/* PERSIST */
+function saveForm(fid){localStorage.setItem('hx-form-'+fid,JSON.stringify({saved:new Date().toISOString()}))}
+function saveAll(){forms.forEach(function(f){saveForm(f.id)});toast('\u2713 تم حفظ جميع النماذج')}
+function clearAll(){localStorage.clear();toast('تم مسح جميع البيانات')}
+
+/* TOAST */
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3200)}
+window.toast=toast;
+
+/* SETTINGS */
+var sn=localStorage.getItem('hx-name');if(sn)document.getElementById('setName').value=sn;
+document.getElementById('setName').addEventListener('input',function(){localStorage.setItem('hx-name',this.value)});
+
+/* ========================================
+   DRG ACADEMY
+   ======================================== */
+var totalXP=parseInt(localStorage.getItem('hx-xp'))||2450;
+var currentCase=0;
+var principalSelected=null;
+var secondarySelected=null;
+var currentQuizQ=0;
+var quizScore=0;
+var quizXPEarned=0;
+
+/* COURSES */
+var courses=[
+{id:1,color:'gold',progress:parseInt(localStorage.getItem('hx-c1'))||100,xp:200,tag1:'أساسي',tag2:'مبتدئ',lessons:4,
+title:'أساسيات أنظمة DRG',
+desc:'فهم التطور من MS-DRGs إلى APR DRGs. تعلّم فئات شدة المرض (SOI) وخطر الوفاة (ROM).',
+chapters:[
+{title:'الفصل 1: ما هي DRGs؟',content:'<h3>ما هي مجموعات التشخيص المرتبطة (DRGs)؟</h3><h4>التعريف</h4><p>مجموعات التشخيص المرتبطة (DRGs) هي نظام تصنيف للمرضى يُستخدم لتصنيف إقامات المرضى في المستشفيات إلى مجموعات متماسكة سريرياً.</p><div class="info-b"><strong>رؤية أساسية:</strong> غيّرت DRGs نظام تعويضات الرعاية الصحية بشكل جذري من نظام استرجاعي قائم على التكلفة إلى نظام استباقي قائم على التصنيف.</div><h4>أنواع أنظمة DRG</h4><table class="dtbl"><thead><tr><th>النظام</th><th>المطور</th><th>التغطية</th><th>الميزة</th></tr></thead><tbody><tr><td>MS-DRG</td><td>CMS (الولايات المتحدة)</td><td>Medicare</td><td>مستويات شدة قياسية</td></tr><tr><td>APR-DRG</td><td>3M/BrainSAIT</td><td>جميع الفئات</td><td>فئات SOI/ROM فرعية</td></tr><tr><td>AR-DRG</td><td>AIHW (أستراليا)</td><td>جميع الفئات</td><td>التكيف الأسترالي</td></tr></tbody></table>'},
+{title:'الفصل 2: APR DRGs و SOI/ROM',content:'<h3>مجموعات التشخيص المرتبطة بجميع المرضى</h3><h4>لماذا APR DRGs مهمة</h4><p>تمثل APR DRGs تقدماً كبيراً مقارنة بـ MS-DRGs القياسية. تغطي <strong>جميع فئات المرضى بما في ذلك طب الأطفال</strong>.</p><div class="info-b"><strong>الفرق الحاسم:</strong> APR DRGs تدمج فئات شدة المرض (SOI) وخطر الوفاة (ROM) بأربعة مستويات لكل منها.</div><h4>فئات SOI</h4><ul><li><strong>SOI 1 — طفيفة:</strong> تأثير محدود على استهلاك الموارد</li><li><strong>SOI 2 — متوسطة:</strong> تتطلب موارد متوسطة</li><li><strong>SOI 3 — كبيرة:</strong> تعقيد سريري كبير</li><li><strong>SOI 4 — قصوى:</strong> أقصى شدة</li></ul>'},
+{title:'الفصل 3: EAPGs للرعاية الخارجية',content:'<h3>مجموعات المرضى المتنقلين المحسنة (EAPGs)</h3><p>بالنسبة للرعاية الخارجية، يعتمد النظام على منهجية EAPGs التكميلية.</p><div class="info-b t"><strong>السياق السعودي:</strong> مع نمو الخدمات الخارجية في رؤية السعودية 2030، أصبحت EAPGs مهمة بشكل متزايد.</div>'},
+{title:'الفصل 4: اختبار تدريبي',content:'<h3>اختبار الوحدة الأولى</h3><p>اختبر فهمك لأساسيات DRG قبل الانتقال إلى الوحدة التالية.</p><div class="info-b"><strong>درجة النجاح:</strong> تحتاج 75% (3/4 صحيحة) لفتح الوحدة 2.</div>'}
+]},
+{id:2,color:'teal',progress:parseInt(localStorage.getItem('hx-c2'))||75,xp:300,tag1:'أساسي',tag2:'متوسط',lessons:2,
+title:'معايير الترميز ICD-10-AM ونفيس',
+desc:'تعمق في ترميز ICD ضمن إطار نفيس السعودي.',
+chapters:[
+{title:'الفصل 1: نظرة عامة على ICD-10-AM',content:'<h3>ICD-10-AM: التعديل الأسترالي</h3><h4>ما هو ICD-10-AM؟</h4><p>ICD-10-AM هو تعديل سريري لـ ICD-10 التابع لمنظمة الصحة العالمية. اعتمدته المملكة العربية السعودية كمعيار للترميز السريري ضمن نظام نفيس.</p><div class="info-b"><strong>متطلب نفيس:</strong> يجب أن تستخدم جميع المطالبات المقدمة عبر نفيس أكواد ICD-10-AM.</div>'},
+{title:'الفصل 2: تعيين بيانات نفيس',content:'<h3>تعيين البيانات إلى حقول نفيس</h3><table class="dtbl"><thead><tr><th>مفهوم البيانات</th><th>الحقل المستهدف في نفيس</th></tr></thead><tbody><tr><td>معرفات المريض</td><td>معرف المريض (الهوية الوطنية، الإقامة)</td></tr><tr><td>حالة المطالبة</td><td>الحالة (مثل FC_3 للمطالبة المعتمدة)</td></tr><tr><td>معرف مقدم الخدمة</td><td>رقم السجل التجاري (CRNumber)</td></tr></tbody></table><h4>رموز حالة المطالبة</h4><ul><li><strong>FC_1:</strong> مطالبة مستلمة</li><li><strong>FC_2:</strong> قيد المراجعة</li><li><strong>FC_3:</strong> مطالبة معتمدة</li><li><strong>FC_4:</strong> مطالبة مرفوضة</li><li><strong>FC_5:</strong> مطالبة معادة</li></ul>'}
+]},
+{id:3,color:'violet',progress:parseInt(localStorage.getItem('hx-c3'))||40,xp:350,tag1:'تطبيقي',tag2:'متوسط',lessons:1,
+title:'مختبر الترميز بمساعدة الكمبيوتر',
+desc:'تدريب عملي على اقتراح الرموز المدعوم بالذكاء الاصطناعي.',
+chapters:[
+{title:'الفصل 1: كيف يقترح الذكاء الاصطناعي الرموز',content:'<h3>فهم اللغة الطبيعية (NLU) في الترميز الطبي</h3><h4>خط أنابيب الذكاء الاصطناعي</h4><ul><li><strong>المرحلة 1:</strong> استلام المستندات السريرية</li><li><strong>المرحلة 2:</strong> معالجة NLU لاستخراج المفاهيم</li><li><strong>المرحلة 3:</strong> تعيين الرموز إلى ICD-10-AM</li><li><strong>المرحلة 4:</strong> حساب درجات الثقة</li><li><strong>المرحلة 5:</strong> عرض الاقتراحات للمراجعة</li></ul><div class="info-b"><strong>المبدأ الأساسي:</strong> في مرحلة CAC، يساعد الذكاء الاصطناعي لكنه لا يحل محل المبرمج.</div>'}
+]},
+{id:4,color:'rose',progress:parseInt(localStorage.getItem('hx-c4'))||0,xp:400,tag1:'متقدم',tag2:'CDI',lessons:1,
+title:'سلامة التوثيق السريري (CDI)',
+desc:'أتقن نموذج CDI ذات الحلقة المغلقة.',
+chapters:[
+{title:'الفصل 1: تطور CDI',content:'<h3>من CDI الاسترجاعي إلى الاستباقي</h3><h4>CDI Engage One™ (استباقي)</h4><ul><li><strong>تكامل فوري:</strong> الذكاء الاصطناعي يراقب التوثيق أثناء إنشائه</li><li><strong>تنبيهات ذكية:</strong> الأطباء يتلقون مطالبات سياقية قبل حفظ الملاحظات</li><li><strong>تحقق ذات حلقة مغلقة:</strong> النظام يتحقق من معالجة الفجوات</li></ul><div class="info-b v"><strong>التأثير:</strong> يقلل النموذج الاستباقي بشكل كبير من العبء الإداري.</div>'}
+]},
+{id:5,color:'blue',progress:parseInt(localStorage.getItem('hx-c5'))||0,xp:450,tag1:'خبير',tag2:'مدعوم بالذكاء الاصطناعي',lessons:1,
+title:'الترميز شبه المستقل والمستقل',
+desc:'تعلّم مستوى ثقة الترميز.',
+chapters:[
+{title:'الفصل 1: محرك ثقة الترميز',content:'<h3>محرك ثقة الترميز من BrainSAIT</h3><h4>رحلة الترميز المستقل</h4><ul><li><strong>المرحلة 1 — CAC:</strong> الذكاء الاصطناعي يقترح رموز للمراجعة</li><li><strong>المرحلة 2 — شبه مستقل:</strong> الرموز عالية الثقة تُعيّن تلقائياً</li><li><strong>المرحلة 3 — مستقل بالكامل:</strong> الزيارات منخفضة التعقيد تُرمّز بدون تدخل بشري</li></ul><div class="info-b"><strong>النتيجة:</strong> انخفاض يصل إلى 70% في التدخلات اليدوية للحالات الروتينية.</div>'}
+]},
+{id:6,color:'gold',progress:parseInt(localStorage.getItem('hx-c6'))||0,xp:500,tag1:'مشروع تخرج',tag2:'شهادة',lessons:1,
+title:'إتقان نظام نفيس والشهادة',
+desc:'الوحدة الختامية: محاكاة شاملة لدورة حياة المطالبات عبر نفيس.',
+chapters:[
+{title:'الفصل 1: دورة حياة المطالبات الكاملة',content:'<h3>دورة حياة المطالبات الكاملة في نفيس</h3><h4>بنية النظام</h4><ul><li><strong>استلام:</strong> استلام آمن للوثائق السريرية</li><li><strong>معالجة:</strong> نماذج الذكاء الاصطناعي و NLU تولّد رموز ICD و DRG</li><li><strong>إرسال:</strong> البيانات المهيكلة تُرسل عبر APIs آمنة إلى نفيس</li><li><strong>تتبع:</strong> مراقبة حالة المطالبة في الوقت الفعلي (FC_1 إلى FC_3)</li></ul><div class="info-b"><strong>التأثير على الإيرادات:</strong> انخفاض DNFB من $27M إلى $1.2M.</div>'}
+]}
+];
+
+/* LAB CASES */
+var labCases=[
+{id:'SA-001',note:'<p><strong>ملخص الخروج</strong></p><p>المريض: ذكر 58 سنة | القبول: طوارئ | مدة الإقامة: 5 أيام</p><p><strong>التشخيص الرئيسي:</strong><br><span class="hl">احتشاء عضلة القلب الحاد (STEMI)، الجدار الأمامي</span></p><p><strong>التشخيصات الثانوية:</strong><br><span class="hl">السكري النوع الثاني مع اعتلال كلوي مزمن، المرحلة الثالثة</span><br><span class="hl">ارتفاع ضغط الدم الأساسي</span><br><span class="ht">فرط شحميات الدم</span></p><p><strong>الإجراءات:</strong><br><span class="hl">قسطرة تاجية مع دعامة مغطاة بالدواء</span><br><span class="ht">تصوير الأوعية التاجية</span></p><p>ملاحظة سريرية: المريض حضر عبر الطوارئ بألم صدري ضاغط مع ارتفاع Troponin I عند 15.4 ng/mL. قسطرة قلبية طارئة كشفت انسداد 95% في LAD.</p>',
+principal:{options:[{code:'I21.0',name:'احتشاء حاد للجدار الأمامي',correct:true,conf:'96%'},{code:'I21.1',name:'احتشاء حاد للجدار السفلي',correct:false,conf:'12%'},{code:'I25.1',name:'مرض القلب التصلبي',correct:false,conf:'4%'}]},
+secondary:{options:[{code:'E11.22',name:'سكري النوع الثاني مع اعتلال كلوي',correct:true,conf:'94%'},{code:'E11.9',name:'سكري النوع الثاني بدون مضاعفات',correct:false,conf:'8%'}]},
+result:{code:'APR 190',desc:'احتشاء، الخطورة 3',soi:'Major',rom:'Moderate',cmi:'2.48'}},
+{id:'SA-002',note:'<p><strong>ملخص الخروج</strong></p><p>المريض: أنثى 45 سنة | القبول: اختياري | 3 أيام</p><p><strong>التشخيص الرئيسي:</strong><br><span class="hl">حصوات المرارة مع التهاب المرارة الحاد</span></p><p><strong>التشخيصات الثانوية:</strong><br><span class="hl">السمنة المرضية (BMI 42)</span><br><span class="ht">سكري النوع الثاني بدون مضاعفات</span></p><p><strong>الإجراءات:</strong><br><span class="hl">استئصال المرارة بالمنظار</span></p>',
+principal:{options:[{code:'K80.10',name:'حصوات المرارة مع التهاب حاد',correct:true,conf:'97%'},{code:'K80.20',name:'حصوات المرارة بدون التهاب',correct:false,conf:'8%'},{code:'K81.0',name:'التهاب المرارة الحاد',correct:false,conf:'15%'}]},
+secondary:{options:[{code:'E66.01',name:'السمنة المرضية (BMI ≥40)',correct:true,conf:'95%'},{code:'E66.9',name:'سمنة غير محددة',correct:false,conf:'22%'}]},
+result:{code:'APR 342',desc:'استئصال بالمنظار، الخطورة 2',soi:'Moderate',rom:'Low',cmi:'1.42'}},
+{id:'SA-003',note:'<p><strong>ملخص الخروج</strong></p><p>المريض: ذكر 72 سنة | طوارئ | 8 أيام | العناية: 3 أيام</p><p><strong>التشخيص الرئيسي:</strong><br><span class="hl">تفاقم حاد لـ COPD مع فشل تنفسي حاد</span></p><p><strong>التشخيصات الثانوية:</strong><br><span class="hl">الالتهاب الرئوي المكتسب من المجتمع</span><br><span class="hl">فشل القلب المزمن، الفئة الثالثة</span><br><span class="ht">مرض كلوي مزمن، المرحلة الرابعة</span></p><p><strong>الإجراءات:</strong><br><span class="hl">تنبيب رغامي وتهوية ميكانيكية (72 ساعة)</span></p>',
+principal:{options:[{code:'J44.0',name:'COPD مع عدوى سفلية حادة',correct:true,conf:'93%'},{code:'J44.1',name:'تفاقم COPD غير محدد',correct:false,conf:'25%'},{code:'J96.00',name:'فشل تنفسي حاد',correct:false,conf:'18%'}]},
+secondary:{options:[{code:'J18.1',name:'التهاب رئوي فصي',correct:true,conf:'91%'},{code:'J15.9',name:'التهاب رئوي بكتيري',correct:false,conf:'30%'}]},
+result:{code:'APR 139',desc:'COPD مع مضاعفات، الخطورة 4',soi:'Extreme',rom:'Major',cmi:'3.12'}}
+];
+
+/* QUIZ DATA */
+var quizData=[
+{q:'ما هي الميزة الرئيسية لـ APR DRGs على MS-DRGs؟',opts:['تغطي فقط مرضى Medicare','تدمج فئات SOI و ROM لجميع الفئات','تُستخدم حصرياً في السعودية','تُلغي الحاجة للتوثيق'],correct:'صحيح! APR DRGs تدمج فئات SOI و ROM لجميع فئات المرضى.',wrong:'APR DRGs تدمج فئات شدة المرض وخطر الوفاة لجميع الفئات.',ans:1},
+{q:'ماذا يشير حالة المطالبة "FC_3" في منصة نفيس؟',opts:['مطالبة مرفوضة','قيد المراجعة','مطالبة معتمدة','بانتظار التوثيق'],correct:'صحيح! FC_3 يشير إلى مطالبة معتمدة.',wrong:'FC_3 يشير تحديداً إلى مطالبة معتمدة.',ans:2},
+{q:'ما هي المراحل الثلاث للترميز المستقل من BrainSAIT؟',opts:['يدوي → ذكاء اصطناعي → أتمتة','CAC → شبه مستقل → مستقل','إدخال → مراجعة → اعتماد','CDI → استعلام → تعيين'],correct:'صحيح! CAC → شبه مستقل → مستقل بالكامل.',wrong:'المراحل الصحيحة: CAC → شبه مستقل → مستقل.',ans:1},
+{q:'كيف تختلف CDI Engage One™ عن CDI التقليدي؟',opts:['تعمل بعد الخروج','ترسل استعلامات ورقية','تقدم تنبيهات فورية داخل EHR قبل حفظ الملاحظات','تحل محل متخصصي CDI'],correct:'صحيح! تتكامل مع سير عمل EHR بتنبيهات فورية.',wrong:'تقدم تنبيهات فورية داخل EHR قبل حفظ الملاحظات.',ans:2},
+{q:'أي معرف تستخدم اعتماد لتعيين مقدم الخدمة؟',opts:['الهوية الوطنية','رقم ترخيص المستشفى','رقم السجل التجاري (CRNumber)','رمز مقدم الخدمة ICD-10'],correct:'صحيح! تحدد أدلة اعتماد رقم السجل التجاري.',wrong:'الإجابة الصحيحة هي رقم السجل التجاري (CRNumber).',ans:2},
+{q:'ما الذي يقيسه مؤشر مزيج الحالات (CMI)؟',opts:['معدل إشغال الأسرة','متوسط عمر المرضى','حدة المريض وتعقيد استهلاك الموارد','عدد أخطاء الترميز'],correct:'صحيح! يعكس CMI التعقيد السريري وشدة استهلاك الموارد.',wrong:'CMI يقيس حدة المريض وتعقيد استهلاك الموارد.',ans:2},
+{q:'أين تستضاف منصة BrainSAIT السحابية؟',opts:['Google Cloud','Microsoft Azure','Amazon Web Services (AWS)','مراكز بيانات محلية'],correct:'صحيح! تستضاف على AWS مع شهادة SOC 2+.',wrong:'تستضاف على Amazon Web Services (AWS).',ans:2},
+{q:'ما كان معدل DNFB في مركز كارولتون قبل الأتمتة؟',opts:['2 مليون دولار','10 مليون دولار','27 مليون دولار','50 مليون دولار'],correct:'صحيح! ارتفع DNFB من 2 إلى 27 مليون دولار.',wrong:'ارتفع إلى 27 مليون دولار.',ans:2}
+];
+
+/* BADGES */
+var badges=[
+{icon:'\u2728',name:'الخطوات الأولى',earned:true},
+{icon:'\uD83D\uDE80',name:'متعلم سريع',earned:true},
+{icon:'\uD83E\uDDE0',name:'محلل DRG',earned:true},
+{icon:'\uD83C\uDFC6',name:'سلسلة 7 أيام',earned:true},
+{icon:'\uD83D\uDCC8',name:'خبير CMI',earned:false},
+{icon:'\uD83D\uDC8E',name:'محترف نفيس',earned:false},
+{icon:'\uD83E\uDD16',name:'متحدث AI',earned:false},
+{icon:'\uD83C\uDFAF',name:'100 حالة',earned:false},
+{icon:'\uD83D\uDD25',name:'سلسلة 30 يوم',earned:false},
+{icon:'\uD83D\uDC4A',name:'بطل CDI',earned:false},
+{icon:'\uD83C\uDF93',name:'معتمد',earned:false},
+{icon:'\u2B50',name:'Grand Master',earned:false}
+];
+
+var leaderboardData=[
+{name:'د. فاطمة أ.',title:'متخصصة CDI — KAMC',xp:4820,avatar:'\uD83D\uDC69\u200D\u2695\uFE0F'},
+{name:'أحمد م.',title:'مبرمج أول — KFSH',xp:4200,avatar:'\uD83D\uDC68'},
+{name:'د. نورة س.',title:'مديرة دورة الإيرادات — NGHA',xp:3890,avatar:'\uD83D\uDC69\u200D\uD83C\uDFE5'},
+{name:'أنت',title:'متعلم — أكاديمية DRG',xp:totalXP,avatar:'\uD83E\uDD32',isMe:true},
+{name:'خالد ب.',title:'مدير الترميز — وزارة الصحة',xp:2100,avatar:'\uD83D\uDC68\u200D\uD83D\uDCBB'}
+];
+
+/* WATHQ PRODUCTS */
+var wathqProducts=[
+{icon:'\uD83D\uDD0D',iconC:'g',t:'حزمة KYB الشاملة',d:'تحقق شامل من هوية الأعمال — السجل التجاري، الملكية، التوقيعات المعتمدة، والسجل الضريبي في تقرير واحد متكامل.',badge:'الأكثر طلباً',badgeC:'var(--gold)'},
+{icon:'\uD83D\uDCC4',iconC:'t',t:'شهادات PDF رسمية',d:'شهادات تحقق رسمية بصيغة PDF مختومة رقمياً — قابلة للطباعة والمشاركة مع الجهات الحكومية والبنوك.',badge:'معتمد',badgeC:'var(--green)'},
+{icon:'\uD83D\uDD04',iconC:'v',t:'المراقبة المستمرة',d:'مراقبة مستمرة لسجلات الأعمال — تنبيهات فورية عند أي تغيير في السجل التجاري أو التوقيعات أو الملكية.',badge:'24/7',badgeC:'var(--cyan)'},
+{icon:'\uD83E\uDEE7',iconC:'r',t:'مولد فواتير ZATCA',d:'إنشاء فواتير إلكترونية متوافقة مع متطلبات هيئة الزكاة والضريبة والجمارك (ZATCA) — مرحلة الفوترة الإلكترونية.',badge:'متوافق ZATCA',badgeC:'var(--amber)'},
+{icon:'\uD83E\uDD16',iconC:'g',t:'تقييم المخاطر بالذكاء الاصطناعي',d:'تحليل ذكي لمخاطر الأعمال باستخدام نماذج AI — تقييم شامل يشمل المخاطر المالية والتشغيلية والامتثالية.',badge:'AI-Powered',badgeC:'var(--violet)'}
+];
+
+/* RENDER COURSES */
+function renderCourses(){
+var container=document.getElementById('courseCards');
+container.innerHTML='';
+courses.forEach(function(c){
+var progressColor=c.color==='rose'||c.color==='violet'||c.color==='blue'?'t':'g';
+var completedLessons=Math.round(c.lessons*c.progress/100);
+var card=document.createElement('div');
+card.className='drg-card';
+card.onclick=function(){openCourse(c.id)};
+card.innerHTML='<div class="drg-card-h"><div class="drg-card-t">'+c.title+'</div><div class="drg-xp">\u2605 '+c.xp+' XP</div></div>'+
+'<div class="drg-desc">'+c.desc+'</div>'+
+'<div class="drg-tags"><span class="drg-tag g">'+c.tag1+'</span><span class="drg-tag t">'+c.tag2+'</span><span class="drg-tag v">'+c.lessons+' دروس</span></div>'+
+'<div class="drg-prog"><div class="drg-prog-f '+progressColor+'" style="width:'+c.progress+'%"></div></div>'+
+'<div style="font-size:11px;color:var(--tx3)">'+completedLessons+'/'+c.lessons+' مكتمل</div>';
+container.appendChild(card);
+});
+}
+
+function openCourse(id){
+var course=courses.find(function(c){return c.id===id});
+if(!course)return;
+var panel=document.getElementById('lessonPanel');
+var content=document.getElementById('lessonContent');
+currentCourseId=id;currentChapterIdx=0;
+var chHTML='<div class="ch-nav">';
+course.chapters.forEach(function(ch,i){
+chHTML+='<button class="ch-btn'+(i===0?' act':'')+'" onclick="showChapter('+id+','+i+',this)">'+(i+1)+'. '+ch.title+'</button>';
+});
+chHTML+='</div>';
+chHTML+='<div class="ch-body" id="chapterBody">'+course.chapters[0].content+'</div>';
+chHTML+='<div class="ch-ft"><button class="btn-s" id="prevChBtn" style="visibility:hidden" onclick="showChapter('+id+',0)">السابق</button><button class="btn-s" id="nextChBtn" style="background:var(--gold);color:var(--s1)" onclick="showChapter('+id+',1)">الفصل التالي</button></div>';
+content.innerHTML='<h3 style="font-family:var(--fd);font-size:22px;font-weight:700;margin-bottom:6px">'+course.title+'</h3><p style="font-size:11px;color:var(--tx3);margin-bottom:16px">'+course.lessons+' فصول · '+course.xp+' XP</p>'+chHTML;
+panel.classList.add('open');
+panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function showChapter(courseId,chapterIndex,btnEl){
+var course=courses.find(function(c){return c.id===courseId});
+if(!course||chapterIndex<0||chapterIndex>=course.chapters.length)return;
+currentChapterIdx=chapterIndex;
+var body=document.getElementById('chapterBody');
+body.innerHTML=course.chapters[chapterIndex].content;
+document.querySelectorAll('.ch-btn').forEach(function(b,i){b.classList.toggle('act',i===chapterIndex)});
+var prevBtn=document.getElementById('prevChBtn');
+var nextBtn=document.getElementById('nextChBtn');
+if(prevBtn){prevBtn.style.visibility=chapterIndex>0?'visible':'hidden';prevBtn.onclick=function(){showChapter(courseId,chapterIndex-1)}}
+if(nextBtn){
+if(chapterIndex>=course.chapters.length-1){
+nextBtn.textContent='\u2713 إكمال الوحدة';nextBtn.style.background='var(--green)';
+nextBtn.onclick=function(){completeModule(courseId)};
+}else{
+nextBtn.textContent='الفصل التالي';nextBtn.style.background='var(--gold)';
+nextBtn.onclick=function(){showChapter(courseId,chapterIndex+1)};
+}
+}
+}
+
+function completeModule(id){
+var course=courses.find(function(c){return c.id===id});
+if(course){course.progress=100;addXP(course.xp);localStorage.setItem('hx-c'+id,'100')}
+closeLesson();renderCourses();
+toast('\u2713 أكملت الوحدة! +'+course.xp+' XP');
+}
+
+function closeLesson(){document.getElementById('lessonPanel').classList.remove('open')}
+
+/* DRG LAB */
+function renderCaseNav(){
+var nav=document.getElementById('caseNav');
+nav.innerHTML='';
+labCases.forEach(function(c,i){
+nav.innerHTML+='<button class="case-b'+(i===currentCase?' act':'')+'" onclick="loadCase('+i+')">'+c.id+'</button>';
+});
+}
+
+function loadCase(index){
+currentCase=index;
+principalSelected=null;secondarySelected=null;
+var c=labCases[index];
+document.getElementById('labTitleBar').textContent='DRG Lab v2.0 — Case #'+c.id;
+document.getElementById('clinicalNote').innerHTML=c.note;
+var pHTML='<div class="ci-l">التشخيص الرئيسي (ICD-10)</div><div class="cs" id="principalCodes">';
+c.principal.options.forEach(function(opt){
+pHTML+='<div class="csu" onclick="selectCode(this,\'principal\')" data-correct="'+opt.correct+'"><div><div class="csu-id">'+opt.code+'</div><div class="csu-nm">'+opt.name+'</div></div><span class="csu-cf">'+opt.conf+'</span></div>';
+});
+pHTML+='</div>';
+document.getElementById('principalGroup').innerHTML=pHTML;
+var sHTML='<div class="ci-l">التشخيص الثانوي (ICD-10)</div><div class="cs" id="secondaryCodes">';
+c.secondary.options.forEach(function(opt){
+sHTML+='<div class="csu" onclick="selectCode(this,\'secondary\')" data-correct="'+opt.correct+'"><div><div class="csu-id">'+opt.code+'</div><div class="csu-nm">'+opt.name+'</div></div><span class="csu-cf">'+opt.conf+'</span></div>';
+});
+sHTML+='</div>';
+document.getElementById('secondaryGroup').innerHTML=sHTML;
+var drgResult=document.getElementById('drgResult');
+drgResult.classList.remove('vis');drgResult.style.display='none';
+document.getElementById('submitBtn').disabled=false;document.getElementById('submitBtn').style.opacity='1';
+renderCaseNav();
+}
+
+function selectCode(el,type){
+var containerId=type==='principal'?'principalCodes':'secondaryCodes';
+document.querySelectorAll('#'+containerId+' .csu').forEach(function(s){s.classList.remove('sel')});
+el.classList.add('sel');
+if(type==='principal')principalSelected=el;else secondarySelected=el;
+}
+
+function submitCoding(){
+if(!principalSelected||!secondarySelected){toast('الرجاء تحديد كود من كل مجموعة');return}
+var c=labCases[currentCase];
+document.querySelectorAll('#principalCodes .csu').forEach(function(s){
+if(s.dataset.correct==='true')s.classList.add('cor');
+else if(s.classList.contains('sel'))s.classList.add('wrg');
+});
+document.querySelectorAll('#secondaryCodes .csu').forEach(function(s){
+if(s.dataset.correct==='true')s.classList.add('cor');
+else if(s.classList.contains('sel'))s.classList.add('wrg');
+});
+var r=c.result;
+var drgResult=document.getElementById('drgResult');
+drgResult.innerHTML='<div style="font-size:10px;color:var(--tx3);margin-bottom:6px">APR DRG المعيّن</div><div class="drg-res-c">'+r.code+' — '+r.desc+'</div><div style="display:flex;justify-content:center;gap:14px;margin-top:10px"><div style="text-align:center"><div style="font-size:9px;color:var(--tx3)">SOI</div><div style="font-size:13px;font-weight:600;color:var(--rose)">'+r.soi+'</div></div><div style="text-align:center"><div style="font-size:9px;color:var(--tx3)">ROM</div><div style="font-size:13px;font-weight:600;color:var(--amber)">'+r.rom+'</div></div><div style="text-align:center"><div style="font-size:9px;color:var(--tx3)">CMI</div><div style="font-size:13px;font-weight:600;color:var(--gold)">'+r.cmi+'</div></div></div>';
+drgResult.classList.add('vis');drgResult.style.display='block';
+document.getElementById('submitBtn').disabled=true;document.getElementById('submitBtn').style.opacity='.5';
+if(principalSelected.dataset.correct==='true'&&secondarySelected.dataset.correct==='true'){addXP(50)}
+}
+
+function resetLab(){loadCase(currentCase)}
+function nextCase(){loadCase((currentCase+1)%labCases.length)}
+
+/* QUIZ */
+function renderQuiz(){
+var q=quizData[currentQuizQ];
+var progHTML='';
+for(var i=0;i<quizData.length;i++){progHTML+='<div class="quiz-d'+(i<currentQuizQ?' dn':'')+(i===currentQuizQ?' act':'')+'"></div>'}
+document.getElementById('quizProgress').innerHTML=progHTML;
+document.getElementById('quizQuestion').textContent=q.q;
+var optsContainer=document.getElementById('quizOptions');
+optsContainer.innerHTML='';
+var letters=['A','B','C','D'];
+q.opts.forEach(function(opt,i){
+var div=document.createElement('div');
+div.className='quiz-o';
+div.onclick=function(){selectQuizOption(div,i)};
+div.innerHTML='<div class="quiz-lt">'+letters[i]+'</div><span>'+opt+'</span>';
+optsContainer.appendChild(div);
+});
+document.getElementById('quizFeedback').className='quiz-fb';
+document.getElementById('quizFeedback').style.display='none';
+}
+
+function selectQuizOption(el,index){
+if(el.style.pointerEvents==='none')return;
+var q=quizData[currentQuizQ];
+var ans=q.ans;
+var options=document.querySelectorAll('.quiz-o');
+options.forEach(function(o){o.style.pointerEvents='none'});
+if(index===ans){
+el.classList.add('cor');quizScore++;quizXPEarned+=100;addXP(100);
+document.getElementById('quizFeedback').className='quiz-fb sh cor';
+document.getElementById('quizFeedback').textContent=q.correct;
+document.getElementById('quizFeedback').style.display='block';
+}else{
+el.classList.add('wrg');options[ans].classList.add('cor');
+document.getElementById('quizFeedback').className='quiz-fb sh wrg';
+document.getElementById('quizFeedback').textContent=q.wrong;
+document.getElementById('quizFeedback').style.display='block';
+}
+document.getElementById('quizXP').innerHTML='\u2605 '+quizXPEarned+' XP';
+}
+
+function nextQuestion(){
+currentQuizQ++;
+if(currentQuizQ>=quizData.length){showQuizResult();return}
+renderQuiz();
+}
+
+function showQuizResult(){
+var pct=Math.round((quizScore/quizData.length)*100);
+var icon=pct>=80?'\uD83C\uDFC6':pct>=50?'\uD83D\uDCAA':'\uD83D\uDCDA';
+var title=pct>=80?'تهانينا!':'جهد جيد!';
+var desc='أجبت بشكل صحيح على '+quizScore+' من '+quizData.length+' أسئلة ('+pct+'%). +'+quizXPEarned+' XP مكتسبة.';
+showModal(icon,title,quizScore+'/'+quizData.length,desc,true);
+}
+
+function resetQuiz(){currentQuizQ=0;quizScore=0;quizXPEarned=0;renderQuiz()}
+
+/* GAMIFICATION */
+function renderBadges(){
+var grid=document.getElementById('badgesGrid');
+grid.innerHTML='';
+badges.forEach(function(b){
+grid.innerHTML+='<div class="badge-i"><div class="badge-ic '+(b.earned?'earn':'lock')+'">'+b.icon+'</div><div class="badge-nm">'+b.name+'</div></div>';
+});
+}
+
+function renderLeaderboard(){
+var lb=document.getElementById('leaderboard');
+var sorted=[...leaderboardData].sort(function(a,b){return b.xp-a.xp});
+var html='<div class="lb-h"><span style="font-family:var(--fd);font-size:16px;font-weight:600">أفضل المتعلمين</span><span style="font-size:11px;color:var(--tx3)">هذا الشهر</span></div>';
+sorted.forEach(function(p,i){
+html+='<div class="lb-r'+(p.isMe?' me':'')+'"><div class="lb-rk'+(i<3?' tp':'')+'">'+(i+1)+'</div><div class="lb-av">'+p.avatar+'</div><div class="lb-inf"><div class="lb-nm">'+p.name+'</div><div class="lb-tt">'+p.title+'</div></div><div class="lb-sc">'+p.xp.toLocaleString()+' XP</div></div>';
+});
+lb.innerHTML=html;
+}
+
+function startDailyChallenge(){
+toast('\uD83C\uDFC6 بدأ التحدي اليومي!');go('drg-l');loadCase(Math.floor(Math.random()*labCases.length));
+}
+
+function startBossExam(){
+toast('\uD83D\uDE80 اختبار التحدي جاهز!');go('drg-q');resetQuiz();
+}
+
+/* WATHQ */
+function renderWathq(){
+var grid=document.getElementById('wathqGrid');
+grid.innerHTML='';
+wathqProducts.forEach(function(p){
+grid.innerHTML+='<div class="wh-card"><div class="wh-icon '+p.iconC+'">'+p.icon+'</div><div class="wh-t">'+p.t+'</div><div class="wh-d">'+p.d+'</div><span class="wh-badge" style="background:'+p.iconC+'20;color:'+p.badgeC+'">'+p.badge+'</span></div>';
+});
+}
+
+/* API SANDBOX */
+function runApiDemo(id){
+var resEl=document.getElementById('apiRes'+id);
+var responses={
+1:'{\n  "status": "success",\n  "verification_id": "VER-2024-001",\n  "cr_number": "1234567890",\n  "company_name": "شركة الرعاية الصحية المتقدمة",\n  "status_kyb": "verified",\n  "registration_date": "2018-03-15",\n  "legal_form": "شركة ذات مسؤولية محدودة",\n  "authorized_signatories": 2,\n  "tax_number": "300012345600003",\n  "risk_score": 12,\n  "risk_level": "low",\n  "timestamp": "2024-01-15T10:30:00Z"\n}',
+2:'{\n  "status": "success",\n  "invoice_id": "INV-ZATCA-2024-001",\n  "invoice_hash": "a3f2b8c1d4e5f6...",\n  "qr_code": "base64_encoded_qr_data",\n  "zatca_uuid": "550e8400-e29b-41d4-a716-446655440000",\n  "total_with_vat": 1665.00,\n  "vat_amount": 165.00,\n  "compliance_status": "compliant",\n  "timestamp": "2024-01-15T10:30:00Z"\n}',
+3:'{\n  "status": "success",\n  "assessment_id": "RISK-2024-001",\n  "cr_number": "1234567890",\n  "overall_risk_score": 28,\n  "risk_level": "low",\n  "financial_risk": 15,\n  "operational_risk": 22,\n  "compliance_risk": 8,\n  "reputation_risk": 12,\n  "recommendations": ["مراقبة مستمرة مطلوبة","تحديث ربع سنوي"],\n  "timestamp": "2024-01-15T10:30:00Z"\n}'
+};
+resEl.textContent=responses[id]||'{}';
+resEl.classList.add('sh');
+toast('\u2713 تم تنفيذ الطلب بنجاح');
+}
+
+function copyApiCode(id){
+var code=document.getElementById('apiCode'+id).textContent;
+navigator.clipboard.writeText(code).then(function(){toast('\u2713 تم نسخ الكود')}).catch(function(){toast('فشل النسخ')});
+}
+
+/* MODAL */
+function showModal(icon,title,score,desc,showRetry){
+var modal=document.getElementById('modal');
+var body=document.getElementById('modalBody');
+body.innerHTML='<h3 style="text-align:center;font-size:40px;margin-bottom:10px">'+icon+'</h3><h3 style="text-align:center">'+title+'</h3>'+
+(score?'<div style="text-align:center;font-family:var(--fd);font-size:42px;font-weight:900;color:var(--gold);margin:10px 0">'+score+'</div>':'')+
+'<p style="text-align:center;color:var(--tx2);margin-bottom:18px">'+desc+'</p>'+
+'<div style="display:flex;gap:10px;justify-content:center">'+
+(showRetry?'<button class="btn-s" style="padding:8px 18px;background:var(--teal);color:#fff" onclick="resetQuiz();closeModal()">إعادة المحاولة</button>':'')+
+'<button class="btn-s" style="padding:8px 18px;background:var(--s2);border:1px solid var(--bd)" onclick="closeModal()">إغلاق</button></div>';
+modal.classList.add('show');
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+
+/* XP */
+function addXP(amount){totalXP+=amount;localStorage.setItem('hx-xp',totalXP);updateXPDisplay()}
+function updateXPDisplay(){document.getElementById('xpDisp').textContent=totalXP.toLocaleString()+' XP'}
+updateXPDisplay();
+
+/* INIT */
+go('hx');
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+/.next/
+/out/
+/build
+next-env.d.ts
+
+# Secrets & environment — NEVER commit real values (this repo is public)
+.env
+.env.*
+!.env.example
+!.env.local.example
+*.pem
+*.key
+*secret*
+*.credentials
+.secure-vault/
+
+# Logs & runtime
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+*.pid
+*.seed
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.cache/
+coverage/
