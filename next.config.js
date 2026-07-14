@@ -7,6 +7,11 @@ const nextConfig = {
   // Production output settings
   output: "standalone",
 
+  // The app doesn't use next/image, so disable the Image Optimizer endpoint
+  // entirely — this closes the remotePatterns DoS vector (GHSA-9g9p-9gw9-jx7f)
+  // with no functional impact.
+  images: { unoptimized: true },
+
   // Increase build worker timeout for large pages
   experimental: {
     workerThreads: false,
