@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BrainSAIT — Evidence-backed Healthcare AI Operating System</title>
+  <meta name="description" content="BrainSAIT is the Arabic-first healthcare AI operating system connecting evidence, identity, workflows, IDN trust, and measurable economic value.">
+  <meta property="og:title" content="BrainSAIT — Healthcare AI with Evidence">
+  <meta property="og:description" content="The main BrainSAIT hub: value evidence, Saudi healthcare AI, IDN/LGR trust, products, and the founder profile.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://brainsait.de">
+  <link rel="canonical" href="https://brainsait.de">
+  <link rel="icon" href="/assets/brainsait-logo.png">
+  <style>
+    :root {
+      --ink: #101418;
+      --paper: #f6f7f4;
+      --surface: #ffffff;
+      --line: #d9ded8;
+      --muted: #65706f;
+      --deep: #123235;
+      --teal: #1f766f;
+      --sage: #7b946f;
+      --amber: #c28b2c;
+      --blue: #355e88;
+      --danger: #8e3b33;
+      --shadow: 0 18px 44px rgba(16, 20, 24, .08);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.58;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(246,247,244,.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+    .nav-inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .brand img { width: 36px; height: 36px; object-fit: contain; }
+    .brand span { display: block; font-size: 14px; color: var(--muted); letter-spacing: 0; font-weight: 600; }
+    .links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    .links a {
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .links a:hover { color: var(--deep); border-color: var(--line); background: var(--surface); }
+    .hero {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 78px 0 40px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(320px, .72fr);
+      gap: 38px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid rgba(31,118,111,.2);
+      background: rgba(31,118,111,.08);
+      color: var(--teal);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font: 700 12px/1 var(--mono);
+      margin-bottom: 20px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+    h1 {
+      margin: 0;
+      font-size: clamp(42px, 7vw, 86px);
+      line-height: .96;
+      letter-spacing: 0;
+      max-width: 820px;
+    }
+    h1 b { color: var(--teal); font-weight: 900; }
+    .lead {
+      margin: 24px 0 0;
+      max-width: 740px;
+      color: #384241;
+      font-size: clamp(18px, 2.2vw, 23px);
+    }
+    .lead-ar {
+      margin: 14px 0 0;
+      max-width: 740px;
+      direction: rtl;
+      color: #3d4746;
+      font-size: clamp(17px, 2vw, 21px);
+      font-family: "IBM Plex Sans Arabic", var(--sans);
+    }
+    .hero-actions, .action-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .hero-actions { margin-top: 30px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      border-radius: 999px;
+      padding: 10px 16px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--deep);
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 6px 18px rgba(16,20,24,.04);
+    }
+    .btn.primary { background: var(--deep); color: #fff; border-color: var(--deep); }
+    .btn.accent { background: var(--teal); color: #fff; border-color: var(--teal); }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .hero-panel {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .panel-photo {
+      position: relative;
+      min-height: 260px;
+      background: #e8ece7;
+      display: grid;
+      place-items: center;
+      padding: 34px;
+    }
+    .panel-photo img.logo { width: 132px; height: 132px; object-fit: contain; }
+    .panel-body { padding: 24px; }
+    .metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .metric { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fbfbf8; }
+    .metric strong { display: block; color: var(--deep); font: 900 24px/1.1 var(--mono); }
+    .metric span { color: var(--muted); font-size: 12px; font-weight: 700; }
+    .vision-strip {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto 42px;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .vision-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--deep);
+      color: #f5faf7;
+      padding: clamp(24px, 4vw, 38px);
+      min-height: 100%;
+    }
+    .vision-panel.light { background: var(--surface); color: var(--ink); }
+    .vision-panel h2 { font-size: clamp(28px, 4vw, 44px); }
+    .vision-panel p { color: rgba(245,250,247,.78); margin: 14px 0 0; }
+    .vision-panel.light p { color: #4a5554; }
+    .signal-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 22px;
+    }
+    .signal {
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 8px;
+      padding: 14px;
+      background: rgba(255,255,255,.06);
+    }
+    .signal b { display: block; font-size: 13px; color: #a9d8d0; }
+    .signal span { display: block; color: rgba(245,250,247,.78); font-size: 13px; margin-top: 5px; }
+    .vision-panel.light .signal { border-color: var(--line); background: #fbfbf8; }
+    .vision-panel.light .signal b { color: var(--teal); }
+    .vision-panel.light .signal span { color: var(--muted); }
+    .section {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 70px 0;
+      border-top: 1px solid var(--line);
+    }
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(220px,.42fr) 1fr;
+      gap: 30px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+    .section-label { color: var(--teal); font: 800 12px/1.2 var(--mono); text-transform: uppercase; }
+    h2 { margin: 0; font-size: clamp(30px, 4vw, 52px); line-height: 1.03; letter-spacing: 0; }
+    .muted { color: var(--muted); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; }
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      background: var(--surface);
+      min-height: 100%;
+    }
+    .item h3 { margin: 0 0 10px; font-size: 18px; color: var(--deep); }
+    .item p { margin: 0; color: #4a5554; }
+    .item .tag {
+      display: inline-flex;
+      margin-bottom: 14px;
+      border-radius: 999px;
+      padding: 5px 9px;
+      background: rgba(53,94,136,.1);
+      color: var(--blue);
+      font: 800 11px/1 var(--mono);
+    }
+    .proof {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .proof-block {
+      border-radius: 8px;
+      padding: 26px;
+      background: var(--deep);
+      color: #edf4f1;
+    }
+    .proof-block.light { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+    .proof-block h3 { margin: 0 0 12px; font-size: 25px; }
+    .proof-block p { margin: 0 0 12px; color: inherit; opacity: .9; }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      display: table;
+    }
+    .table th, .table td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .table th { background: #eef1ed; color: var(--deep); font-size: 12px; text-transform: uppercase; letter-spacing: .02em; }
+    .table tr:last-child td { border-bottom: 0; }
+    .rtl { direction: rtl; font-family: "IBM Plex Sans Arabic", var(--sans); }
+    .band {
+      background: var(--deep);
+      color: #f4f8f6;
+      margin: 36px 0 0;
+      padding: 58px 0;
+    }
+    .band-inner { width: min(1180px, calc(100% - 32px)); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+    .band h2 { color: #fff; }
+    .band p { color: rgba(244,248,246,.82); margin: 14px 0 0; }
+    .profile {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 18px;
+      align-items: center;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .profile img { width: 140px; height: 150px; object-fit: cover; border-radius: 8px; }
+    .profile h3 { margin: 0 0 6px; color: #fff; }
+    .profile p { margin: 0 0 12px; color: rgba(244,248,246,.82); }
+    footer {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0 70px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      border-top: 1px solid var(--line);
+    }
+    footer a { font-weight: 800; color: var(--deep); }
+    @media (max-width: 900px) {
+      .hero, .section-head, .proof, .band-inner { grid-template-columns: 1fr; }
+      .grid-3, .grid-4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .links { display: none; }
+      .hero { padding-top: 48px; }
+    }
+    @media (max-width: 620px) {
+      .grid-3, .grid-4, .metric-grid, .profile { grid-template-columns: 1fr; }
+      .table { display: block; overflow-x: auto; }
+      h1 { font-size: clamp(38px, 14vw, 64px); }
+      .panel-photo { min-height: 190px; }
+      .profile img { width: 100%; height: auto; max-height: 300px; }
+    }
+    #bpr .metric strong { font-size: 15px; overflow-wrap: anywhere; }
+    #bpr .grid-3 { grid-template-columns: 1fr; }
+    .proof > div { min-width: 0; }
+    .tool-showcase { background: #101817; color: #f3f7f4; padding: 58px 0 64px; }
+    .tool-inner { width: min(1180px, calc(100% - 32px)); margin: auto; }
+    .tool-heading { max-width: 760px; margin-bottom: 30px; }
+    .tool-heading .section-label { color: #78d8c6; }
+    .tool-heading h2 { font-size: 36px; line-height: 1.16; margin-top: 12px; }
+    .tool-heading p { color: #b6c7bd; font-size: 17px; }
+    .tool-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .tool-card { --tool-color: #79dcca; position: relative; background: #1b2521; border: 1px solid #3c4c43; border-radius: 8px; padding: 24px; display: flex; flex-direction: column; min-width: 0; transition: border-color .2s, background .2s; }
+    .tool-card:hover { border-color: var(--tool-color); background: #223029; }
+    .tool-card:nth-child(3n+2) { --tool-color: #edcc79; }
+    .tool-card:nth-child(3n) { --tool-color: #a9bdf5; }
+    .tool-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid #3c4c43; margin-bottom: 18px; }
+    .tool-name { color: var(--tool-color); font: 800 25px/1.2 var(--mono); letter-spacing: 0; }
+    .tool-type { color: #b6c7bd; font-size: 11px; text-transform: uppercase; }
+    .tool-card h3 { font-size: 22px; line-height: 1.25; color: #f3f7f4; margin: 0 0 12px; }
+    .tool-card p { font-size: 15px; color: #c0cec6; margin: 0 0 16px; }
+    .tool-card .tool-ar { font-size: 16px; color: var(--tool-color); line-height: 1.65; margin-top: auto; padding-top: 8px; }
+    .tool-card a { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: #fff; font-size: 13px; font-weight: 750; border-top: 1px solid #3c4c43; padding-top: 16px; }
+    .tool-card a::after { content: "↗"; color: var(--tool-color); font-size: 22px; line-height: 1; }
+    .tool-card a:focus-visible { outline: 3px solid var(--tool-color); outline-offset: 5px; }
+    .tool-path { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; border-top: 1px solid #3c4c43; margin-top: 30px; padding-top: 24px; color: #b6c7bd; font-size: 14px; }
+    .tool-path strong { color: #f3f7f4; }
+    #tools { scroll-margin-top: 100px; }
+    .value-preview { width: min(1180px, calc(100% - 32px)); margin: auto; padding: 58px 0; border-bottom: 1px solid var(--line); }
+    .value-preview .section-label { color: var(--teal); }
+    .value-intro { display: grid; grid-template-columns: 1.2fr .8fr; gap: 44px; align-items: start; margin-top: 18px; }
+    .value-preview h2 { font-size: 34px; line-height: 1.45; }
+    .value-preview p { color: #4a5554; font-size: 17px; }
+    .value-figures { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .value-figure { border-top: 2px solid var(--teal); padding-top: 16px; min-width: 0; }
+    .value-figure strong { display: block; font-size: 36px; color: var(--deep); direction: ltr; text-align: right; }
+    .value-figure span { display: block; font-size: 13px; color: var(--muted); }
+    .value-disclaimer { font-size: 14px !important; border-inline-start: 3px solid var(--amber); padding-inline-start: 14px; }
+    .value-chain { display: flex; flex-wrap: wrap; gap: 12px; border-top: 1px solid var(--line); padding-top: 20px; margin-top: 24px; font-size: 14px; color: var(--teal); }
+    .value-preview .hero-actions { margin-top: 20px; }
+    @media(max-width: 900px) { .value-intro { grid-template-columns: 1fr; gap: 24px; } }
+    @media(max-width: 620px) { .value-preview h2 { font-size: 28px; } .value-figure strong { font-size: 30px; } }
+    @media(max-width: 900px) { .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media(max-width: 620px) { .tool-grid { grid-template-columns: 1fr; } .tool-heading h2 { font-size: 29px; } .tool-showcase { padding: 42px 0; } }
+    @media(prefers-reduced-motion: reduce) { .tool-card { transition: none; } }
+    .locale-toggle { display: inline-flex; flex-shrink: 0; border: 1px solid var(--line); border-radius: 6px; padding: 3px; gap: 3px; direction: ltr; }
+    .locale-toggle button { border: 0; border-radius: 4px; padding: 7px 10px; background: transparent; color: var(--muted); font: 700 13px var(--sans); cursor: pointer; }
+    .locale-toggle button[aria-pressed="true"] { background: var(--deep); color: #fff; }
+    .locale-toggle button:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+    [hidden] { display: none !important; }
+    .lead-ar, .tool-ar, .tool-heading > p[lang="ar"] { display: none; }
+    html[lang="en"] .rtl { direction: ltr; }
+    html[lang="ar"] .rtl { direction: rtl; }
+    .table th, .table td { text-align: start; }
+    .tool-name, .metric strong { unicode-bidi: isolate; direction: ltr; }
+    html[lang="en"] .value-figure strong { text-align: left; }
+    @media(max-width: 620px) { .nav-inner { flex-wrap: wrap; gap: 8px; padding: 12px 0; } .brand span { font-size: 12px; } }
+    .incubation-section { width: min(1180px, calc(100% - 32px)); margin: auto; padding: 54px 0; border-top: 1px solid var(--line); scroll-margin-top: 110px; }
+    .incubation-head { display: grid; grid-template-columns: 1.1fr .9fr; gap: 38px; align-items: start; }
+    .incubation-section h2 { font-size: 34px; line-height: 1.3; margin: 12px 0; }
+    .incubation-section p { color: #52625b; }
+    .incubation-proof { border-inline-start: 3px solid var(--teal); padding-inline-start: 24px; }
+    .incubation-proof strong { font-size: 28px; color: var(--deep); display: block; }
+    .incubation-proof .small { font-size: 13px; }
+    .incubation-path { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; padding: 28px 0; }
+    .incubation-path article { border-top: 2px solid var(--teal); padding-top: 16px; }
+    .incubation-path h3 { font-size: 20px; margin: 0; }
+    .incubation-path p { font-size: 14px; }
+    .portfolio-posters { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 26px 0; }
+    .portfolio-posters figure { margin: 0; min-width: 0; }
+    .portfolio-posters img { aspect-ratio: 1200 / 630; width: 100%; height: auto; object-fit: contain; border-radius: 6px; }
+    .portfolio-posters figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; }
+    .portfolio-controls { display: flex; flex-wrap: wrap; gap: 18px; align-items: end; margin: 24px 0; }
+    .portfolio-controls label { display: block; font-size: 13px; margin-bottom: 6px; }
+    .portfolio-controls input, .portfolio-controls select { font: inherit; border: 1px solid var(--line); border-radius: 6px; padding: 9px 12px; background: white; color: var(--ink); max-width: 100%; }
+    .portfolio-controls input { width: 260px; }
+    #app-count { font-size: 13px; color: var(--muted); padding-bottom: 10px; }
+    .incubated-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 18px; }
+    .incubated-app { background: white; border: 1px solid var(--line); border-radius: 8px; padding: 20px; text-align: center; min-width: 0; }
+    .incubated-app img { width: 120px; height: 120px; object-fit: contain; margin: 0 auto 18px; }
+    .incubated-app h3 { font-size: 18px; margin: 0; overflow-wrap: anywhere; }
+    .incubated-app p { font-size: 13px; margin: 7px 0 0; }
+    .portfolio-note { font-size: 13px; border-inline-start: 3px solid var(--amber); padding-inline-start: 14px; margin-top: 24px; }
+    .delivery-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; border-top: 1px solid var(--line); padding-top: 24px; margin: 28px 0; }
+    .delivery-tools h3 { margin: 0; font-size: 25px; }
+    .delivery-tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--line); margin-top: 24px; }
+    .delivery-tabs button { font: 700 14px var(--sans); background: transparent; color: var(--muted); border: 0; border-bottom: 3px solid transparent; padding: 12px 0; cursor: pointer; }
+    .delivery-tabs button[aria-selected="true"] { color: var(--teal); border-bottom-color: var(--teal); }
+    .delivery-steps { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; margin: 22px 0; }
+    .delivery-steps article { padding-inline-start: 18px; border-inline-start: 2px solid var(--line); }
+    .delivery-steps h4 { font-size: 17px; margin: 0 0 8px; }
+    .delivery-steps p { font-size: 14px; margin: 0; }
+    .delivery-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 24px; }
+    .delivery-footer button { cursor: pointer; font: 700 14px var(--sans); }
+    @media(max-width: 900px) { .vision-strip, .incubation-head { grid-template-columns: 1fr; } .incubated-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+    @media(max-width: 620px) { .signal-row, .incubation-path, .portfolio-posters, .delivery-tools, .delivery-steps { grid-template-columns: 1fr; } .incubated-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; } .incubated-app { padding: 16px 10px; } .incubated-app img { width: 100px; height: 100px; } .incubated-app h3 { font-size: 16px; } .incubation-section h2 { font-size: 28px; } .portfolio-controls > div { max-width: 100%; } }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Primary">
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="BrainSAIT home">
+        <img src="/assets/brainsait-logo.png" alt="BrainSAIT logo">
+        <div>BrainSAIT<span>Healthcare AI Operating System</span></div>
+      </a>
+      <div class="links">
+        <a href="#tools">Our tools</a>
+        <a href="#incubation">Activation pathway</a>
+        <a href="/value/">Value framework</a>
+        <a href="#ecosystem">Ecosystem</a>
+        <a href="/bpr/">BPR</a>
+        <a href="#idn">IDN/LGR</a>
+        <a href="#profile">Founder</a>
+        <a href="https://brainsait.de">brainsait.de</a>
+      </div>
+      <div class="locale-toggle" role="group" aria-label="Language / اللغة"><button type="button" data-language-switch="en" aria-pressed="true">EN</button><button type="button" data-language-switch="ar" aria-pressed="false">العربية</button></div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> Saudi healthcare AI · Arabic-first · evidence-led</div>
+        <h1>BrainSAIT<br><b>Health intelligence that proves its value.</b></h1>
+        <p class="lead">An Arabic-first healthcare operating ecosystem for Saudi Arabia and MENA: provider identity, OID trust, Arabic domain intelligence, clinical AI agents, NPHIES-aware workflows, automation, academy, and evidence-backed economic value.</p>
+        <p class="lead-ar">BrainSAIT ليست حاضنة فقط؛ إنها طبقة تشغيل للذكاء الصحي تربط الهوية، والتكامل، والأتمتة، والتعليم، والامتثال، والقيمة الاقتصادية في منظومة واحدة قابلة للمراجعة.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#tools">Explore BrainSAIT tools</a>
+          <a class="btn accent" href="#ecosystem">See the ecosystem map</a>
+          <a class="btn primary" href="/value/">Explore the evidence &amp; value framework</a>
+          <a class="btn accent" href="/bpr/">Open BPR identity workspace</a>
+          <a class="btn accent" href="https://idn.brainsait.de">Open IDN Trust Hub</a>
+          <a class="btn" href="https://elfadil.brainsait.de">Founder profile</a>
+          <a class="btn" href="https://chat.whatsapp.com/IXmNn2zFS002gTOcE9r4ic?mode=gi_t" target="_blank" rel="noopener noreferrer">Founder’s WhatsApp business group ↗</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="BrainSAIT system snapshot">
+        <div class="panel-photo">
+          <img class="logo" src="/assets/brainsait-logo.png" alt="BrainSAIT">
+        </div>
+        <div class="panel-body">
+          <div class="metric-grid">
+            <div class="metric"><strong>486%</strong><span>illustrative three-year ROI scenario, corrected from 525%</span></div>
+            <div class="metric"><strong>90d</strong><span>first proof-of-value path</span></div>
+            <div class="metric"><strong>14</strong><span>ecosystem modules across care, identity, claims, agents, compliance, and automation</span></div>
+            <div class="metric"><strong>5</strong><span>Arabic IDN/LGR trust tables loaded</span></div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="vision-strip" aria-labelledby="vision-title">
+      <div class="vision-panel">
+        <div class="section-label" style="color:#a7d6ce">BrainSAIT command vision</div>
+        <h2 id="vision-title">Not another app. A governed operating layer for healthcare action.</h2>
+        <p>BrainSAIT reduces the gap between trusted health information and the right operational move: cleaner documentation, safer identity, more complete requests, measurable workflows, and human review when evidence is not strong enough.</p>
+        <div class="signal-row">
+          <div class="signal"><b>Identity</b><span>BPR, SPID, OID, Arabic IDN/LGR, profile provenance.</span></div>
+          <div class="signal"><b>Workflow</b><span>FHIR context, NPHIES/RCM pathways, agents, automation, review queues.</span></div>
+          <div class="signal"><b>Value</b><span>Proof paths that connect operational change to financial evidence.</span></div>
+        </div>
+      </div>
+      <div class="vision-panel light">
+        <div class="section-label">Lead magnet · proof pathway</div>
+        <h2>Start with one pathway. Leave with evidence.</h2>
+        <p>For providers, founders, and partners, BrainSAIT turns curiosity into a scoped proof: learn the context, build the integration, run a measured solution, and decide the next move with data.</p>
+        <div class="signal-row">
+          <div class="signal"><b>LEARN</b><span>Healthcare data, documentation, review, and tool fluency.</span></div>
+          <div class="signal"><b>BUILD</b><span>Integrations, identity records, APIs, and traceable workflows.</span></div>
+          <div class="signal"><b>SOLUTIONS</b><span>Scoped pilots with owners, baselines, exceptions, and outcomes.</span></div>
+        </div>
+        <div class="hero-actions"><a class="btn accent" href="#incubation">Enter LEARN → BUILD → SOLUTIONS</a><a class="btn" href="https://chat.whatsapp.com/IXmNn2zFS002gTOcE9r4ic?mode=gi_t" target="_blank" rel="noopener noreferrer">Talk to the founder ↗</a></div>
+      </div>
+    </section>
+
+    <section id="incubation" class="incubation-section" aria-labelledby="incubation-title">
+      <div class="incubation-head">
+        <div><div class="section-label">BrainSAIT activation · LEARN → BUILD → SOLUTIONS</div><h2 id="incubation-title">The pathway that turns the ecosystem into proof.</h2><p>Incubation is one capability inside BrainSAIT, not the whole story. It is the hands-on route for teams that want to convert a healthcare problem into a tested workflow, a readable identity record, or a pilot with measurable operational evidence.</p><div class="hero-actions"><a class="btn primary" href="/developers/">Start the developer pathway</a><a class="btn" href="https://chat.whatsapp.com/IXmNn2zFS002gTOcE9r4ic?mode=gi_t" target="_blank" rel="noopener noreferrer">Discuss your proof pathway ↗</a></div></div>
+        <div class="incubation-proof"><div class="section-label">Document-backed foundations</div><strong>Incubation licence record · 1170</strong><p>Virtual business-incubator licence issued for BrainSAIT in Riyadh, alongside company, partnership-proposal, and governance materials.</p><p class="small">The supplied licence lists expiry 3 September 2026. Current renewal is not verified. Partnership proposals and unsigned documents are labeled in the evidence library.</p><a class="btn" href="/credentials/">Inspect the evidence library ↗</a></div>
+      </div>
+      <div class="incubation-path"><article><h3>LEARN</h3><p>Understand the problem, build the skills, and document what good evidence looks like.</p><a href="https://fadil369.github.io/learn/">Explore learning pathways</a></article><article><h3>BUILD</h3><p>Translate a focused brief into a prototype, real integrations, and a testable delivery record.</p><a href="/developers/">Enter the developer pathway ↗</a></article><article><h3>SOLUTIONS</h3><p>Run a scoped pilot with owners, human review, and measured outcomes before deciding how to scale.</p><a href="/value/">Explore the evidence &amp; value framework</a></article></div>
+      <h2>Ideas with a product identity.</h2><p>Examples from our incubation portfolio, spanning care, trust, learning, travel, and developer tools.</p>
+      <div class="portfolio-posters"><figure><a href="/assets/incubation/clinicflow-gov-pro.png" target="_blank" rel="noopener noreferrer"><img src="/assets/incubation/clinicflow-gov-pro.png" width="1200" height="630" loading="lazy" alt="ClinicFlow Pro product artwork"></a><figcaption>ClinicFlow Pro · Clinic operations portfolio artwork</figcaption></figure><figure><a href="/assets/incubation/halaltrace-gov-pro.png" target="_blank" rel="noopener noreferrer"><img src="/assets/incubation/halaltrace-gov-pro.png" width="1200" height="630" loading="lazy" alt="HalalTrace product artwork"></a><figcaption>HalalTrace · Supply-chain trust portfolio artwork</figcaption></figure></div>
+      <div class="portfolio-controls"><div><label for="app-search">Find a portfolio example</label><input id="app-search" type="search" autocomplete="off"></div><div><label for="app-category">Explore by focus</label><select id="app-category"><option value="All">All areas</option><option value="Healthcare">Healthcare</option><option value="Trust">Trust</option><option value="Commerce">Commerce</option><option value="Learning">Learning</option><option value="Developer">Developer</option></select></div><output id="app-count" aria-live="polite"></output></div>
+      <div id="incubated-apps" class="incubated-grid"></div><p id="app-empty" hidden>No matching portfolio examples.</p>
+      <p class="portfolio-note">These are supplied portfolio visuals. Production availability, government approval, and advertised prices require separate confirmation; artwork is not certification.</p>
+    </section>
+
+    <section id="collaboration" class="incubation-section" aria-labelledby="collaboration-title">
+      <div class="section-label">Lark × Meegle · The delivery layer</div><h2 id="collaboration-title">Keep the conversation connected to the work.</h2><p>Bring the incubation pathway into a shared team rhythm: collaboration in Lark, milestones and delivery tracking in Meegle, and evidence attached to each decision.</p>
+      <div class="delivery-tools"><div><h3>Lark</h3><p>Bring discussions, documents, and review context together so mentors, founders, and delivery teams can stay aligned.</p><a href="https://www.larksuite.com/" target="_blank" rel="noopener noreferrer">Explore Lark ↗</a></div><div><h3>Meegle</h3><p>Make milestones, owners, dependencies, and handoffs visible across a product’s delivery journey.</p><a href="https://www.meegle.com/meegle_features/workflow" target="_blank" rel="noopener noreferrer">Explore Meegle workflows ↗</a></div></div>
+      <div class="delivery-tabs" role="tablist" aria-label="Delivery pathway"><button id="delivery-learn" role="tab" aria-controls="panel-learn" data-delivery-stage="learn" aria-selected="true">LEARN</button><button id="delivery-build" role="tab" aria-controls="panel-build" data-delivery-stage="build" aria-selected="false">BUILD</button><button id="delivery-solutions" role="tab" aria-controls="panel-solutions" data-delivery-stage="solutions" aria-selected="false">SOLUTIONS</button></div>
+      <div id="panel-learn" role="tabpanel" aria-labelledby="delivery-learn" data-stage-panel="learn" class="delivery-steps"><article><h4>Define the learning brief</h4><p>Founder · Problem statement and learning objective</p></article><article><h4>Review the evidence</h4><p>Mentor · Source register and documented assumptions</p></article><article><h4>Approve the build scope</h4><p>Reviewer · Approved scope and acceptance criteria</p></article></div>
+      <div id="panel-build" role="tabpanel" aria-labelledby="delivery-build" data-stage-panel="build" class="delivery-steps" hidden><article><h4>Prepare the product brief</h4><p>Product owner · Defined user journey and data boundaries</p></article><article><h4>Build the integration</h4><p>Developer · Working prototype and test evidence</p></article><article><h4>Review the handoff</h4><p>Reviewer · Accepted deliverable and remaining issues</p></article></div>
+      <div id="panel-solutions" role="tabpanel" aria-labelledby="delivery-solutions" data-stage-panel="solutions" class="delivery-steps" hidden><article><h4>Approve the pilot</h4><p>Sponsor · Pilot scope, owners and measurement baseline</p></article><article><h4>Run supervised delivery</h4><p>Delivery team · Operational evidence and exception log</p></article><article><h4>Make the expansion decision</h4><p>Reviewer · Measured outcome and expand / adjust / stop decision</p></article></div>
+      <div class="delivery-footer"><div><strong id="plan-stage">LEARN</strong><p>A delivery blueprint for your team, ready to review and adapt.</p></div><div class="hero-actions"><button id="download-plan" class="btn accent" type="button">↓ Download delivery plan CSV</button><a class="btn" href="https://chat.whatsapp.com/IXmNn2zFS002gTOcE9r4ic?mode=gi_t" target="_blank" rel="noopener noreferrer">Request workspace access ↗</a></div></div>
+            <div class="delivery-footer"><div><strong>DEV-TEAM &middot; open cohort intake</strong><p>External developers apply in one minute. The workspace, the onboarding process, and the team chat open automatically.</p></div><div class="hero-actions"><a class="btn accent" href="/dev-onboard/">Apply to the DEV-TEAM &rarr;</a></div></div>
+<p class="portfolio-note">Workspace access is by invitation. These are delivery blueprints; no tasks or notifications are sent from this public page.</p>
+    </section>
+
+    <section id="tools" class="tool-showcase" aria-labelledby="tools-title">
+      <div class="tool-inner">
+        <div class="tool-heading">
+          <div class="section-label">The BrainSAIT toolkit</div>
+          <h2 id="tools-title">A name. An identity. A world of possibilities.</h2>
+          <p>Every connection begins with something worth trusting. Discover the tools that bring Arabic names, professional profiles, structured identifiers, and connected workflows into the same conversation.</p>
+          <p class="rtl" lang="ar">من اسمٍ بلغتك إلى هويةٍ واضحة، ومن معرفةٍ إلى عمل. أدوات مترابطة تمنح كل خطوة معناها.</p>
+        </div>
+        <div class="tool-grid">
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">IDN</span><span class="tool-type">Internationalized domain names</span></div>
+            <h3>Your language belongs on the internet.</h3>
+            <p>Let an Arabic name keep its voice. Explore internationalized domain labels, their encoded form, and the script rules that shape a more multilingual web.</p>
+            <p class="tool-ar rtl" lang="ar">اسمك العربي، بهويته وصوته، على الإنترنت.</p>
+            <a href="https://idn.brainsait.de">Explore Arabic domain intelligence</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">LGR</span><span class="tool-type">Label generation rules</span></div>
+            <h3>Behind every name, a careful alphabet.</h3>
+            <p>Characters, variants, and context become explicit rules. Check Arabic labels against the live reference table and see the reasoning behind an eligible or ineligible result.</p>
+            <p class="tool-ar rtl" lang="ar">قواعد واضحة تحمي دقة الاسم، حرفًا بحرف.</p>
+            <a href="/bpr/#label">Check an Arabic label</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">OID</span><span class="tool-type">Object identifiers</span></div>
+            <h3>A precise address in the identity tree.</h3>
+            <p>Give systems a structured way to reference an entity. Explore BrainSAIT’s namespace root, <b>1.3.6.1.4.1.61026</b>, and its place in the connected identity story.</p>
+            <p class="tool-ar rtl" lang="ar">لغة تعريف منظّمة تربط الأنظمة بمعنى واحد.</p>
+            <a href="/bpr/#chain">Explore the identifier chain</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">BPR</span><span class="tool-type">BrainSAIT Provider Registry</span></div>
+            <h3>The professional behind the identifier.</h3>
+            <p>A profile gives a number its human context. Discover published provider information, connected identifiers, and source references in one bilingual workspace.</p>
+            <p class="tool-ar rtl" lang="ar">وراء كل معرّف، إنسان وخبرة وقصة مهنية.</p>
+            <a href="/bpr/">Meet the first provider profile</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">SPID</span><span class="tool-type">Provider identifier</span></div>
+            <h3>One reference. A clearer connection.</h3>
+            <p>Move from a name to a specific published provider record. Search <b>SA-PHY-000001</b>, inspect its linked profile, and carry its public identity data in a downloadable record.</p>
+            <p class="tool-ar rtl" lang="ar">مرجع واضح يصل الاسم بملفه المهني المنشور.</p>
+            <a href="/bpr/#identity">Inspect the SPID record</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">VERIFY</span><span class="tool-type">Evidence &amp; provenance</span></div>
+            <h3>Trust starts with a question.</h3>
+            <p>Where did this claim come from? Follow the profile’s source trail, distinguish published references from assessed credentials, and open the dedicated verification service.</p>
+            <p class="tool-ar rtl" lang="ar">الثقة تبدأ بمصدر واضح، وسؤال يمكن الإجابة عنه.</p>
+            <a href="/credentials/">Review the evidence library</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">API</span><span class="tool-type">Developer access</span></div>
+            <h3>Turn an insight into a connection.</h3>
+            <p>Turn capability into a working integration through our developer pathway: explore identity references, test a live Arabic label endpoint, and build a reviewed delivery plan.</p>
+            <p class="tool-ar rtl" lang="ar">بيانات قابلة للقراءة، وأفكار قابلة للبناء.</p>
+            <a href="/developers/">Enter the developer pathway ↗</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">AGENTS</span><span class="tool-type">AI workspace</span></div>
+            <h3>Give expertise a new way to work.</h3>
+            <p>Explore BrainSAIT’s clinical and operational agent workspace: a starting point for bringing language, context, and specialist tasks into healthcare workflows.</p>
+            <p class="tool-ar rtl" lang="ar">مساحة تلتقي فيها الخبرة الصحية بإمكانات الذكاء الاصطناعي.</p>
+            <a href="https://agent.brainsait.de">Explore the agent workspace</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">HUB</span><span class="tool-type">Connected operations</span></div>
+            <h3>Where individual tools become a system.</h3>
+            <p>Bring the ecosystem into view. Open BrainSAIT’s operations hub to explore the integration layer behind connected applications and workflows.</p>
+            <p class="tool-ar rtl" lang="ar">نقطة التقاء الأدوات، وبداية العمل المترابط.</p>
+            <a href="https://hub.brainsait.de">Open the operations hub</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">LEARN</span><span class="tool-type">Knowledge &amp; capability</span></div>
+            <h3>The next breakthrough starts with you.</h3>
+            <p>Build fluency in healthcare data, documentation, and thoughtful review. Explore learning pathways that help teams move from understanding a tool to using it with purpose.</p>
+            <p class="tool-ar rtl" lang="ar">معرفة اليوم، وقدرة الفريق على صناعة الغد.</p>
+            <a href="https://fadil369.github.io/learn/">Explore learning pathways</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">BUILD</span><span class="tool-type">Integration &amp; workflows</span></div>
+            <h3>Make the connection that matters.</h3>
+            <p>Turn a specific operational need into an integration worth testing. Explore the building pathway for connected data, traceable drafts, and reviewable workflows.</p>
+            <p class="tool-ar rtl" lang="ar">من حاجة واضحة إلى تكامل يمكن اختباره ومراجعته.</p>
+            <a href="https://fadil369.github.io/build/">Explore the building pathway</a>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name">SOLUTIONS</span><span class="tool-type">Measured healthcare value</span></div>
+            <h3>Progress you can put to the test.</h3>
+            <p>Connect capability to a defined healthcare pathway. Explore solution offerings built around scoped operation, human review, and evidence that informs the next decision.</p>
+            <p class="tool-ar rtl" lang="ar">قيمة تبدأ بمسار محدد، وتُثبت بالقياس والمراجعة.</p>
+            <a href="https://fadil369.github.io/solutions/">Explore healthcare solutions</a>
+          </article>
+        </div>
+        <div class="tool-path"><strong>Name → Rules → Identity → Evidence → Action</strong><span>Arabic label eligibility, provider credentials, and domain ownership are separate checks.</span></div>
+      </div>
+    </section>
+
+    <section id="value" class="value-preview rtl" data-localized-direction aria-labelledby="value-title">
+      <div class="section-label">إطار BrainSAIT · القيمة الاقتصادية المدعومة بالأدلة</div>
+      <div class="value-intro">
+        <div>
+          <h2 id="value-title">قيمة تُقاس.<br>وأثر يستحق أن يُثبت.</h2>
+          <p>من الذكاء الصحي إلى قيمة اقتصادية قابلة للإثبات: كل عائد مالي يرتبط بتحسين تشغيلي، وكل تحسين بقياس موثّق وضوابط تحقق. إطار مستقل يجمع الحالة التجارية، ومنهج الاختبار، وخطة إثبات القيمة خلال 90 يومًا.</p>
+          <p class="value-disclaimer">العائد 486% تصحيح حسابي لسيناريو افتراضي عند خصم 10%، وليس نتيجة عميل أو عائدًا معتمدًا. هذا إطار BrainSAIT مستقل، وليس دراسة Forrester TEI™ رسمية.</p>
+          <div class="hero-actions"><a class="btn primary" href="/value/">استكشف الإطار الكامل</a><a class="btn" href="/value/#calculator">جرّب الحاسبة التفاعلية</a></div>
+        </div>
+        <div class="value-figures">
+          <div class="value-figure"><strong>486%</strong><span>عائد افتراضي غير مثبت تجريبيًا</span></div>
+          <div class="value-figure"><strong>29.44M</strong><span>صافي القيمة الحالية المفترض · ريال</span></div>
+          <div class="value-figure"><strong>13</strong><span>محورًا يربط الفكرة الاستثمارية بالأدلة</span></div>
+          <div class="value-figure"><strong>90</strong><span>يومًا لبناء دليل يساعد على قرار التوسع</span></div>
+        </div>
+      </div>
+      <div class="value-chain"><span>مصدر موثّق</span><span>← بيانات متحققة</span><span>← اقتراح آلي</span><span>← قرار مخوّل</span><span>← نتيجة تشغيلية</span><span>← أثر مالي معتمد</span></div>
+    </section>
+
+    <section id="evidence" class="section">
+      <div class="section-head">
+        <div class="section-label">01 · Evidence-backed value</div>
+        <h2>The value claim is measured before it is marketed.</h2>
+      </div>
+      <div class="proof">
+        <div class="proof-block">
+          <h3>Independent BrainSAIT framework</h3>
+          <p>This is not presented as a formal Forrester TEI study. It is an internal planning and analysis framework built around benefits, costs, flexibility, and risk.</p>
+          <p>All institutional numbers are illustrative until validated against customer data, operating baselines, adoption, attribution, and cost-to-achieve.</p>
+        </div>
+        <div class="proof-block light rtl">
+          <h3>سلسلة الإثبات</h3>
+          <p>مصدر موثّق ← بيانات متحققة ← اقتراح آلي ← قرار مخوّل ← نتيجة تشغيلية ← أثر مالي معتمد.</p>
+          <p>كل منفعة تحتاج تعريف مؤشر، مصدر بيانات، خط أساس، إصدار نظام، نطاق مستخدمين، واستثناءات واضحة.</p>
+        </div>
+      </div>
+      <div style="margin-top:18px; overflow-x:auto">
+        <table class="table">
+          <thead><tr><th>Value class</th><th>Financial treatment</th><th>Guardrail</th></tr></thead>
+          <tbody>
+            <tr><td>Real cash savings</td><td>Recognized after spending is demonstrably reduced.</td><td>Time saved is not automatically cost saved.</td></tr>
+            <tr><td>Legitimate additional collection</td><td>Recognized after settlement and de-duplication.</td><td>Do not count the same claim twice across CDI and SBS.</td></tr>
+            <tr><td>Released work capacity</td><td>Reported in hours, monetized only with documented redeployment.</td><td>Separate staff time from vendor and infrastructure cost.</td></tr>
+            <tr><td>Risk exposure reduction</td><td>Shown as expected value with sensitivity ranges.</td><td>No privacy or safety guarantee from absence of observed leakage.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-label">02 · Research methods</div>
+        <h2>Research informs the tests; it does not import the outcomes.</h2>
+      </div>
+      <div class="grid-4">
+        <div class="item"><span class="tag">CLAIRE</span><h3>Field extraction with review</h3><p>Separate data extraction from verification, correction, and referral for SBS, ClaimLinc, PriorAuth, and BPR requests.</p></div>
+        <div class="item"><span class="tag">PrivMeSA</span><h3>Cumulative disclosure testing</h3><p>Measure privacy risk across messages, visits, and local memory, not just single prompts.</p></div>
+        <div class="item"><span class="tag">CRC-Router</span><h3>Accept or escalate</h3><p>Calibrate whether AI output can be accepted or must be routed to specialist review.</p></div>
+        <div class="item"><span class="tag">CASE</span><h3>Evidence gathering</h3><p>Test longitudinal record retrieval, date ordering, conflict handling, and FHIR-backed context.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-label">03 · 90-day proof path</div>
+        <h2>Start narrow, prove cleanly, then scale deliberately.</h2>
+      </div>
+      <div class="grid-3">
+        <div class="item"><h3>Days 1–15</h3><p>Select one claims pathway, assign owners, define indicators, approve assumptions, and lock data sources.</p></div>
+        <div class="item"><h3>Days 16–30</h3><p>Build baseline and test 50 bilingual synthetic cases for errors, verification, and escalation. No financial claim yet.</p></div>
+        <div class="item"><h3>Days 31–60</h3><p>Run limited supervised operation after access and security conditions are met; measure time, quality, and review load.</p></div>
+        <div class="item"><h3>Days 61–75</h3><p>Compare against usual workflow or a matched group and analyze differences in case mix and uncertainty.</p></div>
+        <div class="item"><h3>Days 76–90</h3><p>Refresh benefits, costs, and evidence into a decision: expand, adjust, or stop the scoped path.</p></div>
+        <div class="item"><h3>First scope</h3><p>Claims and prior authorization documentation completeness, with defined human review. Beds, imaging, and no-shows come later.</p></div>
+      </div>
+    </section>
+
+    <section id="ecosystem" class="section">
+      <div class="section-head">
+        <div class="section-label">04 · Main ecosystem</div>
+        <h2>One major page for the whole BrainSAIT estate.</h2>
+      </div>
+      <div class="grid-4">
+        <a class="item" href="https://brainsait.de"><span class="tag">Published source</span><h3>brainsait.de</h3><p>Public bilingual ecosystem: healthcare AI OS, provider registry, trust chain, products, and storefront links.</p></a>
+        <a class="item" href="/bpr/"><span class="tag">Identity</span><h3>BPR workspace</h3><p>Provider identity workspace with SPID/OID references, Arabic label checks, and live trust-passport links.</p></a>
+        <a class="item" href="#bpr"><span class="tag">BPR Live</span><h3>Provider trust passports</h3><p>Published BPR passports now connect provider profiles, SPID/OID identity, Arabic IDN/LGR, and clear evidence boundaries.</p></a>
+        <a class="item" href="/credentials/"><span class="tag">Trust</span><h3>Evidence library</h3><p>Inspect the licence record, company documents, proposals, and governance references with clear document statuses.</p></a>
+        <a class="item" href="https://store.brainsait.de"><span class="tag">Commerce</span><h3>Store</h3><p>LEARN, BUILD, OID, BPR, and solution pathways with SAR pricing.</p></a>
+        <a class="item" href="https://hub.brainsait.de"><span class="tag">Operations</span><h3>Hub</h3><p>Integration hub and operational control surfaces for the live platform.</p></a>
+        <a class="item" href="/coolify"><span class="tag">Deployments</span><h3>Coolify</h3><p>Manage applications and deployments. Owner sign-in required.</p></a>
+        <a class="item" href="https://app.brainsait.de"><span class="tag">App</span><h3>BrainSAIT app</h3><p>Application layer for the operating system experience.</p></a>
+        <a class="item" href="https://agent.brainsait.de"><span class="tag">Agents</span><h3>AI agents</h3><p>Arabic-first clinical and operational agent templates and routing.</p></a>
+        <a class="item" href="https://elfadil.brainsait.de"><span class="tag">Author</span><h3>Dr. Fadil</h3><p>Founder profile: physician, builder, writer, and BrainSAIT ecosystem author.</p></a>
+      </div>
+    </section>
+
+    <section id="bpr" class="section">
+      <div class="section-head">
+        <div class="section-label">05 · BPR trust passports</div>
+        <h2>Provider trust passports are becoming a live identity layer.</h2>
+      </div>
+      <div class="proof">
+        <div class="proof-block light">
+          <h3>Dr. Fadi Al Ghareeb</h3>
+          <p>Explore the published physician profile, SPID, BrainSAIT OID namespace, and live Arabic label checks in one bilingual identity workspace. Published references and independently verified credentials are clearly distinguished.</p>
+          <div class="grid-3" style="margin-top:18px">
+            <div class="metric"><strong>SA-PHY-000001</strong><span>SPID</span></div>
+            <div class="metric"><strong>1.3.6.1.4.1.61026</strong><span>BrainSAIT OID branch</span></div>
+            <div class="metric"><strong>BPR-IDN-OID</strong><span>trust receipt family</span></div>
+          </div>
+          <div class="action-row" style="margin-top:18px">
+            <a class="btn accent" href="/bpr/">Open BPR identity workspace</a>
+            <a class="btn" href="https://bpr-fadi-alghareeb.fadil369.chatgpt.site/">Original BPR passport</a>
+            <a class="btn" href="https://bpr-farroukh-raza.fadil369.chatgpt.site/">Farroukh Raza passport</a>
+            <a class="btn" href="/bpr/">Open BPR workspace</a>
+          </div>
+        </div>
+        <div class="proof-block">
+          <h3>هوية مهنية قابلة للتحقق</h3>
+          <p>يربط هذا المسار اسم الطبيب، السجل المهني، فرع OID، والتحقق من الاسم العربي ضمن طبقة ثقة واحدة يمكن مشاركتها وقراءتها ومراجعتها.</p>
+          <p class="muted" style="color:rgba(244,248,246,.72)">Search profile references, download public JSON, follow the evidence chain, and run live IDN/LGR checks. Professional credentials and digital signatures are not assessed by this page.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="idn" class="section">
+      <div class="section-head">
+        <div class="section-label">06 · LGR / IDN trust</div>
+        <h2>Arabic domain intelligence is now part of the main trust story.</h2>
+      </div>
+      <div class="proof">
+        <div class="proof-block light">
+          <h3>idn.brainsait.de</h3>
+          <p>The IDN hub runs live Arabic label verification, regulatory Atlas access, Arabic-script LGR findings, and API endpoints for `/api/verify`, `/api/tables`, `/api/data`, and `/lgr/&lt;file&gt;.xml`.</p>
+          <div class="action-row" style="margin-top:18px">
+            <a class="btn accent" href="https://idn.brainsait.de">Open IDN hub</a>
+            <a class="btn" href="https://idn.brainsait.de/api/tables">View tables API</a>
+          </div>
+        </div>
+        <div class="proof-block">
+          <h3>Unified Arabic reference LGR</h3>
+          <p>BrainSAIT’s local LGR pack is installed on the server and wired to the live IDN service. The verifier currently loads five tables including BrainSAIT unified v1.0, Saudi, .عرب, Aramco, and .شبكة.</p>
+          <p class="muted" style="color:rgba(244,248,246,.72)">Operational note: structural lgr-core parsing passes; full IDNA validation reports the known ICU Unicode 17 / munidata compatibility warning.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-label">07 · Commercial bridge</div>
+        <h2>LEARN → BUILD → SOLUTIONS</h2>
+      </div>
+      <div class="grid-3">
+        <a class="item" href="https://fadil369.github.io/learn/"><h3>LEARN</h3><p>Train teams on documentation, healthcare data, review, and tool use. Evidence is measured task quality and efficiency.</p></a>
+        <a class="item" href="https://fadil369.github.io/build/"><h3>BUILD</h3><p>Build integration, workflow, and verification controls. Evidence is successful tests and traceable drafts.</p></a>
+        <a class="item" href="https://fadil369.github.io/solutions/"><h3>SOLUTIONS</h3><p>Operate a defined monitored path and scale only after stable quality, operational impact, and financial evidence.</p></a>
+      </div>
+    </section>
+
+    <section id="profile" class="band">
+      <div class="band-inner">
+        <div>
+          <div class="section-label" style="color:#a7d6ce">08 · Founder profile</div>
+          <h2>Built around the physician, not around another screen.</h2>
+          <p>Dr. Mohamed El Fadil Abuagla connects clinical practice, AI engineering, Arabic healthcare operations, and product systems. BrainSAIT’s founder narrative is now directly linked from the main domain.</p>
+          <p>Connect with the founder through the BrainSAIT WhatsApp business group for partnerships, ideas, and business conversations.</p>
+          <div class="hero-actions">
+            <a class="btn accent" href="https://chat.whatsapp.com/IXmNn2zFS002gTOcE9r4ic?mode=gi_t" target="_blank" rel="noopener noreferrer">Join the founder’s business group ↗</a>
+            <a class="btn accent" href="https://elfadil.brainsait.de">Open author profile</a>
+            <a class="btn" href="https://sa.linkedin.com/in/fadil369">LinkedIn</a>
+          </div>
+        </div>
+        <a class="profile" href="https://elfadil.brainsait.de" aria-label="Open Dr. Fadil profile">
+          <img src="https://elfadil.brainsait.de/assets/img/prof_pic.jpg" alt="Dr. Mohamed El Fadil">
+          <div>
+            <h3>Dr. Mohamed El Fadil</h3>
+            <p>Physician · founder · healthcare AI builder. Riyadh, Saudi Arabia.</p>
+            <span class="btn">Profile hub</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>© 2026 BrainSAIT Ltd. Riyadh, KSA. Main hub: brainsait.de</div>
+    <div><a href="https://brainsait.de">brainsait.de</a> · <a href="https://bpr-fadi-alghareeb.fadil369.chatgpt.site/">Fadi BPR</a> · <a href="https://bpr-farroukh-raza.fadil369.chatgpt.site/">Farroukh BPR</a> · <a href="https://idn.brainsait.de">idn.brainsait.de</a> · <a href="https://elfadil.brainsait.de">Founder</a></div>
+  </footer>
+  <script src="/assets/incubation-showcase.js"></script>
+  <script src="/assets/home-translations.js?v=narrative-20261004"></script>
+  <script src="/assets/incubation-translations.js"></script>
+  <script src="/assets/brainsait-language.js"></script>
+  <script>
+    function updatePageTitle() { document.title = document.documentElement.lang === 'ar' ? 'BrainSAIT | ذكاء صحي وقيمة مدعومة بالأدلة' : 'BrainSAIT | Evidence-backed Healthcare AI Operating System'; }
+    window.addEventListener('brainsait-language', updatePageTitle);
+    updatePageTitle();
+  </script>
+</body>
+</html>

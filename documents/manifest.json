@@ -1,0 +1,72 @@
+{
+  "reviewed_on": "2026-10-04",
+  "verification_scope": "file_contents_reviewed_not_independently_issuer_verified",
+  "documents": [
+    {
+      "file": "incubator-licence-1170.pdf",
+      "title": "Incubator licence · 1170",
+      "type": "Licence record",
+      "status": "Expired date on supplied copy",
+      "description": "Monsha’at virtual business-incubator licence for BrainSAIT, Riyadh. The supplied document states expiry 21 Rabiʽ al-Awwal 1448 (3 September 2026). Current renewal and issuer status have not been verified.",
+      "preview": "licence.png",
+      "sha256": "b0391d3e20066b13bc511b716e017ae79d2e7a0d8dfcdb7c1a741666181ac0f1"
+    },
+    {
+      "file": "company-profile.pdf",
+      "title": "Company profile & credentials",
+      "type": "Company publication",
+      "status": "Self-reported profile",
+      "description": "BrainSAIT’s enterprise profile, platform scope and listed vendor references. These are statements in the supplied profile, not independent issuer confirmations.",
+      "sha256": "c86442d417f6c2792f242d0a10779d12e6e174350b5f00d56934a1d11e5e855b"
+    },
+    {
+      "file": "allam-partnership-proposal.pdf",
+      "title": "ALLaM partnership proposal",
+      "type": "Partnership proposal",
+      "status": "Proposal",
+      "description": "Proposed sovereign clinical AI collaboration with SDAIA / NCAI. A proposal does not establish an executed partnership or institutional endorsement.",
+      "sha256": "c7c3c2260af92e2eb417ae6b7f8941f5fa649ddbdcbbc4d3e17512015a9c74fc"
+    },
+    {
+      "file": "allam-partnership-proposal-369.pdf",
+      "title": "ALLaM partnership · alternate edition",
+      "type": "Partnership proposal",
+      "status": "Proposal",
+      "description": "The second supplied edition of the ALLaM proposal, retained as a distinct document for review.",
+      "sha256": "4b1021bd8fb1bb974de60a02bae5fa860e083d9e94016557be147b6f49e810d7"
+    },
+    {
+      "file": "sdaia-mou-draft.pdf",
+      "title": "SDAIA / NCAI memorandum",
+      "type": "Agreement draft",
+      "status": "Unsigned draft",
+      "description": "Ref. BS-MOU-ALLaM-2026-001. The supplied copy contains blank signature and date fields; it is not presented as an executed agreement.",
+      "sha256": "3c2f29f4921be18093eccb7fcde4ee4d26a08335cab1ccca48e6682e87c3e920"
+    },
+    {
+      "file": "saihta-risk-management.pdf",
+      "title": "SAIHTA risk & continuity framework",
+      "type": "Governance material",
+      "status": "Founding draft",
+      "description": "Edition 1.0 — Founding Draft, 2026. Bilingual risk management and business-continuity planning; not an accreditation certificate.",
+      "sha256": "635235e49b2c65a2a9cc818b12dd5db12b4a35b52f17ba512d85533fb4b20a31"
+    },
+    {
+      "file": "gni-content-regulation-policy.pdf",
+      "title": "Content regulation & human rights",
+      "type": "External policy reference",
+      "status": "Reference material",
+      "description": "External analysis and recommendations supplied for governance context. It does not certify BrainSAIT or its applications.",
+      "sha256": "0ecfaa97797bd9edae62d13e69ee48a2e789882463c1b62482e84eff87de82f4"
+    },
+    {
+      "file": "lark-authorization.pages",
+      "title": "Lark ISV authorization letter",
+      "type": "Company authorization",
+      "status": "Company letter",
+      "description": "Dated 23 September 2026. Authorizes the founder to apply for Lark ISV qualification on the company’s behalf. It is not proof of Lark acceptance or ISV certification.",
+      "preview": "authorization.jpg",
+      "sha256": "9b588347eda79cfddfbe08c467fba4cde27913cdd66365baaad87d2527016f68"
+    }
+  ]
+}

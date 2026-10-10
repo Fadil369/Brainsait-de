@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BrainSAIT Executive Dashboard · OID 1.3.6.1.4.1.61026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0b1e3d; --navy2:#142a4f; --gold:#c6a15b; --gold-l:#e3c789;
+  --cream:#f7f3ec; --ivory:#fffdf8; --line:#e7ded0;
+  --slate:#6b7688; --emerald:#0e6e5b; --red:#c0392b;
+  --shadow-sm:0 2px 8px rgba(11,30,61,.06);
+  --shadow-md:0 8px 24px rgba(11,30,61,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.55;min-height:100vh}
+.serif{font-family:'Playfair Display',serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.ar{font-family:Tajawal,sans-serif}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+a{color:inherit}
+
+/* === Header === */
+header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;padding:24px 0;border-bottom:3px solid var(--gold)}
+.nav{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.brand{display:flex;align-items:center;gap:14px;font-family:'Playfair Display',serif;font-size:24px;font-weight:700}
+.mark{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold-l));display:grid;place-items:center;color:var(--navy);font-size:24px;font-weight:800}
+.brand .oid{color:var(--gold-l);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;margin-top:3px;letter-spacing:.04em}
+.navlinks{display:flex;gap:22px;align-items:center}
+.navlinks a{color:#cdd6e6;text-decoration:none;font-size:14px;font-weight:500;transition:.2s}
+.navlinks a:hover{color:var(--gold-l)}
+.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#5fcba8;box-shadow:0 0 8px #5fcba8;animation:pulse 2s infinite;margin-right:6px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* === Hero === */
+.hero{padding:36px 0 18px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,3.6vw,42px);color:var(--navy);margin-bottom:8px}
+.hero p{color:var(--slate);font-size:15px;max-width:740px}
+
+/* === Stats grid === */
+.grid{display:grid;gap:18px;margin-bottom:24px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:1fr 1fr}
+@media(max-width:980px){.g4{grid-template-columns:repeat(2,1fr)}.g3,.g2{grid-template-columns:1fr}}
+
+.card{background:var(--ivory);border:1px solid var(--line);border-radius:18px;padding:22px;transition:.3s}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.card .label{color:var(--slate);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.card .num{font-family:'Playfair Display',serif;font-size:34px;color:var(--navy);font-weight:700;line-height:1}
+.card .sub{color:var(--emerald);font-size:12px;font-weight:600;margin-top:8px}
+.card .sub.down{color:var(--red)}
+.card.accent{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-color:var(--gold)}
+.card.accent .label{color:var(--gold-l)}
+.card.accent .num{color:#fff}
+
+/* === OID Tree === */
+.oid-section{background:var(--ivory);border:1px solid var(--line);border-radius:20px;padding:28px;margin-bottom:24px}
+.oid-section h2{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:6px}
+.oid-section .sub{color:var(--slate);font-size:13px;margin-bottom:18px}
+.oid-root{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);padding:10px 18px;border-radius:12px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;margin-bottom:18px}
+.oid-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.oid-node{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;transition:.2s}
+.oid-node:hover{border-color:var(--gold);box-shadow:var(--shadow-sm)}
+.oid-node .num{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:11px;font-weight:600}
+.oid-node .name{font-family:'Playfair Display',serif;color:var(--navy);font-size:15px;font-weight:600;margin:4px 0 6px}
+.oid-node .items{display:flex;flex-wrap:wrap;gap:4px}
+.oid-node .items span{background:rgba(11,30,61,.05);color:var(--slate);padding:2px 8px;border-radius:6px;font-size:10px;font-family:'JetBrains Mono',monospace}
+
+/* === Activity stream === */
+.activity{background:var(--navy);color:#fff;border-radius:20px;padding:24px;margin-bottom:24px}
+.activity h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold-l);margin-bottom:14px}
+.act-list{max-height:380px;overflow-y:auto}
+.act-row{display:grid;grid-template-columns:80px 110px 1fr 110px;gap:10px;padding:9px 6px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12.5px;align-items:center}
+.act-row:last-child{border-bottom:none}
+.act-time{font-family:'JetBrains Mono',monospace;color:#9fb0cc;font-size:11px}
+.act-type{background:rgba(198,161,91,.18);color:var(--gold-l);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;text-align:center}
+.act-payload{color:#cdd6e6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px}
+.act-source{font-size:10px;color:#9fb0cc;text-align:right;font-family:'JetBrains Mono',monospace}
+
+/* === Services table === */
+.svc{background:var(--ivory);border:1px solid var(--line);border-radius:20px;padding:24px;margin-bottom:24px}
+.svc h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{background:rgba(11,30,61,.05);color:var(--slate);padding:10px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;border-radius:8px 8px 0 0}
+td{padding:11px 12px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600}
+.badge.up{background:rgba(14,110,91,.12);color:var(--emerald)}
+.badge.warn{background:rgba(243,156,18,.15);color:#b7791f}
+.badge.down{background:rgba(192,57,43,.12);color:var(--red)}
+
+/* === Footer === */
+footer{background:var(--navy);color:#9fb0cc;padding:32px 0;margin-top:30px;font-size:13px}
+.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px}
+@media(max-width:760px){.fgrid{grid-template-columns:1fr}}
+.fgrid a{color:#cdd6e6;text-decoration:none;display:block;margin:5px 0}
+.fgrid a:hover{color:var(--gold-l)}
+.fcopy{border-top:1px solid rgba(255,255,255,.1);padding-top:18px;margin-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+ <div class="nav">
+  <div class="brand">
+   <span class="mark">ب</span>
+   <div>
+    BrainSAIT Executive Dashboard
+    <div class="oid">OID 1.3.6.1.4.1.61026 · <span class="live-dot"></span>Live</div>
+   </div>
+  </div>
+  <div class="navlinks">
+   <a href="https://brainsait.de">Home</a>
+   <a href="https://brainsait.de/portal">Portal</a>
+   <a href="https://market.brainsait.de">Marketplace</a>
+   <a href="https://momfood.de">MomFood</a>
+   <a href="https://brainsait.de/api/integration/health" target="_blank">Hub</a>
+  </div>
+ </div>
+</div></header>
+
+<div class="hero"><div class="wrap">
+ <h1>Enterprise-wide health, in one OID-aware view</h1>
+ <p>Live telemetry from the BrainSAIT Integration Hub · portal profiles · marketplace catalog · system services. Powered by <code class="mono" style="color:var(--navy);background:rgba(198,161,91,.15);padding:2px 8px;border-radius:6px">1.3.6.1.4.1.61026</code>.</p>
+</div></div>
+
+<div class="wrap">
+ <!-- TOP STATS -->
+ <div class="grid g4" id="topStats">
+   <div class="card accent"><div class="label">OID Enterprise</div><div class="num" style="font-size:24px">1.3.6.1.4.1.61026</div><div class="sub">BrainSAIT Ltd · IANA private</div></div>
+   <div class="card"><div class="label">OID Branches</div><div class="num" id="sBranches">—</div><div class="sub">top-level Linc families</div></div>
+   <div class="card"><div class="label">OID Leaves</div><div class="num" id="sLeaves">—</div><div class="sub">named services</div></div>
+   <div class="card"><div class="label">Portal Profiles</div><div class="num" id="sProfiles">—</div><div class="sub">live identity count</div></div>
+ </div>
+
+ <div class="grid g4">
+   <div class="card"><div class="label">Hub Status</div><div class="num" id="sHub">—</div><div class="sub" id="sHubSub">checking…</div></div>
+   <div class="card"><div class="label">Portal Status</div><div class="num" id="sPortal">—</div><div class="sub" id="sPortalSub">checking…</div></div>
+   <div class="card"><div class="label">Marketplace Products</div><div class="num" id="sProducts">—</div><div class="sub">in hub catalog</div></div>
+   <div class="card"><div class="label">Hub Events</div><div class="num" id="sEvents">—</div><div class="sub">last hour</div></div>
+ </div>
+
+ <!-- OID TREE -->
+ <div class="oid-section">
+   <h2>Enterprise OID hierarchy</h2>
+   <div class="sub">iso.org.dod.internet.private.enterprise.61026 — every Linc below maps to a working service or product.</div>
+   <div class="oid-root">1.3.6.1.4.1.61026</div>
+   <div class="oid-grid" id="oidGrid"><span style="color:var(--slate)">Loading…</span></div>
+ </div>
+
+ <!-- ACTIVITY + SERVICES -->
+ <div class="grid g2">
+  <div class="activity">
+   <h2>Live hub activity</h2>
+   <div class="act-list" id="actList"><div style="color:#9fb0cc;padding:14px">Loading events…</div></div>
+  </div>
+  <div class="svc">
+   <h2>System services</h2>
+   <table id="svcTable"><thead><tr><th>Service</th><th>Status</th><th>Port / Detail</th></tr></thead><tbody></tbody></table>
+  </div>
+ </div>
+</div>
+
+<footer><div class="wrap">
+ <div class="fgrid">
+  <div>
+   <strong style="color:#fff">BrainSAIT Ltd</strong><br>
+   Riyadh · KSA · Vision 2030<br>
+   <span style="font-family:'JetBrains Mono',monospace;color:var(--gold-l)">OID 1.3.6.1.4.1.61026</span>
+  </div>
+  <div>
+   <strong style="color:#fff">Surfaces</strong>
+   <a href="https://brainsait.de">brainsait.de</a>
+   <a href="https://brainsait.de/portal">Portal</a>
+   <a href="https://market.brainsait.de">Marketplace</a>
+   <a href="https://dashboard.brainsait.de">Dashboard</a>
+  </div>
+  <div>
+   <strong style="color:#fff">API</strong>
+   <a href="https://brainsait.de/api/integration/health">/api/integration/health</a>
+   <a href="https://brainsait.de/api/registry">/api/registry</a>
+   <a href="https://brainsait.de/api/catalog">/api/catalog</a>
+   <a href="https://brainsait.de/api/events?limit=50">/api/events</a>
+  </div>
+ </div>
+ <div class="fcopy">
+  <span>© 2026 BrainSAIT Ltd · Mohamed Elfadil Abuagla</span>
+  <span>CC BY-NC-SA 4.0</span>
+ </div>
+</div></footer>
+
+<script>
+const API = '';  // same-origin
+const REGISTRY = '/api/registry';
+const CATALOG = '/api/catalog';
+const HEALTH = '/api/integration/health';
+const EVENTS = '/api/events';
+const PROFILES = '/api/profile/find?q=';  // cheap way to get count
+
+function esc(s){return s==null?'':String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+async function loadHealth(){
+  try{
+    const r=await fetch(API+HEALTH);
+    const d=await r.json();
+    document.getElementById('sHub').textContent=d.hub==='alive'?'alive':'down';
+    document.getElementById('sHubSub').textContent=d.hub==='alive'?'Telegram + Email ready':'degraded';
+    document.getElementById('sHubSub').className='sub'+(d.hub==='alive'?'':' down');
+    document.getElementById('sPortal').textContent=d.portal==='alive'?'alive':'down';
+    document.getElementById('sPortalSub').textContent=d.portal==='alive'?'portal.service :9610':'check logs';
+    document.getElementById('sPortalSub').className='sub'+(d.portal==='alive'?'':' down');
+  }catch(e){}
+}
+
+async function loadRegistry(){
+  try{
+    const r=await fetch(API+REGISTRY);
+    const d=await r.json();
+    const oid=d.enterprise_oid&&d.enterprise_oid['1.3.6.1.4.1.61026'];
+    if(!oid) return;
+    const children=oid.children||{};
+    const branchCount=Object.keys(children).length;
+    let leafCount=0;
+    const grid=document.getElementById('oidGrid');
+    grid.innerHTML='';
+    Object.keys(children).sort((a,b)=>+a-+b).forEach(num=>{
+      const c=children[num];
+      const items=c.items||[];
+      leafCount+=items.length;
+      const node=document.createElement('div');
+      node.className='oid-node';
+      node.innerHTML='<div class="num">61026.'+num+'</div><div class="name">'+esc(c.name)+'</div>'+
+        '<div class="items">'+items.map(i=>'<span>'+esc(i)+'</span>').join('')+'</div>';
+      grid.appendChild(node);
+    });
+    document.getElementById('sBranches').textContent=branchCount;
+    document.getElementById('sLeaves').textContent=leafCount;
+    // local services list
+    const services=d.local_services||[];
+    const tbody=document.querySelector('#svcTable tbody');
+    tbody.innerHTML='';
+    services.forEach(s=>{
+      const st=s.status==='local'?'up':(s.status==='verified'?'up':'warn');
+      const tr=document.createElement('tr');
+      tr.innerHTML='<td><strong>'+esc(s.name)+'</strong></td>'+
+        '<td><span class="badge '+st+'">'+esc(s.status||'?')+'</span></td>'+
+        '<td><span class="mono" style="color:var(--slate);font-size:12px">'+esc(s.note||'')+'</span></td>';
+      tbody.appendChild(tr);
+    });
+  }catch(e){console.warn(e);}
+}
+
+async function loadCatalog(){
+  try{
+    const r=await fetch(API+CATALOG);
+    const d=await r.json();
+    let n=d.count||0;
+    if(d.products&&typeof d.products==='object'){
+      n=Object.values(d.products).reduce((a,b)=>a+(typeof b==='number'?b:(Array.isArray(b)?b.length:0)),0);
+    }
+    document.getElementById('sProducts').textContent=n;
+  }catch(e){}
+}
+
+async function loadProfileCount(){
+  try{
+    const r=await fetch(API+'/api/profile/find?q='+encodeURIComponent('a')+'&field=name');
+    const d=await r.json();
+    document.getElementById('sProfiles').textContent=(d.profiles&&d.profiles.length)||0;
+  }catch(e){
+    // fallback: read profiles.json directly via portal ? not exposed. show dash.
+    document.getElementById('sProfiles').textContent='—';
+  }
+}
+
+let seenTs=new Set();
+async function loadEvents(){
+  try{
+    const r=await fetch(API+EVENTS+'?limit=30');
+    const d=await r.json();
+    if(!d.ok||!d.events||d.events.length===0){
+      document.getElementById('actList').innerHTML='<div style="color:#9fb0cc;padding:14px">No recent events.</div>';
+      return;
+    }
+    // count events in last hour
+    const now=Date.now();
+    const lastHour=d.events.filter(e=>e.ts&&(now-Date.parse(e.ts))<3600000).length;
+    document.getElementById('sEvents').textContent=lastHour;
+    const fresh=d.events.filter(e=>{
+      const k=(e.ts||'')+'|'+(e.type||e.topic||'')+'|'+JSON.stringify(e).length;
+      if(seenTs.has(k))return false;
+      seenTs.add(k);
+      return true;
+    });
+    if(fresh.length===0) return;
+    const rows=fresh.reverse().map(e=>{
+      const ts=(e.ts||'').substring(11,19);
+      const type=e.type||e.topic||'event';
+      const src=e.source||e.event?.source||'hub';
+      const payload=JSON.stringify({topic:e.topic,kind:e.kind,profile_id:e.profile_id}).substring(0,90);
+      return '<div class="act-row">'+
+        '<span class="act-time">'+ts+'</span>'+
+        '<span class="act-type">'+esc(type)+'</span>'+
+        '<span class="act-payload">'+esc(payload)+'</span>'+
+        '<span class="act-source">'+esc(src)+'</span>'+
+      '</div>';
+    });
+    const list=document.getElementById('actList');
+    list.insertAdjacentHTML('afterbegin',rows.join(''));
+    while(list.children.length>40)list.removeChild(list.lastChild);
+  }catch(e){
+    document.getElementById('actList').innerHTML='<div style="color:#9fb0cc;padding:14px">Hub unreachable.</div>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadHealth();loadRegistry();loadCatalog();loadProfileCount();loadEvents();
+  setInterval(loadHealth,15000);
+  setInterval(loadEvents,4000);
+});
+</script>
+</body>
+</html>

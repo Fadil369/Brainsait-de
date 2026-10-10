@@ -1,0 +1,13 @@
+# Local editing / tool artifacts — never part of the published site
+*.bak
+*.bak-*
+index.html.bak*
+.superdesign/
+.DS_Store
+Thumbs.db
+
+# Secrets must never enter this repository
+.env
+.env.*
+*.pem
+*.key

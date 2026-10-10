@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BPR designs · v1 vs v2 | BrainSAIT</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/brainsait-logo.png">
+<link rel="stylesheet" href="/assets/incubation-public.css">
+<link rel="stylesheet" href="/assets/designs.css">
+</head>
+<body class="ds-compare">
+<div class="ds-viewer-bar">
+  <a class="btn" href="../">&larr; Back to gallery</a>
+  <span class="ds-title" id="title">&nbsp;</span>
+  <span class="spacer"></span>
+  <span class="ds-label" id="legend">v1 left · v2 right</span>
+</div>
+<div class="ds-compare-grid">
+  <figure>
+    <figcaption id="cap-left">v1</figcaption>
+    <iframe id="left" title="v1 screen"></iframe>
+  </figure>
+  <figure>
+    <figcaption id="cap-right">v2</figcaption>
+    <iframe id="right" title="v2 screen"></iframe>
+  </figure>
+</div>
+
+<script src="/assets/designs-manifest.js"></script>
+<script>
+(function () {
+  var D = window.BPR_DESIGNS, pairs = D.pairs;
+  var qs = new URLSearchParams(location.search);
+  var n = parseInt(qs.get('p'), 10);
+  // strict allowlist: only a real pair index can load
+  var p = pairs.find(function (x) { return x.n === n; });
+  if (!p) {
+    document.body.innerHTML = '<div class="ds-viewer-bar"><a class="btn" href="../">&larr; Back to gallery</a>' +
+      '<span class="ds-title">Pair not found</span></div>' +
+      '<p style="padding:24px;color:var(--muted)">That comparison is not part of this design delivery. ' +
+      '<a href="../">Return to the gallery</a>.</p>';
+    return;
+  }
+  document.getElementById('left').src = 'v1/' + p.v1;
+  document.getElementById('right').src = 'v2/' + p.v2;
+  document.getElementById('cap-left').textContent = 'v1 · ' + p.v1title;
+  document.getElementById('cap-right').textContent = 'v2 · ' + p.v2title;
+  document.getElementById('title').textContent = p.v1title;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+window.brainsaitTranslations = [
+['Main hub','الرئيسية'],['Tools','الأدوات'],['Provider identity','الهوية المهنية'],['Dr. Fadil','د. فاضل'],
+['BrainSAIT framework for evidence-backed economic value','إطار BrainSAIT لقياس القيمة الاقتصادية المدعومة بالأدلة'],
+['BrainSAIT — From healthcare intelligence to provable economic value','BrainSAIT — من الذكاء الصحي إلى قيمة اقتصادية قابلة للإثبات'],
+['Every financial return begins with an operational improvement. Every improvement deserves documented measurement. Here, the investment thesis meets the evidence chain so the next step becomes a reviewable decision.','كل عائد مالي يبدأ بتحسين تشغيلي. وكل تحسين يستحق قياسًا موثّقًا. هنا تلتقي الفكرة الاستثمارية بسلسلة الأدلة، لتصبح الخطوة التالية قرارًا يمكن مراجعته.'],
+['For Saudi healthcare institutions · Three-year financial horizon · Currency: SAR','للمنشآت الصحية السعودية · أفق مالي لثلاث سنوات · العملة: الريال السعودي'],
+['Explore the financial scenario','استكشف السيناريو المالي'],['90-day evidence roadmap','خارطة طريق 90 يومًا'],['↓ Complete Arabic source text','↓ النص المرجعي الكامل'],['Print report','طباعة التقرير'],
+['From source to return: keep every link in the chain.','من المصدر إلى العائد: لا تختصر أي حلقة.'],['Documented source','مصدر موثّق'],['Verified data','بيانات متحققة'],['AI proposal','اقتراح آلي'],['Authorized decision','قرار مخوّل'],['Operational outcome','نتيجة تشغيلية'],['Approved financial impact','أثر مالي معتمد'],
+['Review the numbers. Test the assumptions.','الأرقام تُراجع. والافتراضات تُختبر.'],
+['Cash flows in SAR millions. Initial cost at time zero; annual flows at each year end. Changing inputs recalculates the scenario; it does not prove investment value.','التدفقات بالمليون ريال. تكلفة البداية عند الزمن صفر، والتدفقات السنوية في نهاية كل سنة. تغيير المدخلات يعيد الحساب؛ لا يثبت جدوى الاستثمار.'],
+['Discount rate:','معدل الخصم:'],['Initial cost · SAR million','تكلفة البداية · مليون ريال'],['Year','السنة'],['Assumed benefits','الفوائد المفترضة'],['Assumed costs','التكاليف المفترضة'],['Year 1','السنة 1'],['Year 2','السنة 2'],['Year 3','السنة 3'],['Benefits','الفوائد'],['Costs','التكاليف'],['↶ Reference values','↶ القيم المرجعية'],['↓ Download scenario JSON','↓ تنزيل السيناريو JSON'],
+['Hypothetical arithmetic return · ROI','العائد الحسابي الافتراضي ROI'],['Present value of benefits · SAR million','القيمة الحالية للفوائد · مليون ريال'],['Present value of costs · SAR million','القيمة الحالية للتكاليف · مليون ريال'],['Net present value · SAR million','صافي القيمة الحالية · مليون ريال'],['Undiscounted net cash flow · SAR million','صافي التدفق غير المخصوم · مليون ريال'],
+['Not empirically validated. This scenario is not an approved or risk-adjusted return and does not establish payback. The reference table below remains fixed for comparison.','سيناريو غير مثبت تجريبيًا. ليس عائدًا معتمدًا أو معدّلًا حسب المخاطر، ولا يثبت فترة الاسترداد. الجدول المرجعي أدناه يبقى ثابتًا للمقارنة.'],
+['Reading guide · 13 topics','دليل القراءة · 13 محورًا'],['BrainSAIT · Independent planning and analysis framework ·','BrainSAIT · إطار تخطيط وتحليل مستقل ·'],['Return to the ecosystem','العودة إلى المنظومة']
+];

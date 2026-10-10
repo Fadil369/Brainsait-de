@@ -1,0 +1,211 @@
+/* BPR Platform — UI designs gallery. Reuses incubation-public.css tokens. */
+
+.ds-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.ds-head h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.ds-lede {
+  max-width: 62ch;
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+
+.ds-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 18px;
+}
+.ds-toolbar .spacer { flex: 1 1 auto; }
+.ds-filter {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 150px;
+}
+.ds-filter:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+.ds-note {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  background: #fffdf7;
+  color: var(--ink);
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin: 0 0 22px;
+}
+.ds-note strong { color: var(--teal); }
+
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.ds-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.ds-card:hover,
+.ds-card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(20, 45, 41, .10);
+  border-color: var(--teal);
+}
+.ds-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 1440 / 900;
+  background: linear-gradient(180deg, #f6f8f5 0%, #eef3ef 100%);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+.ds-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+.ds-thumb .ds-badge {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  left: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--ink);
+}
+.ds-card[data-ver="v2"] .ds-thumb .ds-badge { background: var(--teal); }
+.ds-thumb { text-decoration: none; }
+.ds-thumb .ds-open-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  background: linear-gradient(180deg, rgba(20,45,41,0) 55%, rgba(20,45,41,.55) 100%);
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.ds-thumb:hover .ds-open-hint,
+.ds-thumb:focus-visible .ds-open-hint { opacity: 1; }
+.ds-thumb:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; }
+
+.ds-meta { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.ds-ver {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.ds-name { font-weight: 700; color: var(--ink); font-size: 16px; }
+.ds-desc { color: var(--muted); font-size: 13.5px; line-height: 1.45; }
+.ds-links { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; padding-top: 10px; }
+.ds-links a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teal);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.ds-links a:hover { border-bottom-color: currentColor; }
+
+.ds-empty {
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  padding: 28px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.ds-foot {
+  margin-top: 30px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Full-screen screen viewer */
+body.ds-viewer { background: var(--paper); }
+.ds-viewer-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(246, 248, 245, .92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+}
+.ds-viewer-bar .ds-title { font-weight: 700; color: var(--ink); }
+.ds-viewer-bar .spacer { flex: 1 1 auto; }
+.ds-viewer-frame { display: block; width: 100%; height: calc(100vh - 49px); border: 0; background: #fff; }
+
+/* Side-by-side comparison */
+body.ds-compare .ds-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px;
+  height: calc(100vh - 49px);
+}
+body.ds-compare .ds-compare-grid figure { margin: 0; display: flex; flex-direction: column; min-width: 0; }
+body.ds-compare figcaption {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 0 0 8px;
+  letter-spacing: .03em;
+}
+body.ds-compare iframe { flex: 1; width: 100%; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+@media (max-width: 900px) {
+  body.ds-compare .ds-compare-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-card { transition: none; }
+  .ds-card:hover, .ds-card:focus-within { transform: none; }
+}

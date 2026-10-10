@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>API Revision Notebook: The BrainSAIT Reference · BrainSAIT Knowledge Capsules</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0b1f3a;--gold:#c9a227;--gold2:#e3c565;--cream:#f7f2e7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;background:var(--cream);color:#1c2536;line-height:1.8;padding:60px 20px}
+.wrap{max-width:820px;margin:0 auto;background:#fff;padding:60px 70px;box-shadow:0 14px 40px rgba(11,31,58,.08)}
+h1{font-family:'Playfair Display',serif;color:var(--navy);font-size:38px;border-bottom:3px solid var(--gold);padding-bottom:14px;margin-bottom:24px}
+h2{font-family:'Playfair Display',serif;color:var(--navy);font-size:24px;margin:36px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--gold)}
+h3{color:var(--navy);font-size:18px;margin:24px 0 8px}
+p{margin:12px 0;font-size:16px}
+ul{margin:10px 0 10px 24px}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+th{background:var(--navy);color:var(--cream);text-align:left;padding:10px 14px;font-weight:500}
+td{padding:10px 14px;border-bottom:1px solid #eee5cf}
+tr:nth-child(even) td{background:#fbf8f0}
+code{background:#f1ecdd;color:var(--navy);padding:2px 7px;border-radius:4px;font-size:14px}
+hr{border:none;border-top:1px solid #e4dcc6;margin:24px 0}
+footer{text-align:center;font-size:13px;color:#6b7386;margin-top:40px;padding-top:24px;border-top:1px solid #e4dcc6}
+footer a{color:var(--navy)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>API Revision Notebook: The BrainSAIT Reference</h1>
+<h2>API Revision Notebook: The BrainSAIT Reference</h2>
+<p>
+<b>Edition:</b> v1.0 · 21 July 2026
+<br>
+<b>Author:</b> Dr. Mohamed El Fadil Abuagla — Founder &amp; CEO, BrainSAIT LTD
+<br>
+<b>Enterprise OID:</b> 1.3.6.1.4.1.61026
+<br>
+<b>License:</b> CC BY-NC-SA 4.0
+<br>
+<b>Classification:</b> Premium Strategic Asset — Marketplace Listing
+</p>
+<hr/>
+<h3>ملخص تنفيذي</h3>
+<p>
+دفتر مراجعة API هو المرجع التشغيلي اليومي لجميع واجهات برمجة التطبيقات في منظومة برين سايت. يحتوي على أنماط التصميم، معايير الأمان، وأمثلة النشر.
+</p>
+<hr/>
+<h3>Executive Summary</h3>
+<p>
+The API revision notebook is the daily operational reference for every API in the BrainSAIT ecosystem. It documents design patterns, security standards, and deployment examples.
+</p>
+<hr/>
+<h3>API Surface Map</h3>
+<table><tr><th>Surface</th><th>Port</th><th>Purpose</th></tr>
+<tr><td>Hub</td><td>9200</td><td>Event bus, orchestration</td></tr>
+<tr><td>API</td><td>9300</td><td>Public REST API</td></tr>
+<tr><td>Dashboard</td><td>9400</td><td>Admin UI JSON</td></tr>
+<tr><td>Store</td><td>9500</td><td>Marketplace JSON</td></tr>
+<tr><td>Profile</td><td>9600</td><td>Identity / SSO</td></tr>
+<tr><td>Portal</td><td>9610</td><td>Customer portal</td></tr>
+<tr><td>Notebooks</td><td>9700</td><td>Knowledge capsules</td></tr>
+</table>
+<p>
+All services bind to <code>127.0.0.1</code>; nginx terminates public HTTPS and proxies upstream.
+</p>
+<h3>Design Standards</h3>
+<h4>Versioning</h4>
+<p>
+Every endpoint carries a major version in the path: <code>/api/v1/...</code>. Breaking changes get a new major; additive changes are minor and don't change the path.
+</p>
+<h4>Authentication</h4>
+<ul>
+<li><b>HMAC</b> for webhooks (no replay, shared secret).</li>
+<li><b>Bearer token</b> for user-facing endpoints.</li>
+<li><b>API key + signature</b> for partner integrations.</li>
+</ul>
+<p>
+The hub's <code>POST /purchase</code> requires a valid key (else 401). The Telegram webhook requires HMAC (else 403). Both proven live in <code>scripts/audit.py</code>.
+</p>
+<h4>Idempotency</h4>
+<p>
+Every mutating endpoint accepts an <code>Idempotency-Key</code> header. Same key + same payload = same response, even on retry.
+</p>
+<h4>Rate Limiting</h4>
+<p>
+Per-key buckets. Default: 1000 req/hour for partners, 100 req/minute for unauthenticated probes.
+</p>
+<h4>Response Shape</h4>
+<p>
+<code>`</code>json
+<br>
+{
+<br>
+  "ok": true,
+<br>
+  "data": { ... },
+<br>
+  "meta": { "request_id": "...", "ts": "..." }
+<br>
+}
+<br>
+<code>`</code>
+</p>
+<p>
+Errors:
+</p>
+<p>
+<code>`</code>json
+<br>
+{
+<br>
+  "ok": false,
+<br>
+  "error": { "code": "...", "message": "..." }
+<br>
+}
+<br>
+<code>`</code>
+</p>
+<p>
+Never stack-trace in production responses.
+</p>
+<h3>Security Standards</h3>
+<ul>
+<li><b>TLS only.</b> No plaintext HTTP for any public endpoint.</li>
+<li><b>Loopback binding.</b> Money-path services bind <code>127.0.0.1</code>; nginx fronts them.</li>
+<li><b>HMAC verification on webhooks.</b> Reject unsigned, reject replayed.</li>
+<li><b>Input validation at the edge.</b> No trusting user input into internal services.</li>
+<li><b>Secrets in 600-mode files.</b> Never world-readable, never committed.</li>
+<li><b>Audit logging on every mutating endpoint.</b> Reconstructable trail.</li>
+<li><b>No PII in logs.</b> Redact; pseudonymize; hash where needed.</li>
+</ul>
+<h3>FHIR R4 Compliance</h3>
+<p>
+Clinical APIs expose FHIR R4 resources. Each resource carries:
+</p>
+<ul>
+<li>Saudi extension URLs in <code>meta.profile</code>.</li>
+<li>Validated against a frozen test suite before each release.</li>
+<li>Versioned with a <code>meta.versionId</code> per resource.</li>
+</ul>
+<p>
+Bulk export is implemented per the FHIR bulk-data spec.
+</p>
+<h3>NPHIES Integration</h3>
+<p>
+Claim submission follows the CHI NPHIES profile. The integration pattern:
+</p>
+<p>
+<code>`</code>
+<br>
+   EHR  →  ClaimLinc (BrainSAIT)  →  NPHIES Gateway  →  Payer
+<br>
+              ↑
+<br>
+         Validation suite (CI)
+<br>
+<code>`</code>
+</p>
+<p>
+ClaimLinc rejects claims with known-deny patterns before submission; the rejection is logged with reason code and recommended correction.
+</p>
+<h3>Deployment Pattern</h3>
+<p>
+Every service follows:
+</p>
+<ul>
+<li><b>Build</b> → Docker image tagged with semver.</li>
+<li><b>Test</b> → live boot against <code>/health</code> and one real endpoint.</li>
+<li><b>Audit</b> → <code>scripts/audit.py</code> exits 0.</li>
+<li><b>Deploy</b> → systemd <code>--user</code> unit with <code>Restart=always</code>.</li>
+<li><b>Verify</b> → curl from outside nginx, not from inside the service.</li>
+</ul>
+<p>
+Step 5 is non-negotiable. A healthy <code>/health</code> from the service does not prove public reachability.
+</p>
+<h3>Observability</h3>
+<ul>
+<li>Structured logs to JSON.</li>
+<li>Metrics endpoint on <code>/metrics</code> (Prometheus format).</li>
+<li>Traces via OpenTelemetry when present.</li>
+<li>Auto-heal script runs every 5 minutes; on detection of a service down, it restarts the systemd unit and re-verifies.</li>
+</ul>
+<h3>Error Handling</h3>
+<ul>
+<li>4xx for caller errors. Include <code>code</code> and <code>message</code>.</li>
+<li>5xx for internal errors. Include <code>request_id</code>; never include stack traces.</li>
+<li>All 5xx trigger an alert via the auto-heal script.</li>
+</ul>
+<h3>Backwards Compatibility</h3>
+<ul>
+<li>Major version bump requires a 6-month deprecation window for the previous version.</li>
+<li>Sunset endpoints respond with <code>410 Gone</code> after the window.</li>
+<li>A <code>Sunset</code> HTTP header announces the date.</li>
+</ul>
+<hr/>
+<h3>Live Status (2026-07-21)</h3>
+<p>
+Verified by <code>scripts/audit.py</code>:
+</p>
+<p>
+<code>`</code>
+<br>
+hub (9200): POST /purchase → 401 without key, 200 with key ✓
+<br>
+api (9300): GET / → 200 ✓
+<br>
+dashboard (9400): GET / → 200 ✓
+<br>
+store (9400 / JSON): GET /api/catalog → 200, all products Article-12 compliant ✓
+<br>
+profile (9600): GET /health → 200 ✓
+<br>
+portal (9610): GET /portal → 200, GET /api/profile → 401 ✓
+<br>
+notebooks (9700): GET /health → 200 ✓
+<br>
+<code>`</code>
+</p>
+<p>
+Public via nginx + Cloudflare:
+</p>
+<p>
+<code>`</code>
+<br>
+brainsait.de         → 200
+<br>
+market.brainsait.de  → 200 (with JSON-LD + ecosystem nav)
+<br>
+notebooks.brainsait.de → 200
+<br>
+brainsait.de/governance/ → 200
+<br>
+<code>`</code>
+</p>
+<hr/>
+<h3>Appendix: The Auditor</h3>
+<p>
+The operational definition of "this API is healthy" is the auditor. Run it before every deploy; run it after every deploy; run it on a daily cron. The auditor's exit code is binding.
+</p>
+<p>
+<code>`</code>bash
+<br>
+python3 ~/.hermes/brainsait/scripts/audit.py
+<br>
+echo "exit=$?"  # 0 = compliant, 1 = blocking failure
+<br>
+<code>`</code>
+</p>
+<hr/>
+<p>
+© 2024–2026 BRAINSAIT LTD · Dr. Mohamed Elfadil Abuagla · CC BY-NC-SA 4.0
+<br>
+Enterprise OID: <a href="https://www.iana.org/assignments/enterprise-numbers/?q=61026">1.3.6.1.4.1.61026 (IANA)</a>
+</p>
+<footer>
+  © 2024–2026 BRAINSAIT LTD — Dr. Mohamed Elfadil Abuagla · CC BY-NC-SA 4.0 — © 2024 BRAINSAIT LTD, Dr. Mohamed Elfadil Abuagla<br>
+  Enterprise OID: <a href="https://www.iana.org/assignments/enterprise-numbers/?q=61026">1.3.6.1.4.1.61026</a>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# BrainSAIT — keep search engines on the evidence path
+User-agent: *
+Allow: /
+Allow: /academy/
+Allow: /bpr/
+Allow: /bpr/designs/
+Allow: /credentials/
+Allow: /dashboard/
+Allow: /dev-onboard/
+Allow: /developers/
+Allow: /governance/
+Allow: /assets/
+Disallow: /api/
+Disallow: /portal/
+Disallow: /session/
+Disallow: /orders/
+Disallow: /events
+Disallow: /credentials/*.bak
+Disallow: /*.bak
+
+Sitemap: https://brainsait.de/sitemap.xml
+Sitemap: https://academy.brainsait.de/sitemap.xml
+
+# Crawl-delay for budget-conscious bots
+Crawl-delay: 1

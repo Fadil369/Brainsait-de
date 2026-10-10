@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BPR design screen | BrainSAIT</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/brainsait-logo.png">
+<link rel="stylesheet" href="/assets/incubation-public.css">
+<link rel="stylesheet" href="/assets/designs.css">
+</head>
+<body class="ds-viewer">
+<div class="ds-viewer-bar">
+  <a class="btn" href="../">&larr; Back to gallery</a>
+  <span class="ds-title" id="title">&nbsp;</span>
+  <span class="spacer"></span>
+  <a class="btn" id="dl" href="#" download>Download</a>
+  <a class="btn" id="tab" href="#" target="_blank" rel="noopener">Open directly</a>
+</div>
+<iframe class="ds-viewer-frame" id="frame" title="Design screen"></iframe>
+
+<script src="/assets/designs-manifest.js"></script>
+<script>
+(function () {
+  var D = window.BPR_DESIGNS, screens = D.screens, pairs = D.pairs;
+  var qs = new URLSearchParams(location.search);
+  var v = qs.get('v') === 'v1' ? 'v1' : 'v2';
+  var f = qs.get('f') || '';
+  // strict allowlist: only a known screen from the manifest can ever be loaded
+  var hit = screens.find(function (s) { return s.ver === v && s.file === f; });
+  var frame = document.getElementById('frame'), title = document.getElementById('title');
+  if (!hit) {
+    document.body.innerHTML = '<div class="ds-viewer-bar"><a class="btn" href="../">&larr; Back to gallery</a>' +
+      '<span class="ds-title">Screen not found</span></div>' +
+      '<p style="padding:24px;color:var(--muted)">That screen is not part of this design delivery. ' +
+      '<a href="../">Return to the gallery</a>.</p>';
+    return;
+  }
+  var src = v + '/' + hit.file;
+  frame.src = src;
+  title.textContent = hit.ver + ' · ' + hit.title;
+  document.getElementById('dl').href = src;
+  document.getElementById('tab').href = src;
+  var cmp = document.getElementById('cmp');
+  if (cmp) cmp.href = 'compare.html?p=' + hit.i;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Solo AI Business Blueprint: Physician-Led Enterprise from Scratch · BrainSAIT Knowledge Capsules</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0b1f3a;--gold:#c9a227;--gold2:#e3c565;--cream:#f7f2e7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;background:var(--cream);color:#1c2536;line-height:1.8;padding:60px 20px}
+.wrap{max-width:820px;margin:0 auto;background:#fff;padding:60px 70px;box-shadow:0 14px 40px rgba(11,31,58,.08)}
+h1{font-family:'Playfair Display',serif;color:var(--navy);font-size:38px;border-bottom:3px solid var(--gold);padding-bottom:14px;margin-bottom:24px}
+h2{font-family:'Playfair Display',serif;color:var(--navy);font-size:24px;margin:36px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--gold)}
+h3{color:var(--navy);font-size:18px;margin:24px 0 8px}
+p{margin:12px 0;font-size:16px}
+ul{margin:10px 0 10px 24px}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+th{background:var(--navy);color:var(--cream);text-align:left;padding:10px 14px;font-weight:500}
+td{padding:10px 14px;border-bottom:1px solid #eee5cf}
+tr:nth-child(even) td{background:#fbf8f0}
+code{background:#f1ecdd;color:var(--navy);padding:2px 7px;border-radius:4px;font-size:14px}
+hr{border:none;border-top:1px solid #e4dcc6;margin:24px 0}
+footer{text-align:center;font-size:13px;color:#6b7386;margin-top:40px;padding-top:24px;border-top:1px solid #e4dcc6}
+footer a{color:var(--navy)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Solo AI Business Blueprint: Physician-Led Enterprise from Scratch</h1>
+<h2>Solo AI Business Blueprint: Physician-Led Enterprise from Scratch</h2>
+<p>
+<b>Edition:</b> v1.0 · 21 July 2026
+<br>
+<b>Author:</b> Dr. Mohamed El Fadil Abuagla — Founder &amp; CEO, BrainSAIT LTD
+<br>
+<b>Enterprise OID:</b> 1.3.6.1.4.1.61026
+<br>
+<b>License:</b> CC BY-NC-SA 4.0
+<br>
+<b>Classification:</b> Premium Strategic Asset — Marketplace Listing
+</p>
+<hr/>
+<h3>ملخص تنفيذي</h3>
+<p>
+الطريق لإنشاء مؤسسة ذكاء اصطناعي يقودها طبيب ليس نسخة من مسار الشركات الناشئة التقليدية. هذه الوثيقة توضح المنهجية الكاملة في عشر خطوات، من تسجيل OID المؤسسي إلى إطلاق أول منتج في السوق.
+</p>
+<hr/>
+<h3>Executive Summary</h3>
+<p>
+The path to launching a physician-led AI enterprise is not the standard SaaS-founder playbook. This blueprint condenses the methodology into ten steps, from registering the Enterprise OID to launching the first marketplace product.
+</p>
+<p>
+The thesis: <b>physicians have a structural advantage in healthcare AI that no engineer can replicate</b> — clinical credibility, patient trust, and regulatory literacy. The challenge is converting that advantage into a scalable enterprise without losing the clinical core.
+</p>
+<hr/>
+<h3>1. The Foundation: Identity First</h3>
+<p>
+Before code, before capital — establish identity.
+</p>
+<ul>
+<li>Register an <b>IANA Private Enterprise Number</b> (PEN). Free, public, globally unique. BrainSAIT's PEN is <code>61026</code>, OID <code>1.3.6.1.4.1.61026</code>.</li>
+<li>Mirror the OID at the <b>Orange OID Repository</b> for public verifiability.</li>
+<li>Document the OID in every artifact: README, footer of every page, license file.</li>
+</ul>
+<p>
+Why: investors, regulators, and partners can verify your existence without trusting your marketing. OID becomes the cryptographic anchor of your enterprise.
+</p>
+<h3>2. The Doctrine: One Directive Document</h3>
+<p>
+Every enterprise has implicit doctrine — usually scattered across Notion docs, Slack threads, and Zoom calls. Codify it.
+</p>
+<p>
+The single-source-of-truth document should:
+</p>
+<ul>
+<li>Establish authority, scope, and supersession rules.</li>
+<li>List every business unit (domains) with explicit mandates.</li>
+<li>Define the agents, products, and platforms in scope.</li>
+<li>Carry <b>enforcement teeth</b> — what is forbidden, what is required, what is forbidden to ship unregistered.</li>
+</ul>
+<p>
+BrainSAIT's directive (BSD-2026-07) is the reference. Its most-cited article is <b>Article 12</b>: every product carries <code>product_id</code>, OID, version, changelog, license, AI metadata. A product missing any field is pre-release by definition.
+</p>
+<h3>3. The Stack: Choose Boring Infrastructure</h3>
+<p>
+Cloudflare for DNS + Workers + Pages. Docker for containerization. Kubernetes-ready architecture but not Kubernetes itself (until you have a reason). PostgreSQL, Redis, object storage. MCP (Model Context Protocol) for agent interop.
+</p>
+<p>
+The rule: every component must be replaceable. No vendor should be load-bearing.
+</p>
+<h3>4. The Agents: Adopt Agent-First from Day One</h3>
+<p>
+Where a workflow can be done by a governed AI agent, it must be. Manual execution is technical debt from the moment it's deployed.
+</p>
+<p>
+Start with three agents:
+</p>
+<ul>
+<li><b>MASTERLINC</b> — orchestration and command.</li>
+<li><b>DocLinc</b> — document generation, summarization, transformation.</li>
+<li><b>BridgeLinc</b> — integration glue between systems.</li>
+</ul>
+<p>
+Add domain-specific agents as the product surface grows. Each agent gets:
+</p>
+<ul>
+<li>A name (in the LINC family).</li>
+<li>A registered OID arc (e.g. <code>1.3.6.1.4.1.61026.8.1</code> for MASTERLINC).</li>
+<li>An AI Metadata record (model, version, validation set, override path).</li>
+<li>A skill spec document.</li>
+</ul>
+<h3>5. The Products: One Catalog, One Identity</h3>
+<p>
+Build one canonical product catalog — a JSON file is fine, a database is fine, what matters is <b>single source of truth</b>.
+</p>
+<p>
+Every product entry carries the Article-12 fields. Every product links to its registry node. Every product has a marketplace listing.
+</p>
+<p>
+BrainSAIT's catalog started with five products and grew to fifty-five in eight months. The catalog is the enterprise.
+</p>
+<h3>6. The Marketplace: Distribution Is Strategy</h3>
+<p>
+The marketplace is not a side feature — it is the primary distribution surface. Unlisted distribution is deprecated by directive.
+</p>
+<p>
+Categorize ruthlessly: Software, Digital Products, APIs, Services. Within each category, sub-categories. Within sub-categories, the actual products.
+</p>
+<p>
+SEO + AEO matters: every product listing carries schema.org structured data with the enterprise OID as the brand identifier. AI search engines can then cite your products by identity, not by guesswork.
+</p>
+<h3>7. The Pricing: Saudi-Realistic, Globally Defensible</h3>
+<p>
+Price in SAR (the home market) and USD (everyone else). Saudi buyers expect price realism, not aspirational sticker prices.
+</p>
+<p>
+BrainSAIT's pricing: 49–499 SAR per digital product, 1500+ SAR for services. Premium enough to signal quality; accessible enough that a single hospital department can buy without a procurement battle.
+</p>
+<h3>8. The Network: Multi-Domain, One Identity</h3>
+<p>
+You need more than one domain. BrainSAIT operates:
+</p>
+<ul>
+<li><code>brainsait.de</code> — flagship corporate identity.</li>
+<li><code>brainsait.cloud</code> — cloud/API surface.</li>
+<li><code>brainsait.de</code> — European presence.</li>
+<li><code>elfadil.com</code> — founder platform.</li>
+<li><code>vip.elfadil.com</code> — premium experience.</li>
+<li><code>momfood.de</code> — adjacent business.</li>
+</ul>
+<p>
+Each domain has a business-unit mandate. Each carries the enterprise identity via OID footer. Each is reachable from a unified navigation bar that knows which domain is current.
+</p>
+<h3>9. The Compliance: Saudi-First, Then Global</h3>
+<p>
+Build for Saudi first. NPHIES, PDPL, FHIR R4, SFDA, CHI. If you clear those bars, the rest of the world is straightforward.
+</p>
+<p>
+BrainSAIT's compliance posture is documented per product. Every agent lists its validation set. Every product lists its license. The auditor (<code>scripts/audit.py</code>) verifies compliance on demand and exits non-zero on failure.
+</p>
+<h3>10. The Exit: The Enterprise Outlives the Founder</h3>
+<p>
+The final step is the most counter-intuitive: <b>build the enterprise to outlive you.</b>
+</p>
+<p>
+The OID outlives you. The directive outlives you. The catalog outlives you. The agent specs outlive you. The auditor outlives you.
+</p>
+<p>
+If the enterprise can run without the founder in the room — meaning, if the directive governs, the agents execute, the products register, and the auditor verifies, all without a daily intervention — then it is a real enterprise. If it can't, it is a job.
+</p>
+<hr/>
+<h3>Conclusion</h3>
+<p>
+A physician-led AI enterprise is not a faster horse. It is a different animal entirely. The methodology is replicable, the playbook is documented, and the only scarce input is the disciplined execution of it.
+</p>
+<p>
+This blueprint is registered under BrainSAIT enterprise OID. Every enterprise that derives from it must register itself under a similar OID and carry Article-12 metadata. Otherwise, the blueprint is a story, not a methodology.
+</p>
+<p>
+© 2024–2026 BRAINSAIT LTD · Dr. Mohamed Elfadil Abuagla · CC BY-NC-SA 4.0
+<br>
+Enterprise OID: <a href="https://www.iana.org/assignments/enterprise-numbers/?q=61026">1.3.6.1.4.1.61026 (IANA)</a>
+</p>
+<footer>
+  © 2024–2026 BRAINSAIT LTD — Dr. Mohamed Elfadil Abuagla · CC BY-NC-SA 4.0 — © 2024 BRAINSAIT LTD, Dr. Mohamed Elfadil Abuagla<br>
+  Enterprise OID: <a href="https://www.iana.org/assignments/enterprise-numbers/?q=61026">1.3.6.1.4.1.61026</a>
+</footer>
+</div>
+</body>
+</html>

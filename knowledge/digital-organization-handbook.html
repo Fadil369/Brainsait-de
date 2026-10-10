@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Digital Organization Handbook</title><style>body{font-family:Georgia,serif;max-width:740px;margin:5% auto;padding:0 24px;line-height:1.7;color:#1c2536}h1{color:#0b1f3a;border-bottom:2px solid #c9a227}h2{color:#122a4d;border-bottom:1px solid #e4dcc6}h2{border-bottom:1px solid #e4dcc6}a{color:#0b1f3a}code{background:#f1ecdd;padding:2px 6px;border-radius:4px}</style></head>
+<body><div style="text-align:center;margin-bottom:40px">
+  <small style="color:#c9a227;letter-spacing:.14em">BRAINSAIT KNOWLEDGE PRODUCT · CC BY-NC-SA 4.0 · OID 1.3.6.1.4.1.61026</small>
+</div><h1>Digital Organization Handbook: Operating an AI-Native Enterprise</h1>
+<p><b>Edition:</b> v1.0 · 21 July 2026</p>
+<p><b>Author:</b> Dr. Mohamed El Fadil Abuagla — Founder &amp; CEO, BrainSAIT LTD</p>
+<p><b>Enterprise OID:</b> 1.3.6.1.4.1.61026</p>
+<p><b>License:</b> CC BY-NC-SA 4.0</p>
+<p><b>Classification:</b> Premium Strategic Asset — Marketplace Listing</p>
+<hr/>
+<h2>ملخص تنفيذي</h2>
+<p>المؤسسة الرقمية ليست شركة تعمل عن بُعد. هي مؤسسة تعمل بهوية مؤسسية واحدة، سجل منتجات موحد، وكل وكيل ذكاء اصطناعي مسجل ومُختبَر. هذا الدليل يوضح المنهج التشغيلي اليومي.</p>
+<hr/>
+<h2>Executive Summary</h2>
+<p>A digital organization is not a remote-work company. It is an enterprise that operates under one identity, one product registry, and every AI agent registered and tested. This handbook codifies the daily operating methodology.</p>
+<hr/>
+<h2>The Operating Loop</h2>
+<p>Every morning, four rituals:</p>
+<ul>
+<li><b>Audit</b> — <code>python3 ~/.hermes/brainsait/scripts/audit.py</code>. If it exits non-zero, nothing else matters.</li>
+<li><b>Briefing</b> — <code>cronjob daily-briefing.sh</code> runs the prior-day activity, surfaces anomalies, prepares the day.</li>
+<li><b>Registry reconcile</b> — verify the Intelligence Graph against the live stack.</li>
+<li><b>Directive check</b> — confirm no work in flight violates any BSD-2026-07 article.</li>
+</ul>
+<h2>Identity Architecture</h2>
+<p>Every person, system, and agent in the enterprise carries an identity under OID <code>1.3.6.1.4.1.61026</code>. The Identity layer is the authentication substrate; every other layer assumes it.</p>
+<p>Person identity: SSO via the profile service (port 9600), backed by enterprise identity records.</p>
+<p>System identity: API keys registered under the same OID hierarchy. Every key is auditable.</p>
+<p>Agent identity: registered under domain arc (e.g. <code>.8.1</code> for MASTERLINC). Every agent has a name, a mandate, and an AI Metadata record.</p>
+<h2>Product Lifecycle</h2>
+<p>Five stages:</p>
+<ul>
+<li><b>Conceive</b> — Article 12 fields defined; OID arc allocated.</li>
+<li><b>Build</b> — implementation; AI Metadata populated as it lands.</li>
+<li><b>Register</b> — registry node created; catalog entry linked.</li>
+<li><b>Ship</b> — marketplace listing live; JSON-LD published.</li>
+<li><b>Iterate</b> — versioned changelog; weekly validation re-run.</li>
+</ul>
+<p>A product that skips a stage is, by directive, pre-release. Marketing it as shipped is non-compliant.</p>
+<h2>Agent Governance</h2>
+<p>Every AI agent has:</p>
+<ul>
+<li>A registered name in the LINC family.</li>
+<li>An OID arc allocation.</li>
+<li>A <b>mandate</b> (what it is allowed to do).</li>
+<li>A <b>model card</b> (which model, which version, which validation set).</li>
+<li>An <b>override path</b> (how a human operator can take over).</li>
+<li>A <b>changelog</b> (validation runs, drift events, manual overrides).</li>
+</ul>
+<p>Agents without these six attributes are unauthorized and must not be deployed.</p>
+<h2>Documentation Discipline</h2>
+<p>Every project maintains nine documents (Directive Article 14):</p>
+<ul>
+<li>Executive Summary</li>
+<li>Technical Documentation</li>
+<li>API Documentation</li>
+<li>Deployment Guide</li>
+<li>Architecture Diagram</li>
+<li>User Guide</li>
+<li>Administrator Guide</li>
+<li>AI Agent Specification</li>
+<li>Release Notes</li>
+</ul>
+<p>A project missing any of these is not shippable. The auditor enforces this.</p>
+<h2>Marketplace Discipline</h2>
+<p>The marketplace is the distribution surface. Direct, unlisted distribution is deprecated.</p>
+<p>Every listing carries:</p>
+<ul>
+<li>Bilingual name + description.</li>
+<li>SAR + USD pricing.</li>
+<li>schema.org JSON-LD with OID brand identifier.</li>
+<li>Cross-link to registry node.</li>
+</ul>
+<p>Listings without these attributes are pre-listings.</p>
+<h2>Compliance Routine</h2>
+<p>Daily:</p>
+<ul>
+<li>Check for new NPHIES rule changes; update ClaimLinc validation set if needed.</li>
+<li>Verify PDPL consent ledger integrity.</li>
+</ul>
+<p>Weekly:</p>
+<ul>
+<li>Re-run all agent validation sets.</li>
+<li>Re-validate every product against its compliance block.</li>
+</ul>
+<p>Monthly:</p>
+<ul>
+<li>External conformance suite against CHI NPHIES tests.</li>
+<li>Internal conformance against FHIR R4.</li>
+</ul>
+<h2>The Audit Principle</h2>
+<p>The auditor is the operational definition of "the directive is being honored." If the auditor passes, the directive is being honored. If the auditor fails, the directive is being violated, regardless of intent.</p>
+<p>Two rules:</p>
+<ul>
+<li><b>Never ship with a failing auditor.</b> The auditor's exit code is binding.</li>
+<li><b>Always extend the auditor when you amend the directive.</b> Enforcement cannot drift silently.</li>
+</ul>
+<hr/>
+<h2>Daily Checklist</h2>
+<ul>
+<li>[ ] Audit exited 0</li>
+<li>[ ] Briefing reviewed, anomalies flagged</li>
+<li>[ ] Registry reconciled</li>
+<li>[ ] No directive violations in flight</li>
+<li>[ ] Identity layer healthy (SSO responds)</li>
+<li>[ ] All services respond on their assigned ports (per port map)</li>
+<li>[ ] Backups taken; last backup &lt;24h old</li>
+</ul>
+<h2>Weekly Checklist</h2>
+<ul>
+<li>[ ] All agent validation sets re-run</li>
+<li>[ ] Every product compliance block re-validated</li>
+<li>[ ] Registry intelligence graph regenerated</li>
+<li>[ ] Marketplace JSON-LD regenerated</li>
+<li>[ ] Backup restore test performed</li>
+</ul>
+<h2>Monthly Checklist</h2>
+<ul>
+<li>[ ] External conformance suite (NPHIES)</li>
+<li>[ ] FHIR R4 internal conformance</li>
+<li>[ ] OID hierarchy audit (no orphaned nodes, no renumbered arcs)</li>
+<li>[ ] Cross-domain navigation verified</li>
+<li>[ ] Directive amendment review (BSD-YYYY-NN v1.x)</li>
+</ul>
+<hr/>
+<h2>Closing Principle</h2>
+<p>A digital organization is not measured by its size or revenue. It is measured by <b>whether the directive is being honored and the auditor is passing</b>.</p>
+<p>Everything else is decoration.</p>
+<hr/>
+<p>© 2024–2026 BRAINSAIT LTD · Dr. Mohamed Elfadil Abuagla · CC BY-NC-SA 4.0</p>
+<p>Enterprise OID: <a href="https://www.iana.org/assignments/enterprise-numbers/?q=61026">1.3.6.1.4.1.61026 (IANA)</a></p>
+<div style="margin-top:60px;padding-top:16px;border-top:1px solid #e4dcc6;font-size:13px;color:#6b7386;text-align:center">
+  © 2024–2026 BRAINSAIT LTD · Dr. Mohamed Elfadil Abuagla · Enterprise OID 1.3.6.1.4.1.61026
+</div></body></html>

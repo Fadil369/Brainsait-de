@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BPR platform · UI designs | BrainSAIT</title>
+<meta name="description" content="Twenty-four design screens for the BPR provider registry, in two design directions. Design explorations, not the live platform.">
+<link rel="canonical" href="https://brainsait.de/bpr/designs/">
+<link rel="icon" href="/assets/brainsait-logo.png">
+<link rel="stylesheet" href="/assets/incubation-public.css">
+<link rel="stylesheet" href="/assets/designs.css">
+</head>
+<body>
+<header>
+  <div class="bar">
+    <a class="brand" href="/"><img src="/assets/brainsait-logo.png" alt="BrainSAIT">BrainSAIT</a>
+    <nav aria-label="Primary">
+      <a href="/">Main hub</a>
+      <a href="/#incubation">Incubation</a>
+      <a href="/developers/">Developer pathway</a>
+      <a href="/credentials/">Evidence library</a>
+      <a href="/bpr/designs/" aria-current="page">UI designs</a>
+    </nav>
+    <div class="locale-toggle" role="group" aria-label="Language / اللغة">
+      <button data-language-switch="en" aria-pressed="true" type="button">EN</button>
+      <button data-language-switch="ar" aria-pressed="false" type="button">العربية</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="ds-head">
+    <div>
+      <div class="eyebrow">BPR platform · design explorations</div>
+      <h1>UI designs</h1>
+    </div>
+  </div>
+  <p class="ds-lede">Twenty-four screens across two design directions. Every screen opens full size, and any v1/v2 pair can be opened side by side for comparison.</p>
+
+  <div class="ds-note">
+    <strong>Design explorations.</strong> These screens are design work, not the live platform. The BPR pages linked from the main hub remain the working surface.
+    Nothing here is a live registry entry. A screen describes an intended direction; it is not evidence of a verified provider, a licence, or an executed agreement.
+  </div>
+
+  <div class="ds-toolbar">
+    <label class="ds-label" for="ds-filter">Show</label>
+    <select class="ds-filter" id="ds-filter">
+      <option value="all">All directions</option>
+      <option value="v1">v1 · first direction</option>
+      <option value="v2">v2 · current direction</option>
+    </select>
+    <label class="ds-label" for="ds-q">Search screens</label>
+    <input class="ds-filter" id="ds-q" type="search" placeholder="Search screens" autocomplete="off">
+    <span class="spacer"></span>
+    <span class="ds-count" id="ds-count" aria-live="polite"></span>
+  </div>
+
+  <ul class="ds-grid" id="ds-grid"></ul>
+  <div class="ds-empty" id="ds-empty" hidden>No screen matches that search.</div>
+
+  <div class="ds-foot">
+    <span>Screens render exactly as exported from the design file. Nothing was rewritten.</span>
+    <span class="spacer" style="flex:1 1 auto"></span>
+    <a class="btn" href="/bpr/">BPR hub</a>
+    <a class="btn" href="/">Main hub</a>
+  </div>
+</main>
+
+<footer>
+  BrainSAIT · <a href="/">Main hub</a> · <a href="/bpr/designs/">UI designs</a>
+</footer>
+
+<script src="/assets/designs-manifest.js"></script>
+<script src="/assets/designs-translations.js"></script>
+<script src="/assets/brainsait-language.js"></script>
+<script>
+(function () {
+  var D = window.BPR_DESIGNS, screens = D.screens, pairs = D.pairs;
+  var grid = document.getElementById('ds-grid'),
+      empty = document.getElementById('ds-empty'),
+      countEl = document.getElementById('ds-count'),
+      filterEl = document.getElementById('ds-filter'),
+      qEl = document.getElementById('ds-q');
+
+  // descriptions keyed by canonical file name (falls back to a generic line)
+  var DESC = {
+    'Main.dc.html': ['Entry point for the registry: search, verify, or claim a profile.','نقطة الدخول إلى السجل: ابحث أو تحقّق أو اطلب ملفًا.'],
+    'Home.dc.html': ['Public landing page for the registry.','صفحة هبوط عامة للسجل.'],
+    'Search.dc.html': ['Search results with filters for speciality, city, and trust level.','نتائج بحث مع مرشحات للتخصص والمدينة ومستوى الثقة.'],
+    'Directory.dc.html': ['The browsable list of every registered provider.','القائمة القابلة للتصفح لكل مقدمي الخدمة المسجلين.'],
+    'Profile.dc.html': ['The public face of a provider: verified status, trust level, and claims of record.','الوجه العام لمقدم الخدمة: الحالة الموثقة ومستوى الثقة والسجلات المعلنة.'],
+    'Dossier.dc.html': ['A deeper record for a single provider.','سجل أعمق لمقدم خدمة واحد.'],
+    'Passport.dc.html': ['A portable identity document for a provider, with evidence boundaries stated plainly.','وثيقة هوية محمولة لمقدم خدمة، مع حدود الأدلة مذكورة بوضوح.'],
+    'Check.dc.html': ['Verify a provider by identifier and receive a receipt.','تحقّق من مقدم خدمة عبر المعرّف واستلم إيصالًا.'],
+    'Verify.dc.html': ['Verify a provider by identifier and receive a receipt.','تحقّق من مقدم خدمة عبر المعرّف واستلم إيصالًا.'],
+    'VerifyMobile.dc.html': ['The same verification flow on a phone, for scanning a code at a counter.','نفس مسار التحقق على الهاتف، لمسح رمز عند الشبّاك.'],
+    'CheckPhone.dc.html': ['Verification on a phone, for a code scanned in person.','التحقق على الهاتف، لرمز يُمسح حضوريًا.'],
+    'PassportAR.dc.html': ['Arabic right-to-left presentation of the trust passport.','عرض جواز الثقة من اليمين إلى اليسار بالعربية.'],
+    'Claim.dc.html': ['Claim an existing profile and attach evidence for review.','المطالبة بملف موجود وإرفاق أدلة للمراجعة.'],
+    'Claiming.dc.html': ['Claim your profile, with an evidence step.','اطلب ملفك، مع خطوة أدلة.'],
+    'Organization.dc.html': ['Register a new organization or facility with the registry.','تسجيل منشأة أو الجهة الصحية الجديدة في السجل.'],
+    'Facility.dc.html': ['Register a facility and its details.','سجّل منشأة صحبة تفاصيلها.'],
+    'AdminQueue.dc.html': ['Internal queue where submitted claims wait for a decision.','قائمة داخلية تنتظر فيها الطلبات المقدمة قرارًا.'],
+    'Desk.dc.html': ['The reviewer-facing workspace.','مساحة عمل المراجع.'],
+    'AdminCase.dc.html': ['Review one submitted claim end to end with its evidence.','مراجعة طلب مقدم بالكامل مع أدلته.'],
+    'Casefile.dc.html': ['One case, its evidence, and its decision.','حالة واحدة وأدلتها وقرارها.'],
+    'PeerBridge.dc.html': ['How one provider vouches for another, on the record.','كيف يوثّق مقدم خدمة آخر، بشكل موثّق.']
+  };
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  // Allow the language toggle to swap our descriptive lines too.
+  function applyDesc(root, lang) {
+    root.querySelectorAll('[data-desc]').forEach(function (el) {
+      var d = DESC[el.dataset.desc];
+      if (d) el.textContent = lang === 'ar' ? d[1] : d[0];
+    });
+  }
+  window.addEventListener('brainsait-language', function (e) { applyDesc(document, e.detail.lang); });
+
+  function card(s) {
+    var other = s.ver === 'v1' ? 'v2' : 'v1';
+    var view  = 'screen.html?v=' + s.ver + '&amp;f=' + encodeURIComponent(s.file);
+    var li = document.createElement('li');
+    li.className = 'ds-card';
+    li.dataset.ver = s.ver;
+    li.innerHTML =
+      '<a class="ds-thumb" href="' + view + '" aria-label="Open ' + esc(s.title) + ' full size">' +
+        '<img src="thumbs/' + s.ver + '/' + encodeURIComponent(s.file) + '.png" ' +
+            'width="720" height="450" loading="lazy" decoding="async" alt="' + esc(s.title) + ' — ' + s.ver + ' design screen">' +
+        '<span class="ds-badge">' + s.ver + '</span>' +
+        '<span class="ds-open-hint">Open full size</span>' +
+      '</a>' +
+      '<div class="ds-meta">' +
+        '<span class="ds-ver">' + s.ver + ' \u00b7 screen ' + s.i + ' / 12</span>' +
+        '<span class="ds-name">' + esc(s.title) + '</span>' +
+        '<span class="ds-desc" data-desc="' + esc(s.file) + '"></span>' +
+        '<span class="ds-links">' +
+          '<a href="' + view + '">Open full size</a>' +
+          '<a href="' + view + '" target="_blank" rel="noopener">Open in new tab</a>' +
+          '<a href="compare.html?p=' + s.i + '">Compare with ' + other + '</a>' +
+        '</span>' +
+      '</div>';
+    return li;
+  }
+
+  function render() {
+    var ver = filterEl.value, q = (qEl.value || '').trim().toLowerCase();
+    var list = screens.filter(function (s) {
+      if (ver !== 'all' && s.ver !== ver) return false;
+      if (!q) return true;
+      return (s.title + ' ' + s.file + ' ' + s.ver + ' ' + s.i).toLowerCase().indexOf(q) !== -1;
+    });
+    grid.textContent = '';
+    list.forEach(function (s) { grid.appendChild(card(s)); });
+    empty.hidden = list.length > 0;
+    countEl.textContent = list.length + ' / ' + screens.length + ' screens';
+    var lang = document.documentElement.lang === 'ar' ? 'ar' : 'en';
+    applyDesc(document, lang);
+  }
+
+  filterEl.addEventListener('change', render);
+  qEl.addEventListener('input', render);
+
+  // Open filters/search from the URL so a view can be shared or bookmarked.
+  var qs = new URLSearchParams(location.search);
+  if (qs.get('v')) filterEl.value = qs.get('v');
+  if (qs.get('q')) qEl.value = qs.get('q');
+  render();
+})();
+</script>
+</body>
+</html>
