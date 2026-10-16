@@ -1,0 +1,51 @@
+# ── Secrets ────────────────────────────────────────────────────────────────
+# Real env files live OUTSIDE this repo, mode 600:
+#   ~/.hermes/secrets/bpr-{hiring,partner,registry-local,linkedin}.env
+# They are referenced by absolute path from docker-compose.yml `env_file:`.
+# Nothing secret may ever be committed here.
+*.env
+*.env.*
+.env
+!.env.example
+secrets/
+**/secrets/
+
+# ── Python ─────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# ── Runtime state ──────────────────────────────────────────────────────────
+*.log
+*.pid
+*.sock
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.bak
+*.bak-*
+
+# ── Local scratch (never part of the image or the deployable set) ───────────
+tmp/
+.cache/
+.coverage
+coverage.xml
+htmlcov/
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/

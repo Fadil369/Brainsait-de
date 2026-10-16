@@ -1,0 +1,85 @@
+# BPR service stack - local only (no Cloudflare, no pricing exposed).
+# Refuses external hosts: ports bound to 127.0.0.1, reached by host nginx proxies.
+# Runs on the existing 'braincore' bridge network so postgres + n8n resolve by name.
+networks:
+  bpr:
+    name: braincore
+    external: true
+
+services:
+  bpr-hiring:
+    image: brainsait/bpr-python:1.0
+    container_name: bpr-hiring
+    restart: unless-stopped
+    command: ["python3", "/app/services/bpr-hiring.py"]
+    ports: ["127.0.0.1:9640:9640"]
+    env_file: ["/home/fadil369/.hermes/secrets/bpr-hiring.env"]
+    environment:
+      BPR_HIRING_DB_HOST: braincore-postgres
+      BPR_HIRING_DB_PORT: '5432'
+      BPR_HIRING_N8N: http://brainsait-n8n:5678
+      BPR_HIRING_HUB: http://172.18.0.1:9601
+    networks: ["bpr"]
+    healthcheck:
+      test: ["CMD","python3","-c","import urllib.request; urllib.request.urlopen('http://127.0.0.1:9640/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  bpr-partner:
+    image: brainsait/bpr-python:1.0
+    container_name: bpr-partner
+    restart: unless-stopped
+    command: ["python3", "/app/services/bpr-partner.py"]
+    ports: ["127.0.0.1:9641:9641"]
+    env_file: ["/home/fadil369/.hermes/secrets/bpr-partner.env"]
+    environment:
+      BPR_PARTNER_DB_HOST: braincore-postgres
+      BPR_PARTNER_DB_PORT: '5432'
+      BPR_PARTNER_N8N: http://brainsait-n8n:5678
+      BPR_PARTNER_HUB: http://172.18.0.1:9601
+    networks: ["bpr"]
+    healthcheck:
+      test: ["CMD","python3","-c","import urllib.request; urllib.request.urlopen('http://127.0.0.1:9641/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  bpr-registry-local:
+    image: brainsait/bpr-python:1.0
+    container_name: bpr-registry-local
+    restart: unless-stopped
+    command: ["python3", "/app/services/bpr-registry-local.py"]
+    ports: ["127.0.0.1:9642:9642"]
+    env_file: ["/home/fadil369/.hermes/secrets/bpr-registry-local.env"]
+    environment:
+      BPR_REGISTRY_DB_HOST: braincore-postgres
+      BPR_REGISTRY_DB_PORT: '5432'
+    networks: ["bpr"]
+    healthcheck:
+      test: ["CMD","python3","-c","import urllib.request; urllib.request.urlopen('http://127.0.0.1:9642/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  bpr-linkedin:
+    image: brainsait/bpr-python:1.0
+    container_name: bpr-linkedin
+    restart: unless-stopped
+    command: ["python3", "/app/services/bpr-linkedin.py"]
+    ports: ["127.0.0.1:9643:9643"]
+    env_file: ["/home/fadil369/.hermes/secrets/bpr-linkedin.env"]
+    environment:
+      BPR_LINKEDIN_DB_HOST: braincore-postgres
+      BPR_LINKEDIN_DB_PORT: '5432'
+      BPR_LINKEDIN_N8N: http://brainsait-n8n:5678
+    networks: ["bpr"]
+    healthcheck:
+      test: ["CMD","python3","-c","import urllib.request; urllib.request.urlopen('http://127.0.0.1:9643/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
