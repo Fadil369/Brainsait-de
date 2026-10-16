@@ -208,6 +208,40 @@ copies unless deliberately re-synced.
 
 Exit `0` = no drift, `1` = drift or a failed health check.
 
+### Watchdog
+
+`tools/drift-watch.sh` wraps that check for cron. It always writes
+`~/.local/state/bpr-drift.json` + appends to `~/.local/state/bpr-drift.log`,
+and **alerts only on a state change**, so a persistently clean stack stays
+quiet — the same discipline `ops/security/verify_containment.py` uses.
+
+Installed as a user cron entry:
+
+```
+*/15 * * * * /home/fadil369/brainsait/bpr-stack/tools/drift-watch.sh >/dev/null 2>&1   # bpr-stack drift watchdog
+```
+
+> **Known gap:** alert delivery goes to `http://127.0.0.1:9600/alert`, which
+> returns `401 {"error":"unauthorized: missing/invalid X-Hub-Key"}`. The key in
+> `~/.hermes/.env` as `BRAINSAIT_HUB_KEY` does not authenticate against this
+> hub. So today the watchdog **detects and records** drift reliably but **does
+> not successfully page you** — it appends the "alert suppressed" line to its
+> log. Read `~/.local/state/bpr-drift.json` for state, or wire a working channel.
+> See "Open findings" below.
+
+---
+
+## Open findings
+
+- **The C2 containment watchdog's alerts are almost certainly failing too.**
+  `ops/security/verify_containment.py:86` POSTs to `http://127.0.0.1:9600/alert`
+  with no `X-Hub-Key`, which returns 401. Its docstring claims it alerts "through
+  the same local hub path auto-heal.sh uses", but `auto-heal.sh` no longer
+  exists on this host. The **detection** works (it writes
+  `~/.local/state/containment-watch.json` every 5 min); only the **notification**
+  is broken. Not changed here — it is a security-critical file in another repo
+  and the fix needs the correct hub credential.
+
 ---
 
 ## Layout
