@@ -1,0 +1,146 @@
+/* BrainSAIT Provider Registry — token layer
+ *
+ * One identity (emerald + gold, the BrainSAIT trust colours), two surface
+ * planes. The architecture tokens (--background, --card, --ring …) stay
+ * semantic; the identity values are the BrainSAIT ones. No rule downstream
+ * may inline a colour — every value is referenced through a variable here.
+ *
+ * Contrast contract (dark plane):
+ *   --green      #00a65a  decorative marks / large type only
+ *   --green-txt  #34d399  accent that carries words
+ *   --gold       #d0a84f  decorative marks
+ *   --gold-txt   #f0d486  accent that carries words
+ * Contrast contract (light plane):
+ *   --green      #00813f  decorative marks
+ *   --green-txt  #006c35  accent that carries words
+ *   --gold       #b58a24  decorative marks
+ *   --gold-txt  #8a6a1f  accent that carries words
+ */
+
+@import url('/bpr/assets/fonts/fonts.css');
+
+:root {
+  color-scheme: dark;
+
+  /* ---- brand identity --------------------------------------------------- */
+  --green: #00a65a;
+  --green-deep: #006c35;
+  --green-txt: #34d399;
+  --gold: #d0a84f;
+  --gold-txt: #f0d486;
+  --teal: #2a9d8f;
+  --amber: #d98c2b;
+  --amber-txt: #f0b26b;
+  --red: #d54c4c;
+  --red-txt: #fca5a5;
+
+  /* ---- dark plane surfaces --------------------------------------------- */
+  --bg: #07100d;
+  --bg-2: #0a1813;
+  --panel: #101a16;
+  --panel-2: #14231e;
+  --line: #294038;
+  --line-soft: #1f3129;
+  --text: #f7fbf6;
+  --muted: #a9b9b0;
+  --soft: #7f948a;
+
+  /* ---- Gen-A architecture, mapped onto the identity -------------------- */
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card: var(--panel);
+  --muted-foreground: var(--muted);
+  --border: var(--line);
+  --ring: var(--green-txt);
+
+  /* ---- status ----------------------------------------------------------- */
+  --status-ok-fg: #6ee7b7;
+  --status-ok-bg: #052e21;
+  --status-warn-fg: #fcd34d;
+  --status-warn-bg: #3a2a05;
+  --status-err-fg: #fca5a5;
+  --status-err-bg: #3d1414;
+  --destructive: #b91c1c;
+  --destructive-fg: #ffffff;
+
+  /* ---- type -------------------------------------------------------------- */
+  --f-disp: 'Fraunces', 'Georgia', 'Times New Roman', serif;
+  --f-ar: 'Reem Kufi', 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+  --f-body: 'IBM Plex Sans Arabic', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --f-mono: 'IBM Plex Mono', 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+
+  /* ---- radii / elevation ------------------------------------------------- */
+  --radius-card: 14px;
+  --radius-button: 10px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px #0006, 0 14px 34px -18px #000000b3;
+  --shadow-raised: 0 2px 5px #0007, 0 26px 60px -26px #000c;
+
+  /* ---- spacing ----------------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ---- type scale -------------------------------------------------------- */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 28px;
+  --text-2xl: 38px;
+  --text-3xl: 54px;
+  --leading-tight: 1.18;
+  --leading-normal: 1.6;
+
+  /* ---- motion ------------------------------------------------------------ */
+  --ease: cubic-bezier(0.2, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+}
+
+/* ==========================================================================
+   Light plane — the crisp paper reading of the same identity.
+   ========================================================================== */
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --green: #00813f;
+  --green-deep: #006c35;
+  --green-txt: #006c35;
+  --gold: #b58a24;
+  --gold-txt: #8a6a1f;
+  --teal: #1c8577;
+  --amber: #b5741a;
+  --amber-txt: #8a5300;
+  --red: #b3261e;
+  --red-txt: #97231f;
+
+  --bg: #f4f8f5;
+  --bg-2: #edf3ef;
+  --panel: #ffffff;
+  --panel-2: #f7faf8;
+  --line: #d3e0d8;
+  --line-soft: #e2ebe5;
+  --text: #10201a;
+  --muted: #4d6157;
+  --soft: #6b8076;
+
+  --ring: var(--green-deep);
+
+  --status-ok-fg: #0b5c3f;
+  --status-ok-bg: #dff2e7;
+  --status-warn-fg: #7a4d00;
+  --status-warn-bg: #fbf0da;
+  --status-err-fg: #8f2a20;
+  --status-err-bg: #fae3e0;
+
+  --shadow-card: 0 1px 2px #0d241914, 0 12px 28px -18px #0d241940;
+  --shadow-raised: 0 2px 5px #0d24191f, 0 22px 48px -24px #0d24194d;
+}
+
+body { background: var(--bg); color: var(--text); }

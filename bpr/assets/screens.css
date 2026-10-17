@@ -1,0 +1,283 @@
+/* screens.css — layout for the screens added by tasks 6, 10, 11 and 12.
+ *
+ * base.css and pages.css are left exactly as their earlier tasks wrote them.
+ * This file holds only what those two do not cover.
+ *
+ * The contrast contract, restated because these screens are the ones that put
+ * colour on words:
+ *
+ *   --stamp      #ea580c  3.06:1 on --paper  -> DECORATIVE ONLY
+ *   --stamp-text #b3410a  4.90:1 on --paper  -> every accent that carries words
+ *
+ * So: any declaration of --stamp below appears in a rule with NO font-size.
+ * Every coloured word on these screens uses --stamp-text. To keep that true by
+ * construction rather than by review, the task-6 grep looks for `var(--stamp)`
+ * (with the closing paren) co-occurring with `font-size` in the same rule.
+ */
+
+/* ---- Screen 4 — trust passport ------------------------------------------- */
+
+.passport-id {
+  font-family: var(--f-mono);
+  font-size: var(--text-xl);
+  margin: 0;
+  word-break: break-word;
+}
+
+/* A passport seal is display type, so it is allowed the decorative accent at a
+ * size where the accent reads as a mark and not as body copy. */
+.passport-stamp {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  border: 2px solid var(--stamp-text);
+  border-radius: var(--radius-button);
+  color: var(--stamp-text);
+  font-family: var(--f-disp);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.passport-name {
+  font-family: var(--f-disp);
+  font-size: var(--text-xl);
+  color: var(--stamp-text);
+  margin: var(--space-4) 0;
+}
+
+.passport-withheld {
+  color: var(--stamp-text);
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin: 0 0 var(--space-4);
+}
+
+/* The other-language label under a field. */
+.doc-alt {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  font-weight: 400;
+}
+
+.passport-rung {
+  font-family: var(--f-mono);
+  font-size: var(--text-base);
+  color: var(--ink);
+}
+
+.passport-qr {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+.passport-qr a { word-break: break-all; }
+
+/* ---- Screen 5 — verify ---------------------------------------------------- */
+
+.verify-form {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  align-items: end;
+  margin-top: var(--space-5);
+}
+
+.verify-form input {
+  min-width: 16rem;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-button);
+  background-color: var(--paper-hi);
+  color: var(--foreground);
+  font-family: var(--f-mono);
+  font-size: var(--text-base);
+}
+
+.verify-form button {
+  min-height: 44px;
+  padding: var(--space-2) var(--space-5);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-button);
+  background-color: var(--ink);
+  color: var(--paper-hi);
+  font-family: var(--f-body);
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---- Shared: operator-gated surfaces (task 12) --------------------------- */
+
+/* The state shown when a screen is honest about not being able to read an
+ * operator endpoint. Loud on purpose: a visitor must be able to tell the
+ * difference between "there is nothing here" and "you may not look". */
+.gate {
+  margin: 0 0 var(--space-5);
+  padding: var(--space-5);
+  border: 2px solid var(--stamp-text);
+  border-radius: var(--radius-card);
+  background-color: var(--card);
+}
+
+.gate-title {
+  font-family: var(--f-disp);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--stamp-text);
+  margin: 0 0 var(--space-3);
+}
+
+.gate p { margin: 0 0 var(--space-3); }
+
+/* ---- Shared: fixture-backed screens (task 12) ---------------------------- */
+
+/* A screen shipped with fixture data says so in the frame, not in a footnote. */
+.fixture-note {
+  margin: 0 0 var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border: 1px dashed var(--rule-strong);
+  border-radius: var(--radius-button);
+  background-color: var(--paper-lo);
+  color: var(--stamp-text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+/* ---- Shared: wizard (task 12, screen 7) ---------------------------------- */
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  counter-reset: wizard;
+}
+
+.step {
+  flex: 1 1 8rem;
+  min-height: 44px;
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-button);
+  background-color: var(--card);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.step[data-state='current'] {
+  border-color: var(--rule-strong);
+  background-color: var(--paper-lo);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.step[data-state='done'] { color: var(--status-ok-fg); border-color: var(--status-ok-fg); }
+
+.wizard-panel[hidden] { display: none; }
+
+.choice {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-bottom: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-button);
+  background-color: var(--card);
+  color: var(--foreground);
+  font-family: var(--f-body);
+  font-size: var(--text-base);
+  text-align: start;
+  cursor: pointer;
+}
+
+.choice[aria-pressed='true'] {
+  border-color: var(--rule-strong);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+  font-weight: 600;
+}
+
+/* ---- Shared: provisioning + consent (tasks 10, 11) ----------------------- */
+
+.step-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.step-row:last-child { border-bottom: 0; }
+
+.step-name { font-family: var(--f-mono); font-weight: 600; color: var(--ink); }
+.step-at { margin-inline-start: auto; color: var(--muted-foreground); font-size: var(--text-sm); }
+
+.field-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+}
+
+.field-chips li {
+  font-family: var(--f-mono);
+  font-size: var(--text-sm);
+}
+
+.ack {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-button);
+  background-color: var(--card);
+  min-height: 44px;
+}
+
+.ack input { width: 24px; height: 24px; flex: none; margin-top: 2px; }
+
+/* ---- Narrow screens ------------------------------------------------------ */
+
+@media (max-width: 40rem) {
+  .verify-form input { min-width: 100%; }
+
+  .step-row { flex-wrap: wrap; }
+  .step-at { margin-inline-start: 0; }
+}
+
+/* ---- Open-set rows (task 11) --------------------------------------------- */
+
+/* A step name rendered alongside its registry token. The token is kept visible
+ * on purpose: an operator reconciling this list against the worker needs to see
+ * the machine word, not only its translation. */
+.token {
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+
+.steps-open {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+}
+
+.steps-open > .step-row > summary { cursor: pointer; }
+
+/* A detail block folds away so a six-step record stays readable on a phone. */
+details > summary {
+  padding: var(--space-1) 0;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+
+details .doc-field { margin: var(--space-2) 0 0; }
