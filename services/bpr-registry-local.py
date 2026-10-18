@@ -29,9 +29,10 @@ import json
 import os
 import re
 import sys
+import time
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import urlparse, parse_qs, unquote
+from urllib.parse import urlparse, parse_qs, unquote, urlencode
 
 import psycopg2
 import psycopg2.extras
@@ -50,6 +51,38 @@ SERVICE = "bpr-registry-local"
 VERSION = "2.0.0"
 OID_ROOT = "1.3.6.1.4.1.61026"
 CLASS_ARC = {"PHY": "3", "NUR": "3", "PHA": "3", "DEN": "3", "ORG": "2", "HOS": "2", "FAC": "4", "CLI": "4", "LAB": "4"}
+
+# ── ORCID OAuth (Public API, /authenticate scope) ────────────────────────────
+# Credentials registered at https://orcid.org/developer-tools (see brainsait/config/orcid.env).
+# Redirect URI must match exactly what ORCID has on file.
+ORCID_CLIENT_ID = os.environ.get("ORCID_CLIENT_ID", "APP-WQVGGGO3V68I8X2K")
+ORCID_CLIENT_SECRET = os.environ.get("ORCID_CLIENT_SECRET", "")
+ORCID_REDIRECT_URI = os.environ.get("ORCID_REDIRECT_URI", "https://registry.brainsait.de/orcid/callback")
+ORCID_SCOPE = os.environ.get("ORCID_SCOPE", "/authenticate")
+
+# Claim-level trust labels — one label per claim, never a universal "verified" score.
+# ORCID connection proves account control only; it never implies clinical competence,
+# current privileges, or licensure.
+ORCID_CLAIM_LABELS = {
+    "en": {
+        "orcid_connected": "Account control authenticated",
+        "orcid_listed": "Listed on ORCID; original source retained",
+        "provider_declared": "Self-declared",
+        "institution_attested": "Institution-attested; confirmation date shown",
+        "authority_checked": "Authority checked; status and check date shown",
+    },
+    "ar": {
+        "orcid_connected": "تم التحقق من التحكم في الحساب",
+        "orcid_listed": "مسجل في ORCID؛ المصدر الأصلي محتفظ به",
+        "provider_declared": "إفادة مقدمة من مقدم الخدمة",
+        "institution_attested": "مؤكد من المؤسسة؛ يظهر تاريخ التأكيد",
+        "authority_checked": "تم الفحص من السلطة؛ الحالة وتاريخ الفحص موضحان",
+    },
+}
+
+# CSRF state nonces for the OAuth flow (nonce -> (spid, expiry_ts)). Single-process
+# service; good enough for the short-lived authorize -> callback dance.
+ORCID_STATE_NONCES: dict = {}
 
 SPID_ALIASES = {
     "FADI": "SA-PHY-000001",
@@ -438,6 +471,11 @@ def profile(raw_spid):
         "public_profile": True,
         "consent_source": "subject_acknowledged",
         "subject_identity_withheld": False,
+        "orcid": {
+            "orcid_id": p.get("orcid_id"),
+            "orcid_uri": f"https://orcid.org/{p.get('orcid_id')}" if p.get("orcid_id") else None,
+            "verified_at": iso(p.get("orcid_verified_at")),
+        },
         "metadata": meta,
         "attestations": atts,
         "badges": badges,
@@ -503,6 +541,11 @@ def verify(raw_spid):
         "receipt_id": p.get("receipt_id") or "",
         "oid": p.get("oid") or oid_for(p["spid"]),
         "buid": p.get("buid") or buid_for(p["spid"]),
+        "orcid": {
+            "orcid_id": p.get("orcid_id"),
+            "orcid_uri": f"https://orcid.org/{p.get('orcid_id')}" if p.get("orcid_id") else None,
+            "verified_at": iso(p.get("orcid_verified_at")),
+        },
         "badges": clean_all(badges),
         "attestations": clean_all(atts),
         "public_profile": True,
@@ -810,6 +853,372 @@ def requests(_q):
     })
 
 
+# ─── ORCID OAuth handlers ─────────────────────────────────────────────────────
+
+def orcid_connect(q):
+    spid = (q.get("spid", [""])[0] or "").strip()
+    if not spid:
+        return err("spid required", 400)
+    if not query("SELECT 1 FROM bpr_partners WHERE spid = %s", (spid,), one=True):
+        return err("member not found", 404, spid=spid)
+    if not ORCID_CLIENT_ID or not ORCID_CLIENT_SECRET:
+        return err("ORCID not configured", 503)
+
+    nonce = os.urandom(16).hex()
+    ORCID_STATE_NONCES[nonce] = (spid, time.time() + 600)  # 10 min TTL
+
+    params = {
+        "client_id": ORCID_CLIENT_ID,
+        "response_type": "code",
+        "scope": ORCID_SCOPE,
+        "redirect_uri": ORCID_REDIRECT_URI,
+        "state": nonce,
+    }
+    auth_url = "https://orcid.org/oauth/authorize?" + urlencode(params)
+    return b"", 302, {"Location": auth_url, "Content-Type": "text/plain"}
+
+
+def orcid_callback(q):
+    code = q.get("code", [""])[0]
+    state = q.get("state", [""])[0]
+    error = q.get("error", [""])[0]
+
+    if error:
+        return err(f"ORCID authorization denied: {error}", 400)
+    if not code or not state:
+        return err("missing code or state", 400)
+
+    entry = ORCID_STATE_NONCES.pop(state, None)
+    if not entry:
+        return err("state mismatch (CSRF)", 403)
+    spid, _ = entry
+    if time.time() > entry[1]:
+        return err("state expired", 403)
+
+    if not ORCID_CLIENT_ID or not ORCID_CLIENT_SECRET:
+        return err("ORCID not configured", 503)
+
+    # Exchange code for access token
+    try:
+        import urllib.request
+        data = urlencode({
+            "client_id": ORCID_CLIENT_ID,
+            "client_secret": ORCID_CLIENT_SECRET,
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": ORCID_REDIRECT_URI,
+        }).encode()
+        req = urllib.request.Request(
+            "https://orcid.org/oauth/token",
+            data=data,
+            headers={"Content-Type": "application/x-www-form-urlencoded",
+                     "Accept": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            token_data = json.loads(resp.read().decode())
+    except Exception as e:
+        return err(f"token exchange failed: {e}", 502)
+
+    orcid_id = token_data.get("orcid")
+    access_token = token_data.get("access_token")
+    refresh_token = token_data.get("refresh_token")
+    scope = token_data.get("scope")
+    expires_in = token_data.get("expires_in")
+
+    if not orcid_id:
+        return err("no ORCID iD in token response", 502)
+
+    token_expires_at = None
+    if expires_in:
+        from datetime import timedelta
+        token_expires_at = (datetime.now(timezone.utc) + timedelta(seconds=int(expires_in)))
+
+    now = datetime.now(timezone.utc)
+    # Persist ORCID iD on the partner row
+    query(
+        "UPDATE bpr_partners SET orcid_id = %s, orcid_verified_at = %s, updated_at = %s WHERE spid = %s",
+        (orcid_id, now.isoformat(), now.isoformat(), spid),
+    )
+    # Store tokens in the link table
+    query(
+        """INSERT INTO bpr_orcid_links (spid, orcid_id, access_token, refresh_token,
+                                        token_scope, token_expires_at, linked_at, last_synced_at)
+           VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+           ON CONFLICT (spid) DO UPDATE SET
+             orcid_id = EXCLUDED.orcid_id, access_token = EXCLUDED.access_token,
+             refresh_token = EXCLUDED.refresh_token, token_scope = EXCLUDED.token_scope,
+             token_expires_at = EXCLUDED.token_expires_at, linked_at = EXCLUDED.linked_at,
+             last_synced_at = EXCLUDED.last_synced_at""",
+        (spid, orcid_id, access_token, refresh_token, scope, token_expires_at,
+         now.isoformat(), now.isoformat()),
+    )
+
+    # Best-effort: pull public record once to capture display names
+    try:
+        import urllib.request as _ur
+        rec_req = _ur.Request(
+            f"https://pub.orcid.org/v3.0/{orcid_id}/record?format=json",
+            headers={"Accept": "application/json", "User-Agent": "brainsait-bpr/1.0"},
+        )
+        with _ur.urlopen(rec_req, timeout=30) as _resp:
+            record = json.loads(_resp.read().decode())
+        person = record.get("person") or record
+        names = person.get("name") or {}
+        dn = names.get("display-name")
+        display_en = display_ar = None
+        if dn:
+            val = dn.get("value") if isinstance(dn, dict) else dn
+            if isinstance(val, str):
+                if re.search(r"[\u0600-\u06FF]", val):
+                    display_ar = val
+                else:
+                    display_en = val
+        query(
+            "UPDATE bpr_partners SET metadata = metadata || %s::jsonb WHERE spid = %s",
+            (json.dumps({"orcid": {"display_name_en": display_en,
+                                 "display_name_ar": display_ar,
+                                 "synced_at": now.isoformat()}}), spid),
+        )
+    except Exception:
+        pass  # profile enrichment is best-effort
+
+    return b"", 302, {"Location": f"https://brainsait.de/bpr/p/{spid}/?orcid=linked",
+                      "Content-Type": "text/plain"}
+
+
+def orcid_status(raw_spid):
+    spid = resolve_spid(raw_spid)
+    row = query(
+        "SELECT orcid_id, orcid_verified_at FROM bpr_partners WHERE spid = %s", (spid,), one=True)
+    if not row:
+        return err("member not found", 404, spid=spid)
+    link = query(
+        "SELECT orcid_id, token_scope, linked_at, last_synced_at FROM bpr_orcid_links WHERE spid = %s",
+        (spid,), one=True)
+    return json_response({
+        "spid": spid,
+        "orcid_id": row.get("orcid_id"),
+        "orcid_uri": f"https://orcid.org/{row.get('orcid_id')}" if row.get("orcid_id") else None,
+        "verified_at": row.get("orcid_verified_at") and row["orcid_verified_at"].isoformat()
+                       if hasattr(row.get("orcid_verified_at"), "isoformat") else row.get("orcid_verified_at"),
+        "link": link,
+        "claim_labels": ORCID_CLAIM_LABELS,
+    })
+
+
+# ── BPR Research Passport (visual user surface) ──────────────────────────────
+
+def _safe(text):
+    return text or ""
+
+
+def render_passport(spid, published, profile, research, ai, claim_labels, identity,
+                    orcid_section):
+    """Single-file HTML passport: bilingual, evidence-first, claim-level trust."""
+    name_en = _safe(identity.get("business_name"))
+    name_ar = _safe(profile.get("display_name_ar")) or ""
+    oid = _safe(identity.get("oid"))
+    orcid_id = _safe(orcid_section.get("orcid_id"))
+    orcid_uri = orcid_section.get("orcid_uri")
+    verified_at = _safe(orcid_section.get("verified_at"))
+    trust_level = _safe(identity.get("trust_level"))
+    rung = identity.get("verification_rung") or 0
+    max_rung = identity.get("verification_max_rung") or 6
+    status = _safe(identity.get("status"))
+    lang_dir = "rtl" if name_ar else "ltr"
+
+    def label(key, lang="en"):
+        return claim_labels.get(lang, {}).get(key, key)
+
+    def badge(color, text):
+        return (f'<span class="badge" style="background:{color}">{text}</span>')
+
+    # Research contribution rows
+    rc_rows = ""
+    for r in (research or []):
+        src = r.get("source") or "provider"
+        title = _safe(r.get("title_en")) or _safe(r.get("title_ar")) or "Untitled"
+        date = _safe(r.get("date_from"))
+        ext = r.get("external_url")
+        claim_lbl = _safe(r.get("claim_label"))
+        verified_by = _safe(r.get("verified_by"))
+        if src == "orcid":
+            chip = badge("#1f6feb", label("orcid_listed"))
+        elif src == "institution":
+            chip = badge("#0e7c17", label("institution_attested"))
+        else:
+            chip = badge("#b45309", label("provider_declared"))
+        rc_rows += f"""
+          <tr>
+            <td class="mono">{chip}</td>
+            <td>{title}</td>
+            <td>{date or "—"}</td>
+            <td>{claim_lbl or "—"}</td>
+            <td class="mono">{verified_by or "—"}</td>
+            <td><a href="{ext}" target="_blank" rel="noopener">source</a></td>
+          </tr>"""
+
+    # AI contribution rows
+    ai_rows = ""
+    for a in (ai or []):
+        role = _safe(a.get("role"))
+        pname = _safe(a.get("project_name_en")) or _safe(a.get("project_name_ar"))
+        status_txt = _safe(a.get("status"))
+        ai_rows += f"""
+          <tr>
+            <td>{role}</td>
+            <td>{pname}</td>
+            <td><a href="{_safe(a.get('evidence_url'))}" target="_blank" rel="noopener">evidence</a></td>
+            <td class="mono">{status_txt}</td>
+            <td>{_safe(a.get('reviewed_by')) or "pending"}</td>
+          </tr>"""
+
+    orcid_block = ""
+    if orcid_id:
+        orcid_block = f"""
+        <section class="card">
+          <h2>ORCID · {orcid_id}</h2>
+          <p class="note">Account control authenticated via OAuth — read the claim label on each item, not a score.</p>
+          <p><strong>ORCID record:</strong> <a href="{orcid_uri}" target="_blank" rel="noopener">{orcid_uri}</a></p>
+          <p><strong>Connected:</strong> {verified_at}</p>
+        </section>"""
+    else:
+        orcid_block = f"""
+        <section class="card connect">
+          <h2>Connect ORCID</h2>
+          <p class="note">Link your ORCID iD to bring your research contributions into this passport.</p>
+          <a href="/orcid/connect?spid={spid}" class="btn primary">Connect ORCID</a>
+        </section>"""
+
+    html = f"""<!DOCTYPE html>
+<html lang="en" dir="{lang_dir}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{name_en or spid} — BPR Research Passport</title>
+<style>
+  * {{ box-sizing: border-box; }}
+  body {{ font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans Arabic", "Amiri", sans-serif; margin: 0; background: #f3f4f6; color: #111827; direction: {lang_dir}; }}
+  .header {{ background: linear-gradient(135deg, #0b3d66 0%, #14539a 60%, #0e7490 100%); color: #fff; padding: 40px 24px; }}
+  .header h1 {{ margin: 0 0 8px; font-size: 26px; letter-spacing: -0.02em; }}
+  .header .sub {{ opacity: 0.9; font-size: 14px; }}
+  .header .spid {{ display: inline-block; margin-top: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 6px; font-size: 13px; }}
+  .container {{ max-width: 760px; margin: -20px auto 40px; padding: 0 20px; }}
+  .grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }}
+  @media (max-width: 640px) {{ .grid {{ grid-template-columns: 1fr; }} }}
+  .card {{ background: #fff; border-radius: 12px; border: 1px solid #e5e7eb; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }}
+  .card.connect {{ background: #f0f9ff; border-color: #bae6fd; }}
+  .card h2 {{ margin: 0 0 12px; font-size: 17px; display: flex; align-items: center; gap: 8px; }}
+  .card h2 .live {{ width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; }}
+  .note {{ color: #6b7280; font-size: 13.5px; margin: 0 0 12px; line-height: 1.5; }}
+  .meta-row {{ display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }}
+  .meta-item {{ flex: 1; }}
+  .meta-item .k {{ font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-bottom: 4px; }}
+  .meta-item .v {{ font-size: 15px; font-weight: 600; }}
+  .badge {{ display: inline-block; font-size: 11px; font-weight: 700; color: #fff; padding: 2px 8px; border-radius: 999px; }}
+  table {{ width: 100%; border-collapse: collapse; margin-top: 10px; }}
+  th {{ text-align: { 'right' if lang_dir=='rtl' else 'left' }; font-size: 12px; color: #6b7280; padding: 8px 6px; border-bottom: 1px solid #e5e7eb; font-weight: 600; }}
+  td {{ font-size: 13.5px; padding: 8px 6px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }}
+  td.mono {{ font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }}
+  .btn {{ display: inline-block; background: #0b3d66; color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 14px; margin-top: 8px; }}
+  .btn.primary {{ background: #0e7490; }}
+  .qr {{ margin-top: 16px; text-align: center; }}
+  .qr img {{ width: 140px; height: 140px; border: 4px solid #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }}
+  .footer {{ color: #9ca3af; font-size: 12px; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 16px; }}
+  .lang {{ float: {'left' if lang_dir=='rtl' else 'right'}; font-size: 12px; color: #9ca3af; }}
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>{name_en or spid}</h1>
+    <p class="sub">BrainSAIT Provider Registry · Research Passport</p>
+    <span class="spid">{spid}</span>
+  </div>
+
+  <div class="container">
+    <div class="lang">BPR · بى أر بى</div>
+
+    <section class="card">
+      <h2><span class="live"></span>Identity</h2>
+      <div class="grid">
+        <div class="meta-item"><div class="k">SPID</div><div class="v mono">{spid}</div></div>
+        <div class="meta-item"><div class="k">OID</div><div class="v mono">{oid}</div></div>
+        <div class="meta-item"><div class="k">Trust level</div><div class="v">{trust_level}</div></div>
+        <div class="meta-item"><div class="k">Verification rung</div><div class="v">{rung} / {max_rung}</div></div>
+        <div class="meta-item"><div class="k">Status</div><div class="v">{badge('#10b981' if status=='active' else '#f59e0b', status)}</div></div>
+      </div>
+    </section>
+
+    {orcid_block}
+
+    <section class="card">
+      <h2>Research contributions</h2>
+      <p class="note">Each row carries its own claim label — no single "verified" score.</p>
+      <table>
+        <thead><tr><th>Source</th><th>Title</th><th>Date</th><th>Claim</th><th>Verified by</th><th style="width:110px">Link</th></tr></thead>
+        <tbody>{rc_rows or '<tr><td colspan="6" class="note">No research contributions yet.</td></tr>'}</tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Clinical AI contributions</h2>
+      <p class="note">Attributable contributions to healthcare AI (dataset annotation, model evaluation, guideline review, safety assessment).</p>
+      <table>
+        <thead><tr><th>Role</th><th>Project</th><th>Evidence</th><th>Status</th><th>Reviewed by</th></tr></thead>
+        <tbody>{ai_rows or '<tr><td colspan="5" class="note">No AI contributions recorded.</td></tr>'}</tbody>
+      </table>
+    </section>
+
+    <div class="qr">
+      <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=https://registry.brainsait.de/passport/{spid}/&choe=UTF-8" alt="Passport QR">
+      <div class="note" style="margin-top:8px;">Scan to verify this passport</div>
+    </div>
+
+    <div class="footer">
+      Claim labels per ORCID practice: account control authenticated ≠ clinical competence. ORCID connection is optional.
+      <span style="float:{'left' if lang_dir=='rtl' else 'right'};">BrainSAIT Provider Registry · {spid}</span>
+    </div>
+  </div>
+</body>
+</html>"""
+    return html.encode("utf-8"), 200, {"Content-Type": "text/html; charset=utf-8"}
+
+
+def passport_page(raw_spid):
+    spid = resolve_spid(raw_spid)
+    row = query(
+        "SELECT spid, full_name, oid, orcid_id, orcid_verified_at, trust_level, status, verification_rung FROM bpr_partners WHERE spid = %s",
+        (spid,), one=True)
+    if not row:
+        return err("member not found", 404, spid=spid)
+    profile = query(
+        "SELECT display_name_en, display_name_ar, other_names, country, synced_at FROM bpr_orcid_profile WHERE spid = %s",
+        (spid,), one=True) or {}
+    research = query(
+        "SELECT id, source, source_put_code, type, title_en, title_ar, date_from, date_to, external_url, claim_label, verified_by FROM bpr_research_contribution WHERE spid = %s ORDER BY created_at DESC",
+        (spid,))
+    ai = query(
+        "SELECT id, role, project_name_en, project_name_ar, evidence_url, reviewed_by, reviewed_at, status FROM bpr_ai_contribution WHERE spid = %s ORDER BY created_at DESC",
+        (spid,))
+    identity = {
+        "spid": row["spid"],
+        "business_name": row.get("full_name"),
+        "oid": row.get("oid"),
+        "trust_level": row.get("trust_level"),
+        "verification_rung": row.get("verification_rung"),
+        "verification_max_rung": row.get("verification_max_rung"),
+        "status": row.get("status"),
+    }
+    orcid_section = {
+        "orcid_id": row.get("orcid_id"),
+        "orcid_uri": f"https://orcid.org/{row.get('orcid_id')}" if row.get("orcid_id") else None,
+        "verified_at": row.get("orcid_verified_at").isoformat() if hasattr(row.get("orcid_verified_at"), "isoformat") else row.get("orcid_verified_at"),
+    }
+    published = True  # registry state; subject consent governs name display in other views
+    return render_passport(spid, published, profile, research, ai, ORCID_CLAIM_LABELS, identity, orcid_section)
+
+
 ROUTES = [
     "GET /health", "GET /members", "GET /verification/ladder",
     "GET /api/profiles/:spid", "GET /verify/:spid", "GET /oid/verify/:spid",
@@ -817,6 +1226,8 @@ ROUTES = [
     "GET /idn/verify?label=...", "GET /peer-receipts", "POST /peer-receipts",
     "GET /slots", "GET /slots/:id", "GET /slots/:id/chain",
     "GET /network", "GET /partner/:spid", "GET /provision/:spid", "GET /requests",
+    "GET /orcid/connect", "GET /orcid/callback", "GET /orcid/status/:spid",
+    "GET /passport/:spid",
 ]
 
 
@@ -848,6 +1259,16 @@ def route(method, path, q, body=None):
         return network()
     if path == "/requests":
         return requests(q)
+    if path == "/orcid/connect":
+        return orcid_connect(q)
+    if path == "/orcid/callback":
+        return orcid_callback(q)
+    m = re.match(r"^/orcid/status/([^/]+)$", path)
+    if m:
+        return orcid_status(m.group(1))
+    m = re.match(r"^/passport/([^/]+)$", path)
+    if m:
+        return passport_page(m.group(1))
 
     m = re.match(r"^/api/profiles/([^/]+)$", path)
     if m:
